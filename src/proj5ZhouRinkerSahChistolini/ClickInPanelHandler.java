@@ -41,7 +41,7 @@ public class ClickInPanelHandler {
      * @param event
      * @param instrument
      */
-    public void handle(MouseEvent event, String instrument) {
+    public void handle(MouseEvent event, Instrument instrument) {
         isMetaDown = event.isShortcutDown();
         addNote(event.getX(), event.getY(), instrument);
     }
@@ -53,7 +53,7 @@ public class ClickInPanelHandler {
      * @param x mouse x location
      * @param y mouse y location
      */
-    public void addNote(double x, double y, String instrument) {
+    public void addNote(double x, double y, Instrument instrument) {
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,

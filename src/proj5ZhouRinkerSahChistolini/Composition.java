@@ -63,7 +63,7 @@ public class Composition {
      * @param notes a list of notes
      */
     public void addNotes(ArrayList<Note> notes){
-        for(Note note: notes){
+            for(Note note: notes){
             this.addNote(note);
         }
     }

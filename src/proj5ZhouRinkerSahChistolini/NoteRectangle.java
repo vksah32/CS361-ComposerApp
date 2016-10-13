@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 public class NoteRectangle extends Rectangle {
 
     /** the instrument of the note */
-    private int instrument;
+    private Instrument instrument;
 
     /** keeps track of whether the rectangle is selected */
     private boolean selected;
@@ -35,54 +35,17 @@ public class NoteRectangle extends Rectangle {
      */
     public NoteRectangle(double x, double y,
                          double width, double height,
-                         String instrument) {
+                         Instrument instrument) {
         super(x, y, width, height);
-        this.setInstrument(instrument);
-    }
-
-    /**
-     * sets the rectangles color and instrument number given the instrument
-     * @param instrument
-     */
-    public void setInstrument(String instrument){
-        if (instrument.equals("Harpsichord")){
-            this.setFill(Color.GREEN);
-            this.instrument = 6;}
-        else if (instrument.equals("Marimba")) {
-            this.setFill(Color.BLUE);
-            this.instrument = 12;
-        }
-        else if (instrument.equals("Organ")) {
-            this.setFill(Color.GOLD);
-            this.instrument = 19;
-        }
-        else if (instrument.equals("Accordion")){
-            this.setFill(Color.PURPLE);
-            this.instrument = 21;
-        }
-        else if (instrument.equals("Guitar")) {
-            this.setFill(Color.DEEPSKYBLUE);
-            this.instrument = 24;
-        }
-        else if (instrument.equals("Violin")) {
-            this.setFill(Color.BLACK);
-            this.instrument = 40;
-        }
-        else if (instrument.equals("French Horn")) {
-            this.setFill(Color.SANDYBROWN);
-            this.instrument = 60;
-        }
-        else{
-            this.setFill(Color.GREY);
-            this.instrument = 0;
-        }
+        this.setStyle(String.format("-fx-fill: %s", instrument.getColor()));
+        this.instrument = instrument;
     }
 
     /**
      * gets the instrument
      * @return the instrument
      */
-    public int getInstrument(){
+    public Instrument getInstrument(){
         return this.instrument;
     }
 

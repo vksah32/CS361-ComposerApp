@@ -31,15 +31,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
 
-        Controller controller = new Controller();
-        loader.setController(controller);
-
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 600, 425);
 
         primaryStage.setScene(scene);
-        primaryStage.setOnCloseRequest(e -> controller.cleanUpOnExit());
+        primaryStage.setOnCloseRequest(e -> System.exit(0));
         primaryStage.show();
     }
 

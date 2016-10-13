@@ -9,13 +9,13 @@
  * Date: October 11, 2016
  */ -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import proj5ZhouRinkerSahChistolini.CompositionPanel?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="@Main.css">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@Main.css"
+            fx:controller="proj5ZhouRinkerSahChistolini.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
@@ -31,45 +31,10 @@
             </Menu>
         </MenuBar>
     </top>
-
     <left>
-        <VBox spacing="15.0">
-            <fx:define>
-                <ToggleGroup fx:id="instrumentPanel"/>
-            </fx:define>
-            <children>
-                <RadioButton text="Piano"
-                             textFill="grey"
-                             toggleGroup="$instrumentPanel"
-                             selected="true"/>
-                <RadioButton text="Harpsichord"
-                             textFill="green"
-                             toggleGroup="$instrumentPanel"/>
-                <RadioButton text="Marimba"
-                             textFill="blue"
-                             toggleGroup="$instrumentPanel"/>
-                <RadioButton text="Organ"
-                             textFill="gold"
-                             toggleGroup="$instrumentPanel"/>
-                <RadioButton text="Accordion"
-                             textFill="purple"
-                             toggleGroup="$instrumentPanel"/>
-                <RadioButton text="Guitar"
-                             textFill="deepskyblue"
-                             toggleGroup="$instrumentPanel"/>
-                <RadioButton text="Violin"
-                             textFill="black"
-                             toggleGroup="$instrumentPanel"/>
-                <RadioButton text="French Horn"
-                             textFill="sandybrown"
-                             toggleGroup="$instrumentPanel"/>
-            </children>
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </VBox>
+        <fx:include fx:id="instrumentPane"
+                    source="instrumentPanel.fxml"/>
     </left>
-
     <center>
         <ScrollPane>
             <CompositionPanel fx:id="compositionPanel"

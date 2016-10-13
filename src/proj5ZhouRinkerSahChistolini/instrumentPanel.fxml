@@ -1,0 +1,16 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="instrumentBox"
+      spacing="15.0"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@Main.css"
+      fx:controller="proj5ZhouRinkerSahChistolini.InstrumentPanelController">
+    <fx:define>
+        <ToggleGroup fx:id="instrumentPanel"/>
+    </fx:define>
+    <padding>
+        <Insets top="10.0" />
+    </padding>
+</VBox>

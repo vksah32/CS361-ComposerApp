@@ -11,14 +11,12 @@
 
 package proj5ZhouRinkerSahChistolini;
 
+import javafx.fxml.FXML;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
@@ -34,10 +32,6 @@ public class Controller {
     /** The compositionPanel object that is modified */
     @FXML
     public CompositionPanel compositionPanel;
-
-    /** A ToggleGroup to hold the instruments */
-    @FXML
-    public ToggleGroup instrumentPanel;
 
     /** The composition object */
     private Composition composition;
@@ -60,6 +54,10 @@ public class Controller {
     /** The Object which converts all of the rectangles into musical Notes*/
     RectangleToNoteConverter converter;
 
+    /** an instrumentController field which allows us to talk to the InstrumentPanel */
+    @FXML
+    private  InstrumentPanelController instrumentPaneController;
+
     /**
      * initializes the controller
      */
@@ -69,17 +67,6 @@ public class Controller {
         this.clickInPanelHandler = new ClickInPanelHandler(this.compositionPanel);
         this.dragInPanelHandler = new DragInPanelHandler(this.compositionPanel);
         this.converter = new RectangleToNoteConverter(this.compositionPanel,this.composition);
-    }
-
-
-    /**
-     * Gets the name of the instrument from the selected RadioButton
-     * @return instrument name
-     */
-    @FXML
-    public String getInstrument() {
-        RadioButton b = (RadioButton) instrumentPanel.getSelectedToggle();
-        return (b.getText());
     }
 
     /**
@@ -95,7 +82,7 @@ public class Controller {
             if (isPlaying) {
                 this.stopComposition();
             } else {
-                this.clickInPanelHandler.handle(event, this.getInstrument());
+                this.clickInPanelHandler.handle(event, instrumentPaneController.getSelectedInstrument());
             }
         }
     }

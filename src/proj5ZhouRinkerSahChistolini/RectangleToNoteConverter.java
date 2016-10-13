@@ -44,7 +44,7 @@ public class RectangleToNoteConverter {
         int startTick = (int)rectangle.getX();
         int pitch = (127-(int)rectangle.getY()/10);
         Note note = new Note(startTick,duration,pitch);
-        note.setInstrument(rectangle.getInstrument());
+        note.setInstrument(rectangle.getInstrument().getValue());
         return note;
     }
 
