@@ -9,7 +9,7 @@
  * Date: October 11, 2016
  */
 
-package proj4MalionekLamChistoliniSah;
+package proj5ZhouRinkerSahChistolini;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

@@ -11,7 +11,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import proj4MalionekLamChistoliniSah.CompositionPanel?>
+<?import proj5ZhouRinkerSahChistolini.CompositionPanel?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 

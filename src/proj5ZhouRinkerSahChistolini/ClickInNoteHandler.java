@@ -9,7 +9,7 @@
  * Date: October 11, 2016
  */
 
-package proj4MalionekLamChistoliniSah;
+package proj5ZhouRinkerSahChistolini;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;

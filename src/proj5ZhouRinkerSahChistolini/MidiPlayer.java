@@ -6,7 +6,7 @@
  * Date: September 6, 2016
  */
 
-package proj4MalionekLamChistoliniSah;
+package proj5ZhouRinkerSahChistolini;
 
 import javax.sound.midi.*;
 

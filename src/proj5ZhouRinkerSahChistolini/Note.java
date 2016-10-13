@@ -9,7 +9,7 @@
  * Date: October 11, 2016
  */
 
-package proj4MalionekLamChistoliniSah;
+package proj5ZhouRinkerSahChistolini;
 
 /**
  * Holds all the information of a note
