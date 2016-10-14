@@ -37,3 +37,8 @@
     -fx-stroke: red;
     -fx-stroke-width: 1;
 }
+
+#selection-rectangle{
+    -fx-stroke: gold;
+    -fx-fill: null;
+}

@@ -196,7 +196,7 @@ public class CompositionPanelController {
             this.compositionPanel.getChildren().remove(r);
         }
         //then remove from ArrayList of rectangles
-        this.rectangles.removeAll(rectangles);
+        this.rectangles.removeAll(selected);
     }
 
     /**

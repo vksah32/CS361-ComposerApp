@@ -12,6 +12,7 @@
 package proj5ZhouRinkerSahChistolini;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
 
@@ -42,7 +43,14 @@ public class DragInPanelHandler {
         this.compController = compController;
         this.selectionRectangle = new Rectangle();
         this.selectionRectangle.setVisible(false);
-        this.selectionRectangle.setId("selectionRectangle");
+//        this.selectionRectangle.setFill(null);
+//        this.selectionRectangle.setStroke(Color.PALEGOLDENROD.darker());
+//        this.selectionRectangle.set
+//        this.selectionRectangle.setStrokeDashOffset(5.5);
+//        this.selectionRectangle.setId("selectionRectangle");
+//        this.selectionRectangle.getStyleClass().a
+        this.selectionRectangle.setId("selection-rectangle");
+
         this.panelToEdit.getChildren().add(this.selectionRectangle);
     }
 
