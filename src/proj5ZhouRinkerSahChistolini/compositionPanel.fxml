@@ -2,15 +2,15 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.Pane?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml"
-           stylesheets="@Main.css"
-           fx:controller="proj5ZhouRinkerSahChistolini.CompositionPanelController">
-    <ScrollPane>
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@Main.css"
+            fx:controller="proj5ZhouRinkerSahChistolini.CompositionPanelController">
+    <StackPane>
+        <Pane fx:id="staffPane"/>
         <Pane fx:id="compositionPanel"
               onMouseClicked="#handleMouseClick"
               onMousePressed="#handleMousePressed"
               onMouseDragged="#handleDragged"
               onMouseReleased="#handleDragReleased"/>
-        <Pane fx:id="staffPane" />
-    </ScrollPane>
-</StackPane>
+    </StackPane>
+</ScrollPane>

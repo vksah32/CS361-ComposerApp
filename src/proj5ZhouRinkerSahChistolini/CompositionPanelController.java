@@ -71,6 +71,7 @@ public class CompositionPanelController {
         this.clickInPanelHandler = new ClickInPanelHandler(this);
         this.dragInPanelHandler = new DragInPanelHandler(this.compositionPanel, this);
         this.isPlaying=false;
+        this.compositionPanel.toFront();
     }
 
     /**
@@ -109,7 +110,7 @@ public class CompositionPanelController {
      * gets the rectangles
      * @return an ArrayList of the rectangles
      */
-    public ArrayList<NoteRectangle> getRectangles(){
+    public ArrayList<NoteRectangle> getRectangles() {
         return this.rectangles;
     }
 
@@ -117,7 +118,7 @@ public class CompositionPanelController {
      * gets the selectedRectangles
      * @return an ArrayList of the selected notes
      */
-    public ArrayList<NoteRectangle> getSelectedRectangles(){
+    public ArrayList<NoteRectangle> getSelectedRectangles() {
         ArrayList<NoteRectangle> selectedList = new ArrayList<>();
         for(NoteRectangle rectangle:this.rectangles){
             if(rectangle.isSelected()){
@@ -127,19 +128,26 @@ public class CompositionPanelController {
         return selectedList;
     }
 
+    public void buildSong() {
+        this.composition.stop();
+        for (NoteRectangle rect : this.rectangles) {
+            this.composition.addNote((int) rect.getX(),
+                                     (int) rect.getWidth(),
+                                     (int) (127 - rect.getY()/10),
+                                     rect.getInstrument().getValue());
+        }
+    }
+
     /**
      * Plays the composition and initiates the animation.
      * Stops the current animation and plays a new one if one already exists.
      */
     public void playComposition() {
         this.isPlaying = true;
+        buildSong();
 
-        if (this.transition != null) {
-            this.composition.stop();
-        }
         //only plays when there are rectangles
         if (this.rectangles.size() > 0) {
-
             this.beginAnimation();
             this.composition.play();
         }
@@ -192,7 +200,7 @@ public class CompositionPanelController {
     /**
      * clears the selection of the rectangles
      */
-    public void clearSelected(){
+    public void clearSelected() {
         for(NoteRectangle rectangle:this.rectangles){
             if(rectangle.isSelected()){
                 rectangle.setSelected(false);
@@ -203,7 +211,7 @@ public class CompositionPanelController {
     /**
      * removes the selected rectangles
      */
-    public void deleteSelectedNotes(){
+    public void deleteSelectedNotes() {
         ArrayList<NoteRectangle> selected = this.getSelectedRectangles();
         //first remove from the panel
         for (NoteRectangle r: selected){

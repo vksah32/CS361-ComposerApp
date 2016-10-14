@@ -46,7 +46,6 @@ public class Composition {
         this.player.addNote(pitch, this.VOLUME, startTick,
                 duration, this.CHANNEL, this.TRACK_INDEX,
                 instrument);
-
     }
 
     /**

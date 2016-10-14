@@ -38,6 +38,7 @@ public class NoteRectangle extends Rectangle {
                          Instrument instrument) {
         super(x, y, width, height);
         this.setStyle(String.format("-fx-fill: %s", instrument.getColor()));
+        this.getStyleClass().add("note");
         this.instrument = instrument;
     }
 

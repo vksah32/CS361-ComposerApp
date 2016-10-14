@@ -20,8 +20,6 @@ import javafx.scene.layout.Pane;
  */
 public class ClickInNoteHandler implements EventHandler<MouseEvent> {
 
-    /** The Pane object that this handler modifies */
-    private Pane compositionPanel;
     /** The main compositionController */
     private CompositionPanelController compController;
 
