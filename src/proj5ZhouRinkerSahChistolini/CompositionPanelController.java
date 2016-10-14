@@ -11,15 +11,10 @@
 
 package proj5ZhouRinkerSahChistolini;
 
-import javafx.animation.Interpolator;
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -39,6 +34,10 @@ public class CompositionPanelController {
     @FXML
     private Pane staffPane;
 
+    /** the tempoLine */
+    @FXML
+    private TempoLine tempoLine;
+
     /** a pointer to the main controller */
     private Controller mainController;
 
@@ -47,12 +46,6 @@ public class CompositionPanelController {
 
     /** The dragInPaneHandler object */
     private DragInPanelHandler dragInPanelHandler;
-
-    /** The line object */
-    private Line line;
-
-    /** The transition object */
-    private TranslateTransition transition;
 
     /** The composition object */
     private Composition composition;
@@ -158,10 +151,7 @@ public class CompositionPanelController {
      */
     public void stopComposition() {
         this.isPlaying = false;
-
-        if (this.transition != null) {
-            this.stopAnimation();
-        }
+        this.stopAnimation();
         this.composition.stop();
     }
 
@@ -174,27 +164,15 @@ public class CompositionPanelController {
         for(NoteRectangle rectangle: this.rectangles){
             maxX = Math.max(maxX, rectangle.getX() + rectangle.getWidth());
         }
-        this.line = new Line(0, 0, 0, 1280);
-        this.line.setId("playLine");
-        this.compositionPanel.getChildren().add(this.line);
-        this.transition = new TranslateTransition(new Duration(maxX * 10), this.line);
-        this.transition.setToX(maxX);
-        this.transition.setInterpolator(Interpolator.LINEAR);
-        this.transition.play();
-        this.transition.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                compositionPanel.getChildren().remove(line);
-            }
-        });
+        this.tempoLine.updateTempoLine(maxX);
+        this.tempoLine.playAnimation();
     }
 
     /**
      * Stops the animation and removes the line from the composition panel.
      */
     public void stopAnimation() {
-        this.transition.stop();
-        this.compositionPanel.getChildren().remove(line);
+        this.tempoLine.stopAnimation();
     }
 
     /**
