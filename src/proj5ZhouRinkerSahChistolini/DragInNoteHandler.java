@@ -13,6 +13,7 @@
 package proj5ZhouRinkerSahChistolini;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
@@ -24,19 +25,20 @@ public class DragInNoteHandler {
     private double previousY;
     /** Keeps track of whether the current drag action is extending rectangles or dragging rectangles */
     private boolean extendEventHappening;
-    /** The panel that this handler actively edits */
-    private CompositionPanel panelToEdit;
     /** The rectangle that this handler is assigned to */
     private NoteRectangle sourceRectangle;
+    /** The main CompositionController */
+    private CompositionPanelController compController;
 
     /**Creates a new DragInNoteHandler
      *
      * @param sourceRectangle The rectangle that this listens to
-     * @param panelToEdit The panel which this edits
+     * @param compController The main compositionController
      */
-    public DragInNoteHandler(CompositionPanel panelToEdit, NoteRectangle sourceRectangle) {
+    public DragInNoteHandler(NoteRectangle sourceRectangle,
+                             CompositionPanelController compController) {
         this.sourceRectangle = sourceRectangle;
-        this.panelToEdit = panelToEdit;
+        this.compController = compController;
     }
 
     /**
@@ -61,7 +63,7 @@ public class DragInNoteHandler {
      */
     public void handleDragged(MouseEvent event) {
         if (!this.sourceRectangle.isSelected()) {
-            this.panelToEdit.clearSelected();
+            this.compController.clearSelected();
             this.sourceRectangle.setSelected(true);
         } else {
             if (this.extendEventHappening) {
@@ -79,7 +81,7 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteTranslate(MouseEvent event) {
-        ArrayList<NoteRectangle> selectedRectangles = this.panelToEdit.getSelectedRectangles();
+        ArrayList<NoteRectangle> selectedRectangles = this.compController.getSelectedRectangles();
         double deltaX = event.getX() - this.previousX;
         double deltaY = event.getY() - this.previousY;
         for (NoteRectangle rectangle : selectedRectangles) {
@@ -95,7 +97,7 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteExtend(MouseEvent event) {
-        ArrayList<NoteRectangle> selectedRectangles = this.panelToEdit.getSelectedRectangles();
+        ArrayList<NoteRectangle> selectedRectangles = this.compController.getSelectedRectangles();
         double deltaX = event.getX() - this.sourceRectangle.getWidth() - this.sourceRectangle.getX();
         for (NoteRectangle rectangle : selectedRectangles) {
             double width = rectangle.getWidth() + deltaX;
@@ -113,7 +115,7 @@ public class DragInNoteHandler {
      * @param event the MouseEvent fired when the mouse was released
      */
     public void handleMouseReleased(MouseEvent event) {
-        ArrayList<NoteRectangle> selectedRectangles = this.panelToEdit.getSelectedRectangles();
+        ArrayList<NoteRectangle> selectedRectangles = this.compController.getSelectedRectangles();
         for (NoteRectangle rectangle : selectedRectangles) {
             double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
             rectangle.setY(newPitch);

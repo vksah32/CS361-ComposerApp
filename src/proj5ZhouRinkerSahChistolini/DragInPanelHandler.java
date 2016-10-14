@@ -13,13 +13,16 @@ package proj5ZhouRinkerSahChistolini;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
 public class DragInPanelHandler {
 
     /** The panel that this handler actively edits and listens to */
-    private CompositionPanel panelToEdit;
+    private Pane panelToEdit;
+    /** The controller of the composition panel */
+    private CompositionPanelController compController;
     /** The rectangle which appears when you select a group of notes*/
     private Rectangle selectionRectangle;
     /** The x coordinate at which the drag event originated*/
@@ -32,9 +35,11 @@ public class DragInPanelHandler {
     /** Creates a new DragInPaneHandler
      *
      * @param panelToEdit The panel which this handler edits
+     * @param compController The main composition controller
      */
-    public DragInPanelHandler(CompositionPanel panelToEdit){
+    public DragInPanelHandler(Pane panelToEdit, CompositionPanelController compController){
         this.panelToEdit = panelToEdit;
+        this.compController = compController;
         this.selectionRectangle = new Rectangle();
         this.selectionRectangle.setVisible(false);
         this.selectionRectangle.setId("selectionRectangle");
@@ -60,7 +65,7 @@ public class DragInPanelHandler {
     public void handleDragged(MouseEvent event) {
         this.selectionRectangle.setVisible(true);
         if(!this.metaDown){
-            this.panelToEdit.clearSelected();
+            this.compController.clearSelected();
         }
         double leftX = Math.min(event.getX(),this.startX);
         double width = Math.abs(event.getX()-this.startX);
@@ -70,7 +75,7 @@ public class DragInPanelHandler {
         this.selectionRectangle.setHeight(height);
         this.selectionRectangle.setX(leftX);
         this.selectionRectangle.setY(lowestY);
-        ArrayList<NoteRectangle> rectangles = this.panelToEdit.getRectangles();
+        ArrayList<NoteRectangle> rectangles = compController.getRectangles();
         for(NoteRectangle rectangle: rectangles){
             if(rectangle.intersects(leftX,lowestY,width,height)){
                 rectangle.setSelected(true);

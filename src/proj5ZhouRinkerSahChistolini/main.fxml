@@ -10,7 +10,6 @@
  */ -->
 
 <?import javafx.scene.control.*?>
-<?import proj5ZhouRinkerSahChistolini.CompositionPanel?>
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
@@ -36,13 +35,8 @@
                     source="instrumentPanel.fxml"/>
     </left>
     <center>
-        <ScrollPane>
-            <CompositionPanel fx:id="compositionPanel"
-                              onMouseClicked="#handleMouseClick"
-                              onMousePressed="#handleMousePressed"
-                              onMouseDragged="#handleDragged"
-                              onMouseReleased="#handleDragReleased"/>
-        </ScrollPane>
+        <fx:include fx:id="compositionPanel"
+                    source="compositionPanel.fxml"/>
     </center>
 
 </BorderPane>

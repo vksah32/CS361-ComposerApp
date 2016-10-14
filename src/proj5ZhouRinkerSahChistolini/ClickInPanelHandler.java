@@ -13,14 +13,15 @@
 package proj5ZhouRinkerSahChistolini;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 /**
  * Handles when we click in the panel
  */
 public class ClickInPanelHandler {
 
-    /** The panelToEdit object that this handler edits */
-    CompositionPanel panelToEdit;
+    /** The "main" composition Controller */
+    private CompositionPanelController compController;
 
     /** the default rectangle width */
     private final int DEFAULT_RECTANGLE_WIDTH = 100;
@@ -30,16 +31,15 @@ public class ClickInPanelHandler {
 
     /**
      * Creates a new ClickInNoteHandler
-     * @param panelToEdit
+     * @param compController the main composition Controller
      */
-    public ClickInPanelHandler(CompositionPanel panelToEdit) {
-        this.panelToEdit = panelToEdit;
+    public ClickInPanelHandler(CompositionPanelController compController) {
+        this.compController = compController;
     }
 
     /**
      * handles when clicking in the panel
      * @param event
-     * @param instrument
      */
     public void handle(MouseEvent event, Instrument instrument) {
         isMetaDown = event.isShortcutDown();
@@ -58,17 +58,17 @@ public class ClickInPanelHandler {
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,
                 10, instrument);
-        DragInNoteHandler handler = new DragInNoteHandler(this.panelToEdit, rectangle);
+        DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
         // sets the handlers of these events to be the
         // specified methods in its DragInNoteHandler object
         rectangle.setOnMousePressed(handler::handleMousePressed);
         rectangle.setOnMouseDragged(handler::handleDragged);
         rectangle.setOnMouseReleased(handler::handleMouseReleased);
         if (!isMetaDown) {
-            this.panelToEdit.clearSelected();
+            this.compController.clearSelected();
         }
-        rectangle.setOnMouseClicked(new ClickInNoteHandler(this.panelToEdit));
-        this.panelToEdit.addRectangle(rectangle, true);
+        rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
+        this.compController.addRectangle(rectangle, true);
     }
 }
 

@@ -8,9 +8,6 @@
       stylesheets="@Main.css"
       fx:controller="proj5ZhouRinkerSahChistolini.InstrumentPanelController">
     <fx:define>
-        <ToggleGroup fx:id="instrumentPanel"/>
+        <ToggleGroup fx:id="instrumentToggle"/>
     </fx:define>
-    <padding>
-        <Insets top="10.0" />
-    </padding>
 </VBox>
