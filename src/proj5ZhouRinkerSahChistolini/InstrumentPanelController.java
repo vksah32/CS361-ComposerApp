@@ -21,14 +21,15 @@ public class InstrumentPanelController {
     /**List of instruments*/
     private ArrayList<Instrument> instruments;
     /**Toggle group to handle selection*/
-    private ToggleGroup toggleGroup;
+    @FXML
+    private ToggleGroup instrumentToggle;
 
     /**
      * Initiates instruments and radio buttons to the pane
      * @param instrumentPane Pane to hold the radio buttons
      */
+    @FXML
     public void initialize() {
-        this.toggleGroup = new ToggleGroup();
         this.instruments = new ArrayList<Instrument>();
         addInstrument("Harpsichord", 6, 0, "green");
         addInstrument("Marimba", 12, 1, "blue");
@@ -37,7 +38,7 @@ public class InstrumentPanelController {
         addInstrument("Guitar", 28, 4, "teal");
         addInstrument("Violin", 40, 5, "black");
         addInstrument("French Horn", 60, 6, "brown");
-        this.toggleGroup.getToggles().get(0).setSelected(true);
+        this.instrumentToggle.getToggles().get(0).setSelected(true);
     }
 
     /**
@@ -53,7 +54,7 @@ public class InstrumentPanelController {
         RadioButton instrButton = new RadioButton(name);
         instrButton.getStyleClass().add("instrument");
         instrButton.setStyle(String.format("-fx-text-fill: %s", color));
-        instrButton.setToggleGroup(this.toggleGroup);
+        instrButton.setToggleGroup(this.instrumentToggle);
         this.instrumentBox.getChildren().add(instrButton);
     }
 
@@ -62,7 +63,7 @@ public class InstrumentPanelController {
      * @return instrument object
      */
     public Instrument getSelectedInstrument(){
-        RadioButton chk = (RadioButton) this.toggleGroup.getSelectedToggle();
+        RadioButton chk = (RadioButton) this.instrumentToggle.getSelectedToggle();
         String name = chk.getText();
         Instrument selected = this.instruments.get(0);
         for (Instrument instrument: this.instruments){

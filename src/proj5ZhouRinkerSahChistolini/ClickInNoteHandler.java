@@ -13,21 +13,22 @@ package proj5ZhouRinkerSahChistolini;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 /**
  * Handles when we click in a note
  */
 public class ClickInNoteHandler implements EventHandler<MouseEvent> {
 
-    /** The compositionPanel object that this handler modifies */
-    private CompositionPanel compositionPanel;
+    /** The main compositionController */
+    private CompositionPanelController compController;
 
     /**
      * Creates a new ClickInNoteHandler
-     * @param compositionPanel
+     * @param compController the main composition controller
      */
-    public ClickInNoteHandler(CompositionPanel compositionPanel) {
-        this.compositionPanel = compositionPanel;
+    public ClickInNoteHandler(CompositionPanelController compController) {
+        this.compController = compController;
     }
 
     /**
@@ -47,7 +48,7 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
         // clicking
         else {
             if (!rect.isSelected()) {
-                this.compositionPanel.clearSelected();
+                this.compController.clearSelected();
                 rect.setSelected(true);
             }
         }

@@ -1,4 +1,3 @@
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 
@@ -8,9 +7,6 @@
       stylesheets="@Main.css"
       fx:controller="proj5ZhouRinkerSahChistolini.InstrumentPanelController">
     <fx:define>
-        <ToggleGroup fx:id="instrumentPanel"/>
+        <ToggleGroup fx:id="instrumentToggle"/>
     </fx:define>
-    <padding>
-        <Insets top="10.0" />
-    </padding>
 </VBox>
