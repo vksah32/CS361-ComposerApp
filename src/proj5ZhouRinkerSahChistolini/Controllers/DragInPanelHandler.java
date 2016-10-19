@@ -9,14 +9,12 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
-
-import java.util.ArrayList;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 public class DragInPanelHandler {
 
@@ -43,12 +41,7 @@ public class DragInPanelHandler {
         this.compController = compController;
         this.selectionRectangle = new Rectangle();
         this.selectionRectangle.setVisible(false);
-//        this.selectionRectangle.setFill(null);
-//        this.selectionRectangle.setStroke(Color.PALEGOLDENROD.darker());
-//        this.selectionRectangle.set
-//        this.selectionRectangle.setStrokeDashOffset(5.5);
-//        this.selectionRectangle.setId("selectionRectangle");
-//        this.selectionRectangle.getStyleClass().a
+
         this.selectionRectangle.setId("selection-rectangle");
 
         this.panelToEdit.getChildren().add(this.selectionRectangle);
@@ -83,8 +76,8 @@ public class DragInPanelHandler {
         this.selectionRectangle.setHeight(height);
         this.selectionRectangle.setX(leftX);
         this.selectionRectangle.setY(lowestY);
-        ArrayList<NoteRectangle> rectangles = compController.getRectangles();
-        for(NoteRectangle rectangle: rectangles){
+
+        for(SelectableRectangle rectangle: compController.getRectangles()){
             if(rectangle.intersects(leftX,lowestY,width,height)){
                 rectangle.setSelected(true);
             }

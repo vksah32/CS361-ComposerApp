@@ -10,12 +10,10 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-
-import java.util.ArrayList;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 /**Handles when the user drags in a note rectangle*/
 public class DragInNoteHandler {
@@ -26,7 +24,7 @@ public class DragInNoteHandler {
     /** Keeps track of whether the current drag action is extending rectangles or dragging rectangles */
     private boolean extendEventHappening;
     /** The rectangle that this handler is assigned to */
-    private NoteRectangle sourceRectangle;
+    private SelectableRectangle sourceRectangle;
     /** The main CompositionController */
     private CompositionPanelController compController;
 
@@ -35,7 +33,7 @@ public class DragInNoteHandler {
      * @param sourceRectangle The rectangle that this listens to
      * @param compController The main compositionController
      */
-    public DragInNoteHandler(NoteRectangle sourceRectangle,
+    public DragInNoteHandler(SelectableRectangle sourceRectangle,
                              CompositionPanelController compController) {
         this.sourceRectangle = sourceRectangle;
         this.compController = compController;
@@ -81,12 +79,13 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteTranslate(MouseEvent event) {
-        ArrayList<NoteRectangle> selectedRectangles = this.compController.getSelectedRectangles();
         double deltaX = event.getX() - this.previousX;
         double deltaY = event.getY() - this.previousY;
-        for (NoteRectangle rectangle : selectedRectangles) {
-            rectangle.setX(rectangle.getX() + deltaX);
-            rectangle.setY(rectangle.getY() + deltaY);
+        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
+            if (!rectangle.isBounded()){
+                rectangle.setX(rectangle.getX() + deltaX);
+                rectangle.setY(rectangle.getY() + deltaY);
+            }
         }
         this.previousX = event.getX();
         this.previousY = event.getY();
@@ -97,15 +96,16 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteExtend(MouseEvent event) {
-        ArrayList<NoteRectangle> selectedRectangles = this.compController.getSelectedRectangles();
         double deltaX = event.getX() - this.sourceRectangle.getWidth() - this.sourceRectangle.getX();
-        for (NoteRectangle rectangle : selectedRectangles) {
-            double width = rectangle.getWidth() + deltaX;
-            // makes sure the width is at least 5
-            width = Math.max(5, width);
-            // makes sure the note does not extend past the end of the player
-            // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
-            rectangle.setWidth(width);
+        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
+            if (!rectangle.isBounded()) {
+                double width = rectangle.getWidth() + deltaX;
+                // makes sure the width is at least 5
+                width = Math.max(5, width);
+                // makes sure the note does not extend past the end of the player
+                // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
+                rectangle.setWidth(width);
+            }
         }
 
     }
@@ -115,10 +115,11 @@ public class DragInNoteHandler {
      * @param event the MouseEvent fired when the mouse was released
      */
     public void handleMouseReleased(MouseEvent event) {
-        ArrayList<NoteRectangle> selectedRectangles = this.compController.getSelectedRectangles();
-        for (NoteRectangle rectangle : selectedRectangles) {
-            double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
-            rectangle.setY(newPitch);
+        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
+            if (!rectangle.isBounded()) {
+                double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
+                rectangle.setY(newPitch);
+            }
         }
     }
 }

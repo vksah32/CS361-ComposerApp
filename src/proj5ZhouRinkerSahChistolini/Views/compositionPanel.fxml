@@ -2,10 +2,10 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.Pane?>
 
-<?import proj5ZhouRinkerSahChistolini.TempoLine?>
+<?import proj5ZhouRinkerSahChistolini.Views.*?>
 <ScrollPane xmlns:fx="http://javafx.com/fxml"
             stylesheets="@Main.css"
-            fx:controller="proj5ZhouRinkerSahChistolini.CompositionPanelController">
+            fx:controller="proj5ZhouRinkerSahChistolini.Controllers.CompositionPanelController">
     <StackPane>
         <Pane fx:id="staffPane">
             <TempoLine fx:id="tempoLine"

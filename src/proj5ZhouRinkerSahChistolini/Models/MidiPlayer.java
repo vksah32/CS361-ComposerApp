@@ -6,7 +6,7 @@
  * Date: September 6, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Models;
 
 import javax.sound.midi.*;
 

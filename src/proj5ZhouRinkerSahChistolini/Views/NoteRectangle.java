@@ -9,21 +9,17 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Views;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import proj5ZhouRinkerSahChistolini.Models.Instrument;
 
 /**
  * Represents a musical note in the gui interface
  */
-public class NoteRectangle extends Rectangle {
+public class NoteRectangle extends SelectableRectangle{
 
     /** the instrument of the note */
     private Instrument instrument;
-
-    /** keeps track of whether the rectangle is selected */
-    private boolean selected;
 
     /**
      * The constructor of the NoteRectangle
@@ -51,26 +47,19 @@ public class NoteRectangle extends Rectangle {
     }
 
     /**
-     * returns a boolean value to see if the rectangle is selected
-     * @return true if the rectangle is selected, false otherwise
-     */
-    public boolean isSelected() {
-        return this.selected;
-    }
-
-    /**
      * sets the selection of the rectangle
      * @param selected
      */
     public void setSelected(boolean selected){
         if(selected){
-            this.setStrokeWidth(3);
-            this.setStroke(Color.RED);
+            this.getStyleClass().removeAll("note");
+            this.getStyleClass().add("selected-note");
         }
         else{
-            this.setStrokeWidth(1);
-            this.setStroke(Color.BLACK);
+            this.getStyleClass().removeAll("selected-note");
+            this.getStyleClass().add("note");
         }
         this.selected = selected;
     }
+
 }

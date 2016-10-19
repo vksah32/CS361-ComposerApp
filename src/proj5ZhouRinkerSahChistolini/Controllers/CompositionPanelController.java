@@ -9,14 +9,21 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import proj5ZhouRinkerSahChistolini.Views.GroupRectangle;
+import proj5ZhouRinkerSahChistolini.Models.Composition;
+import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
+import proj5ZhouRinkerSahChistolini.Views.TempoLine;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * The pane in which all of the notes are stored and displayed.
@@ -24,7 +31,9 @@ import java.util.ArrayList;
 public class CompositionPanelController {
 
     /** an ArrayList of NoteRectangles */
-    private ArrayList<NoteRectangle> rectangles;
+    private HashSet<NoteRectangle> noteRectangles;
+    private HashSet<SelectableRectangle> rectangles;
+
 
     /** a Pane to hold all the notes */
     @FXML
@@ -59,7 +68,8 @@ public class CompositionPanelController {
     @FXML
     public void initialize() {
         this.drawLines();
-        rectangles = new ArrayList<>();
+        rectangles = new HashSet<>();
+        noteRectangles = new HashSet<>();
         this.composition = new Composition();
         this.clickInPanelHandler = new ClickInPanelHandler(this);
         this.dragInPanelHandler = new DragInPanelHandler(this.compositionPanel, this);
@@ -79,7 +89,21 @@ public class CompositionPanelController {
      * @param rectangle
      * @param selected
      */
-    public void addRectangle(NoteRectangle rectangle, boolean selected){
+    public void addNoteRectangle(NoteRectangle rectangle, boolean selected){
+        this.compositionPanel.getChildren().add(rectangle);
+        this.rectangles.add(rectangle);
+        this.noteRectangles.add(rectangle);
+        if(selected){
+            rectangle.setSelected(true);
+        }
+    }
+
+    /**
+     * adds Rectangles
+     * @param rectangle
+     * @param selected
+     */
+    public void addRectangle(SelectableRectangle rectangle, boolean selected){
         this.compositionPanel.getChildren().add(rectangle);
         this.rectangles.add(rectangle);
         if(selected){
@@ -103,7 +127,7 @@ public class CompositionPanelController {
      * gets the rectangles
      * @return an ArrayList of the rectangles
      */
-    public ArrayList<NoteRectangle> getRectangles() {
+    public HashSet<SelectableRectangle> getRectangles() {
         return this.rectangles;
     }
 
@@ -111,9 +135,9 @@ public class CompositionPanelController {
      * gets the selectedRectangles
      * @return an ArrayList of the selected notes
      */
-    public ArrayList<NoteRectangle> getSelectedRectangles() {
-        ArrayList<NoteRectangle> selectedList = new ArrayList<>();
-        for(NoteRectangle rectangle:this.rectangles){
+    public HashSet<SelectableRectangle> getSelectedRectangles() {
+        HashSet<SelectableRectangle> selectedList = new HashSet<>();
+        for(SelectableRectangle rectangle:this.rectangles){
             if(rectangle.isSelected()){
                 selectedList.add(rectangle);
             }
@@ -123,7 +147,7 @@ public class CompositionPanelController {
 
     public void buildSong() {
         this.composition.stop();
-        for (NoteRectangle rect : this.rectangles) {
+        for (NoteRectangle rect : this.noteRectangles) {
             this.composition.addNote((int) rect.getX(),
                                      (int) rect.getWidth(),
                                      (int) (127 - rect.getY()/10),
@@ -140,7 +164,7 @@ public class CompositionPanelController {
         buildSong();
 
         //only plays when there are rectangles
-        if (this.rectangles.size() > 0) {
+        if (this.noteRectangles.size() > 0) {
             this.beginAnimation();
             this.composition.play();
         }
@@ -161,7 +185,7 @@ public class CompositionPanelController {
      */
     public void beginAnimation() {
         double maxX = 0;
-        for(NoteRectangle rectangle: this.rectangles){
+        for(NoteRectangle rectangle: this.noteRectangles){
             maxX = Math.max(maxX, rectangle.getX() + rectangle.getWidth());
         }
         this.tempoLine.updateTempoLine(maxX);
@@ -179,7 +203,7 @@ public class CompositionPanelController {
      * clears the selection of the rectangles
      */
     public void clearSelected() {
-        for(NoteRectangle rectangle:this.rectangles){
+        for(SelectableRectangle rectangle: this.rectangles){
             if(rectangle.isSelected()){
                 rectangle.setSelected(false);
             }
@@ -190,23 +214,66 @@ public class CompositionPanelController {
      * removes the selected rectangles
      */
     public void deleteSelectedNotes() {
-        ArrayList<NoteRectangle> selected = this.getSelectedRectangles();
+        deleteSelected(this.getSelectedRectangles());
+    }
+
+    /**
+     * removes the selected
+     * @param selected list of selected rectangles
+     */
+    public void deleteSelected(Collection<SelectableRectangle> selected) {
         //first remove from the panel
-        for (NoteRectangle r: selected){
+        for (Rectangle r: selected){
             this.compositionPanel.getChildren().remove(r);
         }
         //then remove from ArrayList of rectangles
         this.rectangles.removeAll(selected);
+        this.noteRectangles.removeAll(selected);
     }
+
+
 
     /**
      * selects all the notes in the composition
      */
     public void selectAllNotes(){
-        for (NoteRectangle rectangle: this.rectangles){
+        for (SelectableRectangle rectangle: this.rectangles){
             rectangle.setSelected(true);
         }
     }
+
+    /**
+     *
+     */
+    public void groupSelected(){
+        GroupRectangle gesture = new GroupRectangle(this.getSelectedRectangles());
+        for (SelectableRectangle rec : gesture.getChildren()){
+            rec.setBounded(true);
+        }
+        DragInNoteHandler handler = new DragInNoteHandler(gesture, this);
+        // sets the handlers of these events to be the
+        // specified methods in its DragInNoteHandler object
+        gesture.setOnMousePressed(handler::handleMousePressed);
+        gesture.setOnMouseDragged(handler::handleDragged);
+        gesture.setOnMouseReleased(handler::handleMouseReleased);
+        gesture.setOnMouseClicked(new ClickInNoteHandler(this));
+        addRectangle(gesture, true);
+    }
+
+    /**
+     *
+     */
+    public void ungroupSelected(){
+        HashSet<GroupRectangle> selectedGroup = new HashSet<>();
+        for (SelectableRectangle rec : this.getSelectedRectangles()){
+            if (!rec.isBounded() && rec instanceof GroupRectangle){
+                selectedGroup.add((GroupRectangle) rec);
+            }
+        }
+        selectedGroup.forEach(GroupRectangle::unbindChildren);
+        this.deleteSelected(new HashSet<>(selectedGroup));
+    }
+
 
     /**
      * Handles mouse click events, extracts x,y coordinates

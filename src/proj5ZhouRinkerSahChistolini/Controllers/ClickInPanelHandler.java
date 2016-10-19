@@ -10,10 +10,11 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import proj5ZhouRinkerSahChistolini.Models.Instrument;
+import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
 
 /**
  * Handles when we click in the panel
@@ -68,7 +69,7 @@ public class ClickInPanelHandler {
             this.compController.clearSelected();
         }
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
-        this.compController.addRectangle(rectangle, true);
+        this.compController.addNoteRectangle(rectangle, true);
     }
 }
 

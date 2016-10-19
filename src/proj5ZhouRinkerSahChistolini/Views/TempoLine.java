@@ -1,4 +1,4 @@
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Views;
 
 import javafx.scene.shape.Line;
 import javafx.util.Duration;

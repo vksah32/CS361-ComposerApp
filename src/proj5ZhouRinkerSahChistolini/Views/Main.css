@@ -29,13 +29,33 @@
 
 /* set the styling for the note rectangles */
 .note {
-    -fx-opacity: 0.7;
+    -fx-opacity: 1;
+    -fx-stroke: black;
+}
+
+.selected-note {
+    -fx-stroke-width: 3;
+    -fx-stroke: red;
 }
 
 /* sets the styling for our tempo-line */
 .tempo-line {
     -fx-stroke: red;
     -fx-stroke-width: 1;
+}
+
+/* sets the styling for our group rectangles */
+.group-note {
+    -fx-stroke: grey;
+    -fx-stroke-dash-array: 2 12 12 2;
+    -fx-fill: transparent;
+}
+
+.selected-group-note {
+    -fx-stroke: red;
+    -fx-stroke-width: 2;
+    -fx-stroke-dash-array: 2 12 12 2;
+    -fx-fill: transparent;
 }
 
 #selection-rectangle{

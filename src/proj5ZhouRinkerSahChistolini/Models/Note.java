@@ -9,7 +9,7 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Models;
 
 /**
  * Holds all the information of a note

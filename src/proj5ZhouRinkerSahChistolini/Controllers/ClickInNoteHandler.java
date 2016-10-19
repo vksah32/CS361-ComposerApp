@@ -9,11 +9,11 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 /**
  * Handles when we click in a note
@@ -36,7 +36,7 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
      * @param event
      */
     public void handle(MouseEvent event) {
-        NoteRectangle rect = ((NoteRectangle) event.getSource());
+        SelectableRectangle rect = ((SelectableRectangle) event.getSource());
         // control-clicking
         if (event.isShortcutDown()) {
             if (rect.isSelected()) {

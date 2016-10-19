@@ -1,4 +1,4 @@
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Models;
 
 /**
  *  This class holds all the info for instruments

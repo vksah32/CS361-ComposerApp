@@ -5,7 +5,7 @@
       spacing="15.0"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@Main.css"
-      fx:controller="proj5ZhouRinkerSahChistolini.InstrumentPanelController">
+      fx:controller="proj5ZhouRinkerSahChistolini.Controllers.InstrumentPanelController">
     <fx:define>
         <ToggleGroup fx:id="instrumentToggle"/>
     </fx:define>

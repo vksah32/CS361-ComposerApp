@@ -1,9 +1,11 @@
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ToggleGroup;
+import proj5ZhouRinkerSahChistolini.Models.Instrument;
+
 import java.util.ArrayList;
 
 /**
@@ -26,7 +28,6 @@ public class InstrumentPanelController {
 
     /**
      * Initiates instruments and radio buttons to the pane
-     * @param instrumentPane Pane to hold the radio buttons
      */
     @FXML
     public void initialize() {

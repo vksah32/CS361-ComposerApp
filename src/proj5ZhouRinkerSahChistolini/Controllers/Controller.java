@@ -9,10 +9,11 @@
  * Date: October 11, 2016
  */
 
-package proj5ZhouRinkerSahChistolini;
+package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.application.Platform;
+import proj5ZhouRinkerSahChistolini.Models.Instrument;
 
 /**
  * Handles all user GUI interactions and coordinates with the MidiPlayer
@@ -56,6 +57,7 @@ public class Controller {
     @FXML
     public void stopComposition() { this.compositionPanelController.stopComposition(); }
 
+    @FXML
     /**
      * deletes the selected notes
      */
@@ -63,10 +65,15 @@ public class Controller {
         this.compositionPanelController.deleteSelectedNotes();
     }
 
+    @FXML
     /**
      * selects all the notes
      */
     public void selectAllNotes() {
         this.compositionPanelController.selectAllNotes();
     }
+    @FXML
+    public void groupSelected() { this.compositionPanelController.groupSelected(); }
+    @FXML
+    public void ungroupSelected() { this.compositionPanelController.ungroupSelected(); }
 }
