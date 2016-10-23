@@ -22,7 +22,6 @@ import proj5ZhouRinkerSahChistolini.Models.Composition;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj5ZhouRinkerSahChistolini.Views.TempoLine;
-
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -143,7 +142,10 @@ public class CompositionPanelController {
         return selectedList;
     }
 
-
+    /**
+     * adds the note to composition
+     * @param note note to be added
+     */
     public void addNoteToComposition(Note note){
         this.composition.appendNote(note);
 
@@ -243,7 +245,7 @@ public class CompositionPanelController {
     }
 
     /**
-     *
+     * groups the selected rectangles
      */
     public void groupSelected(){
         if(!this.getSelectedRectangles().isEmpty()) {
@@ -263,7 +265,7 @@ public class CompositionPanelController {
     }
 
     /**
-     *
+     *Ungroups the selected group
      */
     public void ungroupSelected(){
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();

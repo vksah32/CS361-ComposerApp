@@ -48,12 +48,14 @@ public class ClickInPanelHandler {
         addNote(event.getX(), event.getY(), instrument);
     }
 
+
     /**
      * Creates a note at the given x and y coordinates
      * and adds the note bar (Rectangle) to the CompositionPanel.
      *
      * @param x mouse x location
      * @param y mouse y location
+     * @param instrument the instrument object
      */
     public void addNote(double x, double y, Instrument instrument) {
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
@@ -72,13 +74,23 @@ public class ClickInPanelHandler {
         }
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
         Note note = new Note(instrument);
-        note.pitchProperty().bind(rectangle.yProperty().divide(10) );
-        note.durationProperty().bind(rectangle.widthProperty());
-        note.startTickProperty().bind(rectangle.xProperty());
-        rectangle.setNote(note);
+        bindNotetoRectangle(note, rectangle);
+        rectangle.setNote(note); //set the note field of rectangle to this note
         this.compController.addNoteRectangle(rectangle, true);
         this.compController.addNoteToComposition(note);
 
+
+    }
+
+    /**
+     * bind a note's properties to rectangle's properties
+     * @param note note which to be binded
+     * @param rectangle rectangle to bind the note to
+     */
+    private void bindNotetoRectangle(Note note, NoteRectangle rectangle) {
+        note.pitchProperty().bind(rectangle.yProperty() );
+        note.durationProperty().bind(rectangle.widthProperty());
+        note.startTickProperty().bind(rectangle.xProperty());
 
     }
 }
