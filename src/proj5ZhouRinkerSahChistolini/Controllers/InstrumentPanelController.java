@@ -39,6 +39,7 @@ public class InstrumentPanelController {
         addInstrument("Guitar", 28, 4, "teal");
         addInstrument("Violin", 40, 5, "black");
         addInstrument("French Horn", 60, 6, "brown");
+        addInstrument("Piano", 0, 7,"grey");
         this.instrumentToggle.getToggles().get(0).setSelected(true);
     }
 

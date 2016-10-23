@@ -11,8 +11,7 @@
 
 package proj5ZhouRinkerSahChistolini.Models;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.*;
 
 /**
  * Holds all the information of a note
@@ -27,6 +26,8 @@ public class Note {
     private DoubleProperty pitch;
     /** the start tick of the note */
     private DoubleProperty startTick;
+    /**selectedproperty to track selectionOfrectangle**/
+    private BooleanProperty selected;
 
     /**
      * The constructor for Note
@@ -35,6 +36,7 @@ public class Note {
         this.startTick = new SimpleDoubleProperty();
         this.duration = new SimpleDoubleProperty();
         this.pitch = new SimpleDoubleProperty();
+        this.selected = new SimpleBooleanProperty();
         this.instrument = instrument;
 
     }
@@ -102,5 +104,13 @@ public class Note {
      */
     public DoubleProperty startTickProperty() {
         return startTick;
+    }
+
+    /**
+     * getter for selectedProperty
+     * @return BooleanProperty  the selectedProperty
+     */
+    public BooleanProperty selectedProperty() {
+        return selected;
     }
 }

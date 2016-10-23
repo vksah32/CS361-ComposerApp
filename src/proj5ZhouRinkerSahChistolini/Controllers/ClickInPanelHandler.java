@@ -62,7 +62,7 @@ public class ClickInPanelHandler {
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,
-                10, instrument);
+                10, instrument.getColor(), instrument.getValue());
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
         // sets the handlers of these events to be the
         // specified methods in its DragInNoteHandler object
@@ -75,7 +75,6 @@ public class ClickInPanelHandler {
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
         Note note = new Note(instrument);
         bindNotetoRectangle(note, rectangle);
-        rectangle.setNote(note); //set the note field of rectangle to this note
         this.compController.addNoteRectangle(rectangle, true);
         this.compController.addNoteToComposition(note);
 
@@ -91,6 +90,7 @@ public class ClickInPanelHandler {
         note.pitchProperty().bind(rectangle.yProperty() );
         note.durationProperty().bind(rectangle.widthProperty());
         note.startTickProperty().bind(rectangle.xProperty());
+        note.selectedProperty().bind(rectangle.selectedProperty());
 
     }
 }

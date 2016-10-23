@@ -23,9 +23,9 @@ import proj5ZhouRinkerSahChistolini.Models.Composition;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj5ZhouRinkerSahChistolini.Views.TempoLine;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The pane in which all of the notes are stored and displayed.
@@ -226,11 +226,17 @@ public class CompositionPanelController {
         }
         //then remove from collection of rectangles
         for (SelectableRectangle rect : selected){
-            if(rect instanceof NoteRectangle)
-                this.composition.removeNote(((NoteRectangle)rect).getNote());
+            if(rect instanceof NoteRectangle){
+                //compare each noterectangle's property to find corresposnding note
+                this.composition.getNotes().removeIf(n -> n.startTickProperty().getValue().equals(rect.xProperty().getValue()) &&
+                        n.durationProperty().getValue().equals(rect.widthProperty().getValue())&&
+                        n.pitchProperty().getValue().equals(rect.yProperty().getValue()) &&
+                        n.getInstrument().getValue()==((NoteRectangle)rect).getInstrument() &&
+                        n.selectedProperty().getValue().equals(((NoteRectangle)rect).selectedProperty().getValue()));
+            }
+
         }
     }
-
 
 
     /**

@@ -25,6 +25,8 @@ public class Composition {
     /** The midiplayer on which this composition will be played */
     private MidiPlayer player;
 
+
+
     /** The notes to build the composition */
     private HashSet<Note> notes;
 
@@ -97,5 +99,13 @@ public class Composition {
     public void stop() {
         this.player.clear();
         this.player.stop();
+    }
+
+    /**
+     * getter for notes
+     * @return
+     */
+    public HashSet<Note> getNotes() {
+        return notes;
     }
 }
