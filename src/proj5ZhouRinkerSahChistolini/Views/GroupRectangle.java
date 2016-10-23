@@ -22,7 +22,6 @@ public class GroupRectangle extends SelectableRectangle{
      */
 
     public GroupRectangle(HashSet<SelectableRectangle> selection) {
-        super(0,0,0,0);
         Rectangle left = selection.stream().min(Comparator.comparing(Rectangle::getX)).get();
         Rectangle right = selection.stream().max(Comparator.comparing(
                                                     rec -> rec.getX()+rec.getWidth())).get();

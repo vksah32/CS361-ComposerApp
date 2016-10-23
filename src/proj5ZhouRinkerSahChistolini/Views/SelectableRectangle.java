@@ -21,6 +21,8 @@ public abstract class SelectableRectangle extends Rectangle{
     protected boolean selected;
     protected boolean bounded;
 
+    public SelectableRectangle(){}
+
     public SelectableRectangle(double x, double y,
                                double width, double height) {
         super(x, y, width, height);
