@@ -42,10 +42,10 @@ public class Composition {
      * @param instrument the instrument with which this note will be played
      *
      */
-    public void addNote(int startTick, int duration, int pitch, int instrument) {
+    public void addNote(int startTick, int duration, int pitch, Instrument instrument) {
         this.player.addNote(pitch, this.VOLUME, startTick,
-                duration, this.CHANNEL, this.TRACK_INDEX,
-                instrument);
+                duration, instrument.getChannel(), this.TRACK_INDEX,
+                instrument.getValue());
     }
 
     /**

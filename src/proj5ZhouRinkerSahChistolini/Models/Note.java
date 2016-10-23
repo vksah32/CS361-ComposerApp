@@ -17,7 +17,7 @@ package proj5ZhouRinkerSahChistolini.Models;
 public class Note {
 
     /** the instrument number */
-    private int instrument;
+    private Instrument instrument;
     /** the duration of the note */
     private int duration;
     /** the pitch of the note */
@@ -45,7 +45,7 @@ public class Note {
      * gets the note's instrument
      * @return this note's instrument
      */
-    public int getInstrument() {
+    public Instrument getInstrument() {
         return instrument;
     }
 
@@ -53,7 +53,7 @@ public class Note {
      * Sets the instrument this note will be played with
      * @param instrument the instrument that this note will be played with
      */
-    public void setInstrument(int instrument) {
+    public void setInstrument(Instrument instrument) {
         this.instrument = instrument;
     }
 

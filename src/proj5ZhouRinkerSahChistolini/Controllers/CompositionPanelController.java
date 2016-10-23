@@ -151,7 +151,7 @@ public class CompositionPanelController {
             this.composition.addNote((int) rect.getX(),
                                      (int) rect.getWidth(),
                                      (int) (127 - rect.getY()/10),
-                                     rect.getInstrument().getValue());
+                                     rect.getInstrument());
         }
     }
 
