@@ -123,7 +123,7 @@ public class MidiPlayer
         addMidiEvent(ShortMessage.NOTE_OFF + channel, pitch, volume,
                 startTick + duration, trackIndex);
         addMidiEvent(ShortMessage.PROGRAM_CHANGE + channel, instrument, 0,
-            startTick, trackIndex);
+            0, trackIndex);
     }
 
     /**

@@ -11,7 +11,6 @@
 
 package proj5ZhouRinkerSahChistolini.Models;
 
-import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -20,27 +19,17 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class Note {
 
-    /** the instrument number */
+    /** the instrument that the note plays */
     private Instrument instrument;
     /** the duration of the note */
     private DoubleProperty duration;
     /** the pitch of the note */
     private DoubleProperty pitch;
-
-
-
     /** the start tick of the note */
     private DoubleProperty startTick;
-    /** sets the default track to 0 */
-    private final int TRACK=0;
-    /** sets the default channel to 0 */
-    private final int CHANNEL=0;
-
-
 
     /**
      * The constructor for Note
-
      */
     public Note(Instrument instrument){
         this.startTick = new SimpleDoubleProperty();
@@ -75,14 +64,6 @@ public class Note {
     }
 
     /**
-     * sets how long this note will play for
-     * @param duration how long this note will play
-     */
-//    public void setDuration(int duration) {
-//        this.duration = duration;
-//    }
-
-    /**
      * the pitch at which this note will be played
      * @return the pitch of this note
      */
@@ -90,39 +71,35 @@ public class Note {
         return 127-this.pitchProperty().intValue()/10;
     }
 
-    /**
-     * sets the pitch at which this note will be played
-     * @param pitch the pitch at which this note will be played
-     */
-//    public void setPitch(int pitch) {
-//        this.pitch = pitch;
-//    }
 
     /**
      * the tick at which this note will start playing
      * @return the starting tick
      */
-//
     public int getStartTick() {
         return this.startTickProperty().intValue();
     }
-//
-//    /**
-//     * sets the tick at which this note will first be played
-//     * @param startTick the starting tick
-//     */
-//    public void setStartTick(int startTick) {
-//        this.startTick = startTick;
-//    }
 
+    /**
+     * Gets the duration property
+     * @return DoubleProperty duration
+     */
     public DoubleProperty durationProperty() {
         return duration;
     }
 
+    /**
+     * Gets the pitch property
+     * @return DoubleProperty pitch
+     */
     public DoubleProperty pitchProperty() {
         return pitch;
     }
 
+    /**
+     * Gets the startTick property
+     * @return DoubleProperty startTick
+     */
     public DoubleProperty startTickProperty() {
         return startTick;
     }

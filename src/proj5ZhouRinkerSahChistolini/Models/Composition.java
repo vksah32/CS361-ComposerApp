@@ -11,8 +11,6 @@
 
 package proj5ZhouRinkerSahChistolini.Models;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -21,16 +19,14 @@ import java.util.HashSet;
 public class Composition {
     /** The volume at which all the notes will be played */
     public static final int VOLUME = 127;
-    /** The channel on which all of the notes will be played */
-    public static final int CHANNEL = 0;
     /** The track on which this composition will be played */
     public static final int TRACK_INDEX = 0;
 
     /** The midiplayer on which this composition will be played */
     private MidiPlayer player;
 
+    /** The notes to build the composition */
     private HashSet<Note> notes;
-
 
     /** Creates a new Composition object with a midiplayer which has
      * 60 beats per minute and 100 ticks per beat*/
@@ -62,15 +58,26 @@ public class Composition {
                      note.getPitch(),note.getInstrument());
     }
 
+    /**
+     * Appends a note to the the notes field
+     * @param note the note to be added to the field
+     */
     public void appendNote(Note note){
         this.notes.add(note);
 
     }
 
+    /**
+     * Removes a note from the notes field
+     * @param note the note to be removed
+     */
     public void removeNote(Note note){
         this.notes.remove(note);
     }
 
+    /**
+     * Constructs a composition from the notes collection
+     */
     public void buildSong(){
         for(Note note: notes){
             this.addNote(note);

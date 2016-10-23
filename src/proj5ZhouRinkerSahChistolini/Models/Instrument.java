@@ -1,10 +1,11 @@
-package proj5ZhouRinkerSahChistolini.Models;
-
 /**
  *  This class holds all the info for instruments
  *  @author Ed Zhou
  *  @author Alex Ranker
  */
+
+package proj5ZhouRinkerSahChistolini.Models;
+
 public class Instrument {
 
     /** Name of the instrument */
