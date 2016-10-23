@@ -252,18 +252,20 @@ public class CompositionPanelController {
      *
      */
     public void groupSelected(){
-        GroupRectangle gesture = new GroupRectangle(this.getSelectedRectangles());
-        for (SelectableRectangle rec : gesture.getChildren()){
-            rec.setBounded(true);
+        if(!this.getSelectedRectangles().isEmpty()) {
+            GroupRectangle gesture = new GroupRectangle(this.getSelectedRectangles());
+            for (SelectableRectangle rec : gesture.getChildren()) {
+                rec.setBounded(true);
+            }
+            DragInNoteHandler handler = new DragInNoteHandler(gesture, this);
+            // sets the handlers of these events to be the
+            // specified methods in its DragInNoteHandler object
+            gesture.setOnMousePressed(handler::handleMousePressed);
+            gesture.setOnMouseDragged(handler::handleDragged);
+            gesture.setOnMouseReleased(handler::handleMouseReleased);
+            gesture.setOnMouseClicked(new ClickInNoteHandler(this));
+            addRectangle(gesture, true);
         }
-        DragInNoteHandler handler = new DragInNoteHandler(gesture, this);
-        // sets the handlers of these events to be the
-        // specified methods in its DragInNoteHandler object
-        gesture.setOnMousePressed(handler::handleMousePressed);
-        gesture.setOnMouseDragged(handler::handleDragged);
-        gesture.setOnMouseReleased(handler::handleMouseReleased);
-        gesture.setOnMouseClicked(new ClickInNoteHandler(this));
-        addRectangle(gesture, true);
     }
 
     /**
