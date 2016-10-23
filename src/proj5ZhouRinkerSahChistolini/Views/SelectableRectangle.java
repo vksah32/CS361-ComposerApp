@@ -11,12 +11,13 @@
 
 package proj5ZhouRinkerSahChistolini.Views;
 
+import javafx.beans.binding.ObjectBinding;
 import javafx.scene.shape.Rectangle;
 
 /**
  * Created by Remis on 10/18/2016.
  */
-public abstract class SelectableRectangle extends Rectangle{
+public abstract class SelectableRectangle extends Rectangle {
     /** keeps track of whether the rectangle is selected */
     protected boolean selected;
     protected boolean bounded;

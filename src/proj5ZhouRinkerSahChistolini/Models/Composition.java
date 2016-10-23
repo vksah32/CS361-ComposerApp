@@ -12,6 +12,8 @@
 package proj5ZhouRinkerSahChistolini.Models;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * The central logic for creating and playing back a composition.
@@ -27,11 +29,14 @@ public class Composition {
     /** The midiplayer on which this composition will be played */
     private MidiPlayer player;
 
+    private HashSet<Note> notes;
+
 
     /** Creates a new Composition object with a midiplayer which has
      * 60 beats per minute and 100 ticks per beat*/
     public Composition(){
         player = new MidiPlayer(100,60);
+        notes = new HashSet<>();
     }
     /**
      * This will add a note to this composition
@@ -57,12 +62,17 @@ public class Composition {
                      note.getPitch(),note.getInstrument());
     }
 
-    /**
-     * adds a list of notes to this composition
-     * @param notes a list of notes
-     */
-    public void addNotes(ArrayList<Note> notes){
-            for(Note note: notes){
+    public void appendNote(Note note){
+        this.notes.add(note);
+
+    }
+
+    public void removeNote(Note note){
+        this.notes.remove(note);
+    }
+
+    public void buildSong(){
+        for(Note note: notes){
             this.addNote(note);
         }
     }

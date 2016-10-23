@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import proj5ZhouRinkerSahChistolini.Models.Note;
 import proj5ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj5ZhouRinkerSahChistolini.Models.Composition;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
@@ -145,14 +146,10 @@ public class CompositionPanelController {
         return selectedList;
     }
 
-    public void buildSong() {
-        this.composition.stop();
-        for (NoteRectangle rect : this.noteRectangles) {
-            this.composition.addNote((int) rect.getX(),
-                                     (int) rect.getWidth(),
-                                     (int) (127 - rect.getY()/10),
-                                     rect.getInstrument().getValue());
-        }
+
+    public void addNoteToComposition(Note note){
+        this.composition.appendNote(note);
+
     }
 
     /**
@@ -160,8 +157,10 @@ public class CompositionPanelController {
      * Stops the current animation and plays a new one if one already exists.
      */
     public void playComposition() {
+        this.stopComposition();
         this.isPlaying = true;
-        buildSong();
+        this.composition.buildSong();
+//        this.buildSong();
 
         //only plays when there are rectangles
         if (this.noteRectangles.size() > 0) {
@@ -227,8 +226,15 @@ public class CompositionPanelController {
             this.compositionPanel.getChildren().remove(r);
         }
         //then remove from ArrayList of rectangles
+        for (SelectableRectangle rect : selected){
+            if(rect instanceof NoteRectangle)
+                this.composition.removeNote(((NoteRectangle)rect).getNote());
+        }
         this.rectangles.removeAll(selected);
         this.noteRectangles.removeAll(selected);
+
+
+
     }
 
 

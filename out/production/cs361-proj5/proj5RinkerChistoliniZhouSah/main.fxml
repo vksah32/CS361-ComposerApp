@@ -1,0 +1,83 @@
+<!-- /**
+ * File: main.fxml
+ * @author Victoria Chistolini
+ * @author Tiffany Lam
+ * @author Joseph Malionek
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 4
+ * Date: October 11, 2016
+ */ -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import proj5RinkerChistoliniZhouSah.CompositionPanel?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="@Main.css">
+    <top>
+        <MenuBar>
+            <Menu text="File">
+                <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
+            </Menu>
+            <Menu text="Edit">
+                <MenuItem text="Select All" onAction="#selectAllNotes" accelerator="Shortcut+A"/>
+                <MenuItem text="Delete" onAction="#deleteSelectedNotes" accelerator="Shortcut+BACKSPACE"/>
+            </Menu>
+            <Menu text="Action">
+                <MenuItem text="Play" onAction="#playComposition" accelerator="Shortcut+P"/>
+                <MenuItem text="Stop" onAction="#stopComposition" accelerator="Shortcut+S"/>
+            </Menu>
+        </MenuBar>
+    </top>
+
+    <left>
+        <VBox spacing="15.0">
+            <fx:define>
+                <ToggleGroup fx:id="instrumentPanel"/>
+            </fx:define>
+            <children>
+                <RadioButton text="Piano"
+                             textFill="grey"
+                             toggleGroup="$instrumentPanel"
+                             selected="true"/>
+                <RadioButton text="Harpsichord"
+                             textFill="green"
+                             toggleGroup="$instrumentPanel"/>
+                <RadioButton text="Marimba"
+                             textFill="blue"
+                             toggleGroup="$instrumentPanel"/>
+                <RadioButton text="Organ"
+                             textFill="gold"
+                             toggleGroup="$instrumentPanel"/>
+                <RadioButton text="Accordion"
+                             textFill="purple"
+                             toggleGroup="$instrumentPanel"/>
+                <RadioButton text="Guitar"
+                             textFill="deepskyblue"
+                             toggleGroup="$instrumentPanel"/>
+                <RadioButton text="Violin"
+                             textFill="black"
+                             toggleGroup="$instrumentPanel"/>
+                <RadioButton text="French Horn"
+                             textFill="sandybrown"
+                             toggleGroup="$instrumentPanel"/>
+            </children>
+            <padding>
+                <Insets top="10.0" />
+            </padding>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane>
+            <CompositionPanel fx:id="compositionPanel"
+                              onMouseClicked="#handleMouseClick"
+                              onMousePressed="#handleMousePressed"
+                              onMouseDragged="#handleDragged"
+                              onMouseReleased="#handleDragReleased"/>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

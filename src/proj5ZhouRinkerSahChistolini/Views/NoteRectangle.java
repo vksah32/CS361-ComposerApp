@@ -11,15 +11,21 @@
 
 package proj5ZhouRinkerSahChistolini.Views;
 
+import javafx.beans.property.SimpleObjectProperty;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
+import proj5ZhouRinkerSahChistolini.Models.Note;
 
 /**
  * Represents a musical note in the gui interface
  */
-public class NoteRectangle extends SelectableRectangle{
+public class NoteRectangle extends SelectableRectangle {
 
     /** the instrument of the note */
     private Instrument instrument;
+
+
+
+    private Note note;
 
     /**
      * The constructor of the NoteRectangle
@@ -60,6 +66,15 @@ public class NoteRectangle extends SelectableRectangle{
             this.getStyleClass().add("note");
         }
         this.selected = selected;
+    }
+
+
+    public Note getNote() {
+        return note;
+    }
+
+    public void setNote(Note note) {
+        this.note = note;
     }
 
 }

@@ -132,6 +132,7 @@ public class MidiPlayer
      */
     public void play()
     {
+        System.out.println("playing");
 //        try {
             // this next line should be unnecessary, but seems to be needed
             sequencer.setTempoInBPM(beatsPerMinute);

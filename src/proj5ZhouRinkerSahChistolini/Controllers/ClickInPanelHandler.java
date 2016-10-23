@@ -12,8 +12,13 @@
 
 package proj5ZhouRinkerSahChistolini.Controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.MouseEvent;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
+import proj5ZhouRinkerSahChistolini.Models.Note;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
 
 /**
@@ -56,6 +61,7 @@ public class ClickInPanelHandler {
      */
     public void addNote(double x, double y, Instrument instrument) {
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
+
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,
                 10, instrument);
@@ -69,7 +75,15 @@ public class ClickInPanelHandler {
             this.compController.clearSelected();
         }
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
+        Note note = new Note(rectangle.getInstrument().getValue());
+        note.pitchProperty().bind(rectangle.yProperty().divide(10) );
+        note.durationProperty().bind(rectangle.widthProperty());
+        note.startTickProperty().bind(rectangle.xProperty());
+        rectangle.setNote(note);
         this.compController.addNoteRectangle(rectangle, true);
+        this.compController.addNoteToComposition(note);
+
+
     }
 }
 

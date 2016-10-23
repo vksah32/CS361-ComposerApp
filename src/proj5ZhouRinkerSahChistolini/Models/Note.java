@@ -11,6 +11,10 @@
 
 package proj5ZhouRinkerSahChistolini.Models;
 
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 /**
  * Holds all the information of a note
  */
@@ -19,26 +23,31 @@ public class Note {
     /** the instrument number */
     private int instrument;
     /** the duration of the note */
-    private int duration;
+    private DoubleProperty duration;
     /** the pitch of the note */
-    private int pitch;
+    private DoubleProperty pitch;
+
+
+
     /** the start tick of the note */
-    private int startTick;
+    private DoubleProperty startTick;
     /** sets the default track to 0 */
     private final int TRACK=0;
     /** sets the default channel to 0 */
     private final int CHANNEL=0;
 
+
+
     /**
      * The constructor for Note
-     * @param startTick
-     * @param duration
-     * @param pitch
+
      */
-    public Note(int startTick, int duration, int pitch){
-        this.startTick = startTick;
-        this.duration = duration;
-        this.pitch = pitch;
+    public Note(int instrument){
+        this.startTick = new SimpleDoubleProperty();
+        this.duration = new SimpleDoubleProperty();
+        this.pitch = new SimpleDoubleProperty();
+        this.instrument = instrument;
+
     }
 
     /**
@@ -62,47 +71,59 @@ public class Note {
      * @return the duration of the note
      */
     public int getDuration() {
-        return duration;
+        return this.durationProperty().intValue();
     }
 
     /**
      * sets how long this note will play for
      * @param duration how long this note will play
      */
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+//    public void setDuration(int duration) {
+//        this.duration = duration;
+//    }
 
     /**
      * the pitch at which this note will be played
      * @return the pitch of this note
      */
     public int getPitch() {
-        return pitch;
+        return 127-this.pitchProperty().intValue();
     }
 
     /**
      * sets the pitch at which this note will be played
      * @param pitch the pitch at which this note will be played
      */
-    public void setPitch(int pitch) {
-        this.pitch = pitch;
-    }
+//    public void setPitch(int pitch) {
+//        this.pitch = pitch;
+//    }
 
     /**
      * the tick at which this note will start playing
      * @return the starting tick
      */
-
+//
     public int getStartTick() {
-        return startTick;
+        return this.startTickProperty().intValue();
+    }
+//
+//    /**
+//     * sets the tick at which this note will first be played
+//     * @param startTick the starting tick
+//     */
+//    public void setStartTick(int startTick) {
+//        this.startTick = startTick;
+//    }
+
+    public DoubleProperty durationProperty() {
+        return duration;
     }
 
-    /**
-     * sets the tick at which this note will first be played
-     * @param startTick the starting tick
-     */
-    public void setStartTick(int startTick) {
-        this.startTick = startTick;
+    public DoubleProperty pitchProperty() {
+        return pitch;
+    }
+
+    public DoubleProperty startTickProperty() {
+        return startTick;
     }
 }
