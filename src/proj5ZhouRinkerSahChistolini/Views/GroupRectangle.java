@@ -11,9 +11,6 @@ import java.util.HashSet;
  */
 public class GroupRectangle extends SelectableRectangle{
 
-    /** All children who are selected*/
-    private HashSet<SelectableRectangle> selection;
-
     /** The direct children under the group*/
     private HashSet<SelectableRectangle> children;
 
@@ -38,7 +35,6 @@ public class GroupRectangle extends SelectableRectangle{
         this.setHeight(bot.getY() + bot.getHeight() - top.getY());
 
         this.getDirectChildren(selection);
-        this.selection = selection;
         this.bindSelection();
         this.getStyleClass().add("group-note");
     }
@@ -94,14 +90,14 @@ public class GroupRectangle extends SelectableRectangle{
         if(selected){
             this.getStyleClass().removeAll("group-note");
             this.getStyleClass().add("selected-group-note");
-            for (SelectableRectangle rec: this.selection){
+            for (SelectableRectangle rec: this.getChildren()){
                 rec.setSelected(true);
             }
         }
         else{
             this.getStyleClass().removeAll("selected-group-note");
             this.getStyleClass().add("group-note");
-            for (SelectableRectangle rec: this.selection){
+            for (SelectableRectangle rec: this.getChildren()){
                 rec.setSelected(false);
             }
         }
