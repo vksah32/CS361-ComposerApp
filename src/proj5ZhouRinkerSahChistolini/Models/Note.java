@@ -87,7 +87,7 @@ public class Note {
      * @return the pitch of this note
      */
     public int getPitch() {
-        return 127-this.pitchProperty().intValue();
+        return 127-this.pitchProperty().intValue()/10;
     }
 
     /**
