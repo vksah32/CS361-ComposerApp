@@ -75,7 +75,7 @@ public class ClickInPanelHandler {
             this.compController.clearSelected();
         }
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
-        Note note = new Note(rectangle.getInstrument().getValue());
+        Note note = new Note(instrument);
         note.pitchProperty().bind(rectangle.yProperty().divide(10) );
         note.durationProperty().bind(rectangle.widthProperty());
         note.startTickProperty().bind(rectangle.xProperty());

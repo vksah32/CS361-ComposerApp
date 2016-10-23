@@ -42,7 +42,7 @@ public class Note {
      * The constructor for Note
 
      */
-    public Note(int instrument){
+    public Note(Instrument instrument){
         this.startTick = new SimpleDoubleProperty();
         this.duration = new SimpleDoubleProperty();
         this.pitch = new SimpleDoubleProperty();
