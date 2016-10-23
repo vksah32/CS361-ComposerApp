@@ -1,3 +1,14 @@
+<!-- /**
+ * File: instrumentPanel.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 5
+ * Date: October 23, 2016
+ */ -->
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 

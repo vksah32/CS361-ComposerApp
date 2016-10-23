@@ -23,9 +23,7 @@ public class TempoLine extends Line {
     }
 
     /**
-     * Moves the tempoline across the screen based on the input
-     * stop "time"/location
-     * Uses a TranslateTransition to do so.
+     * Updates the tempoLine's stop location based on the input double
      *
      * @param stopTime this is the stop location (e.g time) which is the
      * location of the right edge of the final note to be played
@@ -39,14 +37,14 @@ public class TempoLine extends Line {
     }
 
     /**
-     * Accessor method for the animation field's play feature
+     * Starts the animation of the tempoLine
      */
     public void playAnimation() {
         this.tempoAnimation.play();
     }
 
     /**
-     * Accessor method for the animation field's stop feature
+     * Stops the visual animation of the tempoLine
      */
     public void stopAnimation() {
         this.tempoAnimation.stop();

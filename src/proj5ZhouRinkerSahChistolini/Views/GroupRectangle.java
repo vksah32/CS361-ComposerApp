@@ -17,10 +17,12 @@ public class GroupRectangle extends SelectableRectangle{
     private double initialWidth;
 
     /**
-     * The constructor of the NoteRectangle
+     * The constructor of the GroupRectangle
+     * Initializes the group based on the input hash set of
+     * rectangles.
+     *
      * @param selection Hashset of selected rectangles to group
      */
-
     public GroupRectangle(HashSet<SelectableRectangle> selection) {
         Rectangle left = selection.stream().min(Comparator.comparing(Rectangle::getX)).get();
         Rectangle right = selection.stream().max(Comparator.comparing(
@@ -33,13 +35,18 @@ public class GroupRectangle extends SelectableRectangle{
         this.setWidth(this.initialWidth);
         this.setHeight(bot.getY() + bot.getHeight() - top.getY());
 
-        this.getDirectChildren(selection);
+        this.setDirectChildren(selection);
         this.bindSelection();
         this.getStyleClass().add("group-note");
     }
 
-
-    public void getDirectChildren(Collection<SelectableRectangle> children){
+    /**
+     * Sets the Group's direct children as the input collection
+     *
+     * @param children a collection of rectangles which are to
+     * be the primary members of the group
+     */
+    public void setDirectChildren(Collection<SelectableRectangle> children){
         this.children = new HashSet<>();
         for (SelectableRectangle rect : children) {
             if(!rect.isBounded()) {
@@ -49,7 +56,7 @@ public class GroupRectangle extends SelectableRectangle{
     }
 
     /**
-     * Bind selected direct children to this rectangle
+     * Binds the selected direct children to this rectangle
      */
     private void bindSelection() {
         for (SelectableRectangle rect : this.children) {
@@ -68,10 +75,11 @@ public class GroupRectangle extends SelectableRectangle{
 
     }
 
-
-
+    /**
+     * Unbinds all of the children within the group.
+     */
     public void unbindChildren() {
-        for (SelectableRectangle rect : this.getChildren()) {
+        for (SelectableRectangle rect : this.children) {
             rect.xProperty().unbind();
             rect.yProperty().unbind();
             rect.widthProperty().unbind();
@@ -79,28 +87,33 @@ public class GroupRectangle extends SelectableRectangle{
         }
     }
 
-    public HashSet<SelectableRectangle> getChildren(){return this.children;}
-
     /**
      * sets the selection of the rectangle
-     * @param selected
+     * @param selected a boolean representing whether the group is to be
+     * selected or deselected
      */
     public void setSelected(boolean selected) {
         if(selected){
             this.getStyleClass().removeAll("group-note");
             this.getStyleClass().add("selected-group-note");
-            for (SelectableRectangle rec: this.getChildren()){
+            for (SelectableRectangle rec: this.children){
                 rec.setSelected(true);
             }
         }
         else{
             this.getStyleClass().removeAll("selected-group-note");
             this.getStyleClass().add("group-note");
-            for (SelectableRectangle rec: this.getChildren()){
+            for (SelectableRectangle rec: this.children){
                 rec.setSelected(false);
             }
         }
         this.selected = selected;
     }
+
+    /**
+     * returns this node's children
+     * @returns this.children this class' children field
+     */
+    public HashSet<SelectableRectangle> getChildren() { return this.children; }
 }
 

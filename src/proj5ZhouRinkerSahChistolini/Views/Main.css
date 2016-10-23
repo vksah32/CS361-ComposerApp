@@ -1,12 +1,12 @@
 /**
  * File: Main.css
  * @author Victoria Chistolini
- * @author Tiffany Lam
- * @author Joseph Malionek
+ * @author Edward Zhou
+ * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 4
- * Date: October 11, 2016
+ * Project: 5
+ * Date: October 23, 2016
  */
 
 /* set the pane size */
@@ -51,6 +51,7 @@
     -fx-fill: transparent;
 }
 
+/* sets the style for groups of selected notes */
 .selected-group-note {
     -fx-stroke: red;
     -fx-stroke-width: 2;
@@ -58,6 +59,7 @@
     -fx-fill: transparent;
 }
 
+/* sets the style for the selection rectangle */
 #selection-rectangle{
     -fx-stroke: gold;
     -fx-fill: null;

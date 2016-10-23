@@ -23,8 +23,7 @@ public class NoteRectangle extends SelectableRectangle {
     /** the instrument of the note */
     private Instrument instrument;
 
-
-
+    /** the note associated with the rectangle */
     private Note note;
 
     /**
@@ -68,11 +67,18 @@ public class NoteRectangle extends SelectableRectangle {
         this.selected = selected;
     }
 
-
+    /**
+     * returns the note associated with this rectangle
+     * @return note Note to be returned
+     */
     public Note getNote() {
         return note;
     }
 
+    /**
+     * Sets the note associated with this rectangle
+     * @param note the note to associate with this rectangle
+     */
     public void setNote(Note note) {
         this.note = note;
     }

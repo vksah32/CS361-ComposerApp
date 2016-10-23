@@ -1,12 +1,12 @@
 <!-- /**
  * File: main.fxml
  * @author Victoria Chistolini
- * @author Tiffany Lam
- * @author Joseph Malionek
+ * @author Edward Zhou
+ * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 4
- * Date: October 11, 2016
+ * Project: 5
+ * Date: October 23, 2016
  */ -->
 
 <?import javafx.scene.control.*?>
