@@ -12,10 +12,6 @@
 
 package proj5ZhouRinkerSahChistolini.Controllers;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.MouseEvent;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
 import proj5ZhouRinkerSahChistolini.Models.Note;

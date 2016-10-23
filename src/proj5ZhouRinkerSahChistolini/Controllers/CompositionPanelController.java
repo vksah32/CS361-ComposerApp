@@ -32,7 +32,6 @@ import java.util.HashSet;
 public class CompositionPanelController {
 
     /** an ArrayList of NoteRectangles */
-    private HashSet<NoteRectangle> noteRectangles;
     private HashSet<SelectableRectangle> rectangles;
 
 
@@ -70,7 +69,6 @@ public class CompositionPanelController {
     public void initialize() {
         this.drawLines();
         rectangles = new HashSet<>();
-        noteRectangles = new HashSet<>();
         this.composition = new Composition();
         this.clickInPanelHandler = new ClickInPanelHandler(this);
         this.dragInPanelHandler = new DragInPanelHandler(this.compositionPanel, this);
@@ -93,7 +91,6 @@ public class CompositionPanelController {
     public void addNoteRectangle(NoteRectangle rectangle, boolean selected){
         this.compositionPanel.getChildren().add(rectangle);
         this.rectangles.add(rectangle);
-        this.noteRectangles.add(rectangle);
         if(selected){
             rectangle.setSelected(true);
         }
@@ -163,7 +160,7 @@ public class CompositionPanelController {
 //        this.buildSong();
 
         //only plays when there are rectangles
-        if (this.noteRectangles.size() > 0) {
+        if (this.rectangles.size() > 0) {
             this.beginAnimation();
             this.composition.play();
         }
@@ -184,7 +181,7 @@ public class CompositionPanelController {
      */
     public void beginAnimation() {
         double maxX = 0;
-        for(NoteRectangle rectangle: this.noteRectangles){
+        for(SelectableRectangle rectangle: this.rectangles){
             maxX = Math.max(maxX, rectangle.getX() + rectangle.getWidth());
         }
         this.tempoLine.updateTempoLine(maxX);
@@ -231,9 +228,6 @@ public class CompositionPanelController {
                 this.composition.removeNote(((NoteRectangle)rect).getNote());
         }
         this.rectangles.removeAll(selected);
-        this.noteRectangles.removeAll(selected);
-
-
 
     }
 
