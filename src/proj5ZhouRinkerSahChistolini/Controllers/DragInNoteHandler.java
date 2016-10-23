@@ -44,6 +44,7 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse press
      */
     public void handleMousePressed(MouseEvent event) {
+        this.compController.stopComposition();
         if (event.getX() >= this.sourceRectangle.getX() + this.sourceRectangle.getWidth() - 5) {
             this.extendEventHappening = true;
         } else {
@@ -60,6 +61,7 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with this mouse drag
      */
     public void handleDragged(MouseEvent event) {
+        this.compController.stopComposition();
         if (!this.sourceRectangle.isSelected()) {
             this.compController.clearSelected();
             this.sourceRectangle.setSelected(true);
