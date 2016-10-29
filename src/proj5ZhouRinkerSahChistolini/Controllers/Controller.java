@@ -72,8 +72,28 @@ public class Controller {
     public void selectAllNotes() {
         this.compositionPanelController.selectAllNotes();
     }
+
     @FXML
+    /**
+     * group the selected notes
+     */
     public void groupSelected() { this.compositionPanelController.groupSelected(); }
+
     @FXML
+    /**
+     * ungroup the selected notes
+     */
     public void ungroupSelected() { this.compositionPanelController.ungroupSelected(); }
+
+    @FXML
+    /**
+     * undoes the latest action
+     */
+    public void undo() { return; } //put stuff here
+
+    @FXML
+    /**
+     * redoes the latest undo action
+     */
+    public void redo() { return; } //put stuff here too
 }

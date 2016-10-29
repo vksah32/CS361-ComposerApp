@@ -21,6 +21,9 @@
                 <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
             </Menu>
             <Menu text="Edit">
+                <MenuItem text="Undo" onAction="#undo" accelerator="Shortcut+Z"/>
+                <MenuItem text="Redo" onAction="#redo" accelerator="Shortcut+SHIFT+Z"/>
+                <SeparatorMenuItem/>
                 <MenuItem text="Select All" onAction="#selectAllNotes" accelerator="Shortcut+A"/>
                 <MenuItem text="Delete" onAction="#deleteSelectedNotes" accelerator="Shortcut+BACKSPACE"/>
                 <SeparatorMenuItem/>
