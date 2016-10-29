@@ -1,0 +1,66 @@
+/**
+ * File: Main.css
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 5
+ * Date: October 23, 2016
+ */
+
+/* set the pane size */
+#compositionPanel {
+    -fx-pref-width: 2000;
+    -fx-pref-height: 1280;
+}
+
+/* set the styling for the composition lines */
+#lines {
+    -fx-stroke: lightgray;
+    -fx-stroke-width: 1
+}
+
+/* set style for radio buttons */
+.instrument {
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+}
+
+/* set the styling for the note rectangles */
+.note {
+    -fx-opacity: 1;
+    -fx-stroke: black;
+}
+
+.selected-note {
+    -fx-stroke-width: 3;
+    -fx-stroke: red;
+}
+
+/* sets the styling for our tempo-line */
+.tempo-line {
+    -fx-stroke: red;
+    -fx-stroke-width: 1;
+}
+
+/* sets the styling for our group rectangles */
+.group-note {
+    -fx-stroke: grey;
+    -fx-stroke-dash-array: 2 12 12 2;
+    -fx-fill: transparent;
+}
+
+/* sets the style for groups of selected notes */
+.selected-group-note {
+    -fx-stroke: red;
+    -fx-stroke-width: 2;
+    -fx-stroke-dash-array: 2 12 12 2;
+    -fx-fill: transparent;
+}
+
+/* sets the style for the selection rectangle */
+#selection-rectangle{
+    -fx-stroke: gold;
+    -fx-fill: null;
+}

@@ -1,0 +1,45 @@
+<!-- /**
+ * File: main.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 5
+ * Date: October 23, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@Main.css"
+            fx:controller="proj5ZhouRinkerSahChistolini.Controllers.Controller">
+    <top>
+        <MenuBar>
+            <Menu text="File">
+                <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
+            </Menu>
+            <Menu text="Edit">
+                <MenuItem text="Select All" onAction="#selectAllNotes" accelerator="Shortcut+A"/>
+                <MenuItem text="Delete" onAction="#deleteSelectedNotes" accelerator="Shortcut+BACKSPACE"/>
+                <SeparatorMenuItem/>
+                <MenuItem text="Group" onAction="#groupSelected" accelerator="Shortcut+G"/>
+                <MenuItem text="Ungroup" onAction="#ungroupSelected" accelerator="Shortcut+U"/>
+            </Menu>
+            <Menu text="Action">
+                <MenuItem text="Play" onAction="#playComposition" accelerator="Shortcut+P"/>
+                <MenuItem text="Stop" onAction="#stopComposition" accelerator="Shortcut+S"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <left>
+        <fx:include fx:id="instrumentPane"
+                    source="instrumentPanel.fxml"/>
+    </left>
+    <center>
+        <fx:include fx:id="compositionPanel"
+                    source="compositionPanel.fxml"/>
+    </center>
+
+</BorderPane>
