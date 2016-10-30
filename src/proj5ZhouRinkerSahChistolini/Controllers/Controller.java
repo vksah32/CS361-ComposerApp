@@ -13,6 +13,7 @@ package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.application.Platform;
+import javafx.scene.control.MenuItem;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
 
 /**
@@ -29,11 +30,26 @@ public class Controller {
     @FXML
     private InstrumentPanelController instrumentPaneController;
 
+    /**
+     * All of our MenuItem are put into fields
+     */
+    @FXML
+    private MenuItem stopButton;
+    @FXML
+    public MenuItem startButton;
+    @FXML
+    private MenuItem deleteButton;
+    @FXML
+    private MenuItem groupButton;
+    @FXML
+    private MenuItem ungroupButton;
+
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
     public void initialize() {
         this.compositionPanelController.init(this);
+        bindMenuItems();
     }
 
     /** Returns the currently selected instrument */
@@ -96,4 +112,16 @@ public class Controller {
      * redoes the latest undo action
      */
     public void redo() { return; } //put stuff here too
+
+    /**
+     * returns whether or not the composition is playing
+     */
+    public void bindMenuItems() {
+        this.stopButton.disableProperty().bind(
+                this.compositionPanelController.getIsPlayingProperty().not()
+        );
+        this.startButton.disableProperty().bind(
+                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(1)
+        );
+    }
 }

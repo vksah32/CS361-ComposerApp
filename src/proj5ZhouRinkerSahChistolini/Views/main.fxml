@@ -25,14 +25,29 @@
                 <MenuItem text="Redo" onAction="#redo" accelerator="Shortcut+SHIFT+Z"/>
                 <SeparatorMenuItem/>
                 <MenuItem text="Select All" onAction="#selectAllNotes" accelerator="Shortcut+A"/>
-                <MenuItem text="Delete" onAction="#deleteSelectedNotes" accelerator="Shortcut+BACKSPACE"/>
+                <MenuItem fx:id="deleteButton"
+                          text="Delete"
+                          onAction="#deleteSelectedNotes"
+                          accelerator="Shortcut+BACKSPACE"/>
                 <SeparatorMenuItem/>
-                <MenuItem text="Group" onAction="#groupSelected" accelerator="Shortcut+G"/>
-                <MenuItem text="Ungroup" onAction="#ungroupSelected" accelerator="Shortcut+U"/>
+                <MenuItem fx:id="groupButton"
+                          text="Group"
+                          onAction="#groupSelected"
+                          accelerator="Shortcut+G"/>
+                <MenuItem fx:id="ungroupButton"
+                          text="Ungroup"
+                          onAction="#ungroupSelected"
+                          accelerator="Shortcut+U"/>
             </Menu>
             <Menu text="Action">
-                <MenuItem text="Play" onAction="#playComposition" accelerator="Shortcut+P"/>
-                <MenuItem text="Stop" onAction="#stopComposition" accelerator="Shortcut+S"/>
+                <MenuItem fx:id="startButton"
+                          text="Play"
+                          onAction="#playComposition"
+                          accelerator="Shortcut+P"/>
+                <MenuItem fx:id="stopButton"
+                          text="Stop"
+                          onAction="#stopComposition"
+                          accelerator="Shortcut+S"/>
             </Menu>
         </MenuBar>
     </top>

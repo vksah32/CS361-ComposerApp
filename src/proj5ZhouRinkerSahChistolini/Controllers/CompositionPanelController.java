@@ -11,12 +11,19 @@
 
 package proj5ZhouRinkerSahChistolini.Controllers;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.beans.property.BooleanProperty;
 import proj5ZhouRinkerSahChistolini.Models.Note;
 import proj5ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj5ZhouRinkerSahChistolini.Models.Composition;
@@ -25,7 +32,6 @@ import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj5ZhouRinkerSahChistolini.Views.TempoLine;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The pane in which all of the notes are stored and displayed.
@@ -56,8 +62,12 @@ public class CompositionPanelController {
     /** The composition object */
     private Composition composition;
 
-    /** a boolean field that keeps track of whether the composition is being played */
-    private boolean isPlaying;
+    /** a boolean property that keeps track of whether the composition is being played */
+    private BooleanProperty isPlaying = new SimpleBooleanProperty();
+    private BooleanProperty isEmpty = new SimpleBooleanProperty();
+
+    /** a list property that keeps track of the children of our compositionpane */
+    private ListProperty<Node> childrenProperty = new SimpleListProperty();
 
     /**
      * Constructs the Panel and draws the appropriate lines.
@@ -68,9 +78,21 @@ public class CompositionPanelController {
         this.composition = new Composition();
         this.clickInPanelHandler = new ClickInPanelHandler(this);
         this.dragInPanelHandler = new DragInPanelHandler(this.compositionPanel, this);
-        this.isPlaying=false;
         this.compositionPanel.toFront();
+
+        //Bindings
+        this.isPlaying.bind(this.tempoLine.getIsPlaying());
+
+        //Bind obp to children and list to obp
+        ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
+        obp.setValue(this.compositionPanel.getChildren());
+        this.childrenProperty.bind(obp);
+
+        this.isEmpty.bind(this.childrenProperty.emptyProperty());
+
     }
+
+    public ListProperty<Node> getChildrenProperty() { return this.childrenProperty; }
 
     /**
      * Initializes the controller with the parent controller
@@ -158,21 +180,16 @@ public class CompositionPanelController {
      */
     public void playComposition() {
         this.stopComposition();
-        this.isPlaying = true;
         this.composition.buildSong();
 
-        //only plays when there are rectangles
-        if (this.getRectangles().size() > 0) {
-            this.beginAnimation();
-            this.composition.play();
-        }
+        this.beginAnimation();
+        this.composition.play();
     }
 
     /**
      * Stops and clears the composition and destroys the animation if there is one.
      */
     public void stopComposition() {
-        this.isPlaying = false;
         this.stopAnimation();
         this.composition.stop();
     }
@@ -282,6 +299,10 @@ public class CompositionPanelController {
         this.deleteSelected(new HashSet<>(selectedGroup));
     }
 
+    /**
+     * returns whether or not the composition is playing
+     */
+    public BooleanProperty getIsPlayingProperty() { return this.isPlaying; }
 
     /**
      * Handles mouse click events, extracts x,y coordinates
@@ -293,7 +314,7 @@ public class CompositionPanelController {
     @FXML
     public void handleMouseClick(MouseEvent event) {
         if (event.isStillSincePress()) { //differentiate from drag and drop
-            if (isPlaying) {
+            if (isPlaying.getValue()) {
                 this.stopComposition();
             } else {
                 this.clickInPanelHandler.handle(event, this.mainController.getSelectedInstrument());
@@ -305,9 +326,7 @@ public class CompositionPanelController {
      * handles when the mouse is pressed
      */
     @FXML
-    public void handleMousePressed(MouseEvent event) {
-        this.dragInPanelHandler.handleMousePressed(event);
-    }
+    public void handleMousePressed(MouseEvent event) {this.dragInPanelHandler.handleMousePressed(event);}
 
     /**
      * handles when the mouse is dragged
