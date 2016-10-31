@@ -64,6 +64,9 @@ public class CompositionPanelController {
     /** The composition object */
     private Composition composition;
 
+    /** Holds redo and undo states */
+    private ActionController actionController;
+
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
@@ -87,6 +90,7 @@ public class CompositionPanelController {
                 this
         );
         this.compositionPanel.toFront();
+        this.actionController = new ActionController(this);
 
         //Bindings
         this.isPlaying.bind(this.tempoLine.getIsPlaying());
@@ -160,6 +164,16 @@ public class CompositionPanelController {
         this.compositionPanel.getChildren().add(rectangle);
     }
 
+
+    /**
+     * gets the composition pane
+     *
+     * @return the pane which contains notes
+     */
+    public Pane getCompositionPane(){
+        return this.compositionPanel;
+    }
+
     /**
      * adds Rectangles
      * @param rectangle
@@ -197,6 +211,36 @@ public class CompositionPanelController {
             }
         }
         return newSet;
+    }
+
+    /**
+     * gets the Note objects from the composition
+     * @return the notes on Composition
+     */
+    public Collection<Note> getNotesfromComposition(){
+        return this.composition.getNotes();
+    }
+
+
+
+    public Collection<Note> getSelectedNotes(){
+        Collection<Note> selected = new HashSet<>();
+        for( Note n : this.composition.getNotes()){
+                if (n.selectedProperty().getValue()){
+                    selected.add(n);
+                }
+            }
+        return selected;
+    }
+
+
+    /**
+     * gets the action controller
+     *
+     * @return the ActionController object
+     */
+    public ActionController getActionController() {
+        return this.actionController;
     }
 
     /**
@@ -288,6 +332,7 @@ public class CompositionPanelController {
     /**
      * removes the selected
      * @param selected list of selected rectangles
+     *                 TODO REMOVE CONVOLUION HERE
      */
     public void deleteSelected(Collection<SelectableRectangle> selected) {
         //first remove from the panel
@@ -350,6 +395,15 @@ public class CompositionPanelController {
         }
         selectedGroup.forEach(GroupRectangle::unbindChildren);
         this.deleteSelected(new HashSet<>(selectedGroup));
+    }
+
+    /**
+     * adds a new acton event to the undo stack
+     *
+     * @param action the action being preformed
+     */
+    public void addAction(Actionable action){
+        this.actionController.addAction(action);
     }
 
     /**

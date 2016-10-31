@@ -86,6 +86,9 @@ public class Controller {
      * deletes the selected notes
      */
     public void deleteSelectedNotes() {
+        DeleteNoteAction deletedNotes = new DeleteNoteAction(this.compositionPanelController.getSelectedRectangles(),
+                            this.compositionPanelController.getSelectedNotes());
+        this.compositionPanelController.addAction(deletedNotes);
         this.compositionPanelController.deleteSelectedNotes();
     }
 
@@ -113,13 +116,17 @@ public class Controller {
     /**
      * undoes the latest action
      */
-    public void undo() { return; } //put stuff here
+    public void undo() {
+        this.compositionPanelController.getActionController().undo();
+    }
 
     @FXML
     /**
      * redoes the latest undo action
      */
-    public void redo() { return; } //put stuff here too
+    public void redo() {
+        this.compositionPanelController.getActionController().redo();
+    }
 
     /**
      * returns whether or not the composition is playing
@@ -131,11 +138,11 @@ public class Controller {
         );
         //startButton
         this.startButton.disableProperty().bind(
-                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(1)
+                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(0)
         );
         //selectAllButton
         this.selectAllButton.disableProperty().bind(
-                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(1)
+                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(0)
         );
         //deleteButton
         this.deleteButton.disableProperty().bind(
