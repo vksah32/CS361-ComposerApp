@@ -16,6 +16,9 @@ import javafx.scene.input.MouseEvent;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
 import proj5ZhouRinkerSahChistolini.Models.Note;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
+
+import java.util.Collection;
 
 /**
  * Handles when we click in the panel
@@ -64,11 +67,15 @@ public class ClickInPanelHandler {
                 this.DEFAULT_RECTANGLE_WIDTH,
                 10, instrument.getColor(), instrument.getValue());
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
+
         // sets the handlers of these events to be the
         // specified methods in its DragInNoteHandler object
         rectangle.setOnMousePressed(handler::handleMousePressed);
         rectangle.setOnMouseDragged(handler::handleDragged);
         rectangle.setOnMouseReleased(handler::handleMouseReleased);
+
+        Collection<SelectableRectangle> selectionStatusBeforeAdd = this.compController.getSelectedRectangles();
+
         if (!isMetaDown) {
             this.compController.clearSelected();
         }
@@ -77,6 +84,10 @@ public class ClickInPanelHandler {
         bindNotetoRectangle(note, rectangle);
         this.compController.addNoteRectangle(rectangle, true);
         this.compController.addNoteToComposition(note);
+
+
+        AddNoteAction actionPreformed = new AddNoteAction(rectangle, note, selectionStatusBeforeAdd);
+        this.compController.addAction(actionPreformed);
 
 
     }
