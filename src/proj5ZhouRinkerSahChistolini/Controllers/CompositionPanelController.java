@@ -64,7 +64,6 @@ public class CompositionPanelController {
 
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
-    private BooleanProperty isEmpty = new SimpleBooleanProperty();
 
     /** a list property that keeps track of the children of our compositionpane */
     private ListProperty<Node> childrenProperty = new SimpleListProperty();
@@ -87,9 +86,6 @@ public class CompositionPanelController {
         ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
         obp.setValue(this.compositionPanel.getChildren());
         this.childrenProperty.bind(obp);
-
-        this.isEmpty.bind(this.childrenProperty.emptyProperty());
-
     }
 
     public ListProperty<Node> getChildrenProperty() { return this.childrenProperty; }
