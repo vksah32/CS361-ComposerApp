@@ -369,9 +369,7 @@ public class CompositionPanelController {
     public void groupSelected(){
         if(!this.getSelectedRectangles().isEmpty()) {
             GroupRectangle gesture = new GroupRectangle(this.getSelectedRectangles());
-            for (SelectableRectangle rec : gesture.getChildren()) {
-                rec.setBounded(true);
-            }
+
             DragInNoteHandler handler = new DragInNoteHandler(gesture, this);
             // sets the handlers of these events to be the
             // specified methods in its DragInNoteHandler object
@@ -389,7 +387,7 @@ public class CompositionPanelController {
     public void ungroupSelected(){
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
         for (SelectableRectangle rec : this.getSelectedRectangles()){
-            if (!rec.isBounded() && rec instanceof GroupRectangle){
+            if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
                 selectedGroup.add((GroupRectangle) rec);
             }
         }

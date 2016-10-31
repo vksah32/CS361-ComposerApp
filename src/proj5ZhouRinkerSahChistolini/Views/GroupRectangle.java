@@ -49,7 +49,7 @@ public class GroupRectangle extends SelectableRectangle{
     public void setDirectChildren(Collection<SelectableRectangle> children){
         this.children = new HashSet<>();
         for (SelectableRectangle rect : children) {
-            if(!rect.isBounded()) {
+            if(!rect.SelectedProperty().isBound()) {
                 this.children.add(rect);
             }
          }
@@ -83,7 +83,6 @@ public class GroupRectangle extends SelectableRectangle{
             rect.xProperty().unbind();
             rect.yProperty().unbind();
             rect.widthProperty().unbind();
-            rect.setBounded(false);
         }
     }
 

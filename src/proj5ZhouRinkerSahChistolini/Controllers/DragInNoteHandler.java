@@ -84,10 +84,7 @@ public class DragInNoteHandler {
         double deltaX = event.getX() - this.previousX;
         double deltaY = event.getY() - this.previousY;
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            if (!rectangle.isBounded()){
-                rectangle.setX(rectangle.getX() + deltaX);
-                rectangle.setY(rectangle.getY() + deltaY);
-            }
+            rectangle.setUnboundPosition(rectangle.getX() + deltaX, rectangle.getY() + deltaY);
         }
         this.previousX = event.getX();
         this.previousY = event.getY();
@@ -100,14 +97,13 @@ public class DragInNoteHandler {
     private void handleNoteExtend(MouseEvent event) {
         double deltaX = event.getX() - this.sourceRectangle.getWidth() - this.sourceRectangle.getX();
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            if (!rectangle.isBounded()) {
-                double width = rectangle.getWidth() + deltaX;
-                // makes sure the width is at least 5
-                width = Math.max(5, width);
-                // makes sure the note does not extend past the end of the player
-                // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
-                rectangle.setWidth(width);
-            }
+            double width = rectangle.getWidth() + deltaX;
+            // makes sure the width is at least 5
+            width = Math.max(5, width);
+            // makes sure the note does not extend past the end of the player
+            // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
+            rectangle.setUnboundWidth(width);
+
         }
 
     }
@@ -118,10 +114,9 @@ public class DragInNoteHandler {
      */
     public void handleMouseReleased(MouseEvent event) {
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            if (!rectangle.isBounded()) {
-                double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
-                rectangle.setY(newPitch);
-            }
+            double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
+            rectangle.setUnboundY(newPitch);
+
         }
     }
 }
