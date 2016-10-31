@@ -32,18 +32,26 @@ public class Controller {
 
     /**
      * All of our MenuItem are put into fields
+     * Each of the following FXML elements are MenuItems defined in
+     * our fxml. They are injected here into our controller so that
+     * we can bind their disable properties
      */
     @FXML
     private MenuItem stopButton;
     @FXML
     public MenuItem startButton;
     @FXML
+    public MenuItem selectAllButton;
+    @FXML
     private MenuItem deleteButton;
     @FXML
     private MenuItem groupButton;
     @FXML
     private MenuItem ungroupButton;
-
+    @FXML
+    private MenuItem undoButton;
+    @FXML
+    private MenuItem reduButton;
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
@@ -117,11 +125,21 @@ public class Controller {
      * returns whether or not the composition is playing
      */
     public void bindMenuItems() {
+        //stopButton
         this.stopButton.disableProperty().bind(
                 this.compositionPanelController.getIsPlayingProperty().not()
         );
+        //startButton
         this.startButton.disableProperty().bind(
                 this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(1)
+        );
+        //selectAllButton
+        this.selectAllButton.disableProperty().bind(
+                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(1)
+        );
+        //deleteButton
+        this.deleteButton.disableProperty().bind(
+                this.compositionPanelController.getSelectedNotesBinding()
         );
     }
 }

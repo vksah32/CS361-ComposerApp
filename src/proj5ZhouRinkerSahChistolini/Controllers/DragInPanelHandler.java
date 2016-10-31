@@ -36,15 +36,10 @@ public class DragInPanelHandler {
      * @param panelToEdit The panel which this handler edits
      * @param compController The main composition controller
      */
-    public DragInPanelHandler(Pane panelToEdit, CompositionPanelController compController){
+    public DragInPanelHandler(Pane panelToEdit, Rectangle selectionRectangle, CompositionPanelController compController){
         this.panelToEdit = panelToEdit;
         this.compController = compController;
-        this.selectionRectangle = new Rectangle();
-        this.selectionRectangle.setVisible(false);
-
-        this.selectionRectangle.setId("selection-rectangle");
-
-        this.panelToEdit.getChildren().add(this.selectionRectangle);
+        this.selectionRectangle = selectionRectangle;
     }
 
     /**

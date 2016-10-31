@@ -11,7 +11,7 @@
 
 package proj5ZhouRinkerSahChistolini.Views;
 
-import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -19,7 +19,7 @@ import javafx.scene.shape.Rectangle;
  */
 public abstract class SelectableRectangle extends Rectangle {
     /** keeps track of whether the rectangle is selected */
-    protected boolean selected;
+    protected SimpleBooleanProperty selected = new SimpleBooleanProperty();
     /** keeps track of whether the rectangle is bounded */
     protected boolean bounded;
 
@@ -49,7 +49,7 @@ public abstract class SelectableRectangle extends Rectangle {
      * the rectangle is selected
      */
     public boolean isSelected() {
-        return selected;
+        return selected.getValue();
     }
 
     /**

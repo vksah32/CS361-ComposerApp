@@ -65,7 +65,7 @@ public class NoteRectangle extends SelectableRectangle {
             this.getStyleClass().removeAll("selected-note");
             this.getStyleClass().add("note");
         }
-        this.selected = selected;
+        this.selected.set(selected);
         this.selectedProperty.set(selected);
     }
 

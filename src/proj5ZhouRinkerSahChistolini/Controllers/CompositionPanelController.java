@@ -11,11 +11,9 @@
 
 package proj5ZhouRinkerSahChistolini.Controllers;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,13 +21,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.beans.property.BooleanProperty;
 import proj5ZhouRinkerSahChistolini.Models.Note;
 import proj5ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj5ZhouRinkerSahChistolini.Models.Composition;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj5ZhouRinkerSahChistolini.Views.TempoLine;
+import java.util.Collection;
 
 import java.util.*;
 
@@ -50,6 +48,10 @@ public class CompositionPanelController {
     @FXML
     private TempoLine tempoLine;
 
+    /** The rectangle which appears when you select a group of notes*/
+    @FXML
+    private Rectangle selectionRectangle;
+
     /** a pointer to the main controller */
     private Controller mainController;
 
@@ -68,6 +70,9 @@ public class CompositionPanelController {
     /** a list property that keeps track of the children of our compositionpane */
     private ListProperty<Node> childrenProperty = new SimpleListProperty();
 
+    /** a boolean binding property that keeps track of whether or not any note is selected */
+    private BooleanBinding selectedNotesBinding;
+
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -76,7 +81,11 @@ public class CompositionPanelController {
         this.drawLines();
         this.composition = new Composition();
         this.clickInPanelHandler = new ClickInPanelHandler(this);
-        this.dragInPanelHandler = new DragInPanelHandler(this.compositionPanel, this);
+        this.dragInPanelHandler = new DragInPanelHandler(
+                this.compositionPanel,
+                this.selectionRectangle,
+                this
+        );
         this.compositionPanel.toFront();
 
         //Bindings
@@ -86,9 +95,51 @@ public class CompositionPanelController {
         ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
         obp.setValue(this.compositionPanel.getChildren());
         this.childrenProperty.bind(obp);
+
+//        List<Node> something = this.compositionPanel.getChildren().stream().filter(child ->{
+//            if (child instanceof SelectableRectangle){
+//                ((SelectableRectangle) child).isSelected();
+//            }
+//            return false;}).collect(Collectors.toList());
+
+        //Set up custom BooleanBinding for our selectedNotes
+        this.selectedNotesBinding = Bindings.createBooleanBinding(() -> areNotesSelected(),
+                this.compositionPanel.getChildren()
+        );
     }
 
+    /**
+     * returns true if there is at least one selected note. False otherwise
+     * @return true or false
+     */
+    private boolean areNotesSelected(){
+        for(Node child : this.compositionPanel.getChildren()) {
+            if (child instanceof SelectableRectangle) {
+                if (((SelectableRectangle) child).isSelected()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * returns the children property
+     * @return this.childrenProperty
+     */
     public ListProperty<Node> getChildrenProperty() { return this.childrenProperty; }
+
+    /**
+     * returns the areNotesSelected property
+     * @return this.areNotesSelected
+     */
+    public BooleanBinding getSelectedNotesBinding() {return this.selectedNotesBinding; }
+
+    /**
+     * returns whether or not the composition is playing
+     * @return this.isPlaying
+     */
+    public BooleanProperty getIsPlayingProperty() {return this.isPlaying; }
 
     /**
      * Initializes the controller with the parent controller
@@ -103,10 +154,10 @@ public class CompositionPanelController {
      * @param selected
      */
     public void addNoteRectangle(NoteRectangle rectangle, boolean selected){
-        this.compositionPanel.getChildren().add(rectangle);
         if(selected){
             rectangle.setSelected(true);
         }
+        this.compositionPanel.getChildren().add(rectangle);
     }
 
     /**
@@ -115,10 +166,11 @@ public class CompositionPanelController {
      * @param selected
      */
     public void addRectangle(SelectableRectangle rectangle, boolean selected){
-        this.compositionPanel.getChildren().add(rectangle);
         if(selected){
             rectangle.setSelected(true);
         }
+        this.compositionPanel.getChildren().add(rectangle);
+
     }
 
     /**
@@ -167,7 +219,6 @@ public class CompositionPanelController {
      */
     public void addNoteToComposition(Note note){
         this.composition.appendNote(note);
-
     }
 
     /**
@@ -195,6 +246,12 @@ public class CompositionPanelController {
      * the length of the composition.
      */
     public void beginAnimation() {
+//        for( Node node : this.compositionPanel.getChildren()) {
+//            if (node instanceof SelectableRectangle) {
+//                SelectableRectangle temp = (SelectableRectangle) node;
+//                System.out.println(temp.isSelected());
+//            }
+//        }
         double maxX = 0;
         for(SelectableRectangle rectangle: this.getRectangles()){
             maxX = Math.max(maxX, rectangle.getX() + rectangle.getWidth());
@@ -294,11 +351,6 @@ public class CompositionPanelController {
         selectedGroup.forEach(GroupRectangle::unbindChildren);
         this.deleteSelected(new HashSet<>(selectedGroup));
     }
-
-    /**
-     * returns whether or not the composition is playing
-     */
-    public BooleanProperty getIsPlayingProperty() { return this.isPlaying; }
 
     /**
      * Handles mouse click events, extracts x,y coordinates

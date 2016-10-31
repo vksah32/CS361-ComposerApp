@@ -107,7 +107,7 @@ public class GroupRectangle extends SelectableRectangle{
                 rec.setSelected(false);
             }
         }
-        this.selected = selected;
+        this.selected.set(selected);
     }
 
     /**

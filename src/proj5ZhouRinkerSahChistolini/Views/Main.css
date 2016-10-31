@@ -60,7 +60,7 @@
 }
 
 /* sets the style for the selection rectangle */
-#selection-rectangle{
+.selection-rectangle{
     -fx-stroke: gold;
     -fx-fill: null;
 }

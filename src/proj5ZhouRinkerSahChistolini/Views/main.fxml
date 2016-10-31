@@ -21,10 +21,19 @@
                 <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
             </Menu>
             <Menu text="Edit">
-                <MenuItem text="Undo" onAction="#undo" accelerator="Shortcut+Z"/>
-                <MenuItem text="Redo" onAction="#redo" accelerator="Shortcut+SHIFT+Z"/>
+                <MenuItem fx:id="undoButton"
+                          text="Undo"
+                          onAction="#undo"
+                          accelerator="Shortcut+Z"/>
+                <MenuItem fx:id="redoButton"
+                          text="Redo"
+                          onAction="#redo"
+                          accelerator="Shortcut+SHIFT+Z"/>
                 <SeparatorMenuItem/>
-                <MenuItem text="Select All" onAction="#selectAllNotes" accelerator="Shortcut+A"/>
+                <MenuItem fx:id="selectAllButton"
+                          text="Select All"
+                          onAction="#selectAllNotes"
+                          accelerator="Shortcut+A"/>
                 <MenuItem fx:id="deleteButton"
                           text="Delete"
                           onAction="#deleteSelectedNotes"
