@@ -5,6 +5,8 @@ import proj5ZhouRinkerSahChistolini.Models.Note;
 import java.util.Collection;
 import java.util.Stack;
 import javafx.scene.Node;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
+
 /**
  * Crontrols the actions preformed in the composition pane
  */
@@ -16,19 +18,19 @@ public class ActionController {
     private Stack<Actionable> redoStack;
 
     /** refrence to selectable rectangles list */
-    private Collection<Node> graphicNoteList;
+    private Collection<Node> graphicRectList;
     /** refrence to Note in Model rectangle list */
     private Collection<Note> modelNoteList;
 
-
-
+    private Collection<SelectableRectangle> beforeSelectedState;
+    private Collection<SelectableRectangle> afterSelectedState;
 
     /**
-     * Initilized ActionContoroller with empty stacks
+     * Initialized ActionContoroller with empty stacks
      */
     public ActionController(CompositionPanelController compPane) {
 
-        this.graphicNoteList = compPane.getCompositionPane().getChildren();
+        this.graphicRectList = compPane.getCompositionPane().getChildren();
         this.modelNoteList = compPane.getNotesfromComposition();
 
         this.undoStack = new Stack<>();
@@ -39,10 +41,12 @@ public class ActionController {
      * Reverts the state of the application to previous state
      */
     public void undo() {
-
-        Actionable prevState = this.undoStack.pop();
-        prevState.unDoIt(this.graphicNoteList,this.modelNoteList);
-        this.redoStack.push(prevState);
+        System.out.println(undoStack);
+        if (!this.undoStack.isEmpty()) {
+            Actionable prevState = this.undoStack.pop();
+            prevState.unDoIt(this.graphicRectList, this.modelNoteList);
+            this.redoStack.push(prevState);
+        }
     }
 
 
@@ -50,10 +54,12 @@ public class ActionController {
      * Redoes the changes that have been undone
      */
     public void redo(){
-        Actionable undidState = this.redoStack.pop();
-        undidState.reDoIt(this.graphicNoteList,this.modelNoteList);
-        this.undoStack.push(undidState);
-
+        System.out.println(undoStack);
+        if (!this.redoStack.isEmpty()) {
+            Actionable undidState = this.redoStack.pop();
+            undidState.reDoIt(this.graphicRectList, this.modelNoteList);
+            this.undoStack.push(undidState);
+        }
     }
 
     /**
@@ -63,10 +69,22 @@ public class ActionController {
     public void addAction(Actionable action) {
         this.redoStack.clear();
         this.undoStack.push(action);
-
     }
 
+    public void setBeforeState(Collection<SelectableRectangle> state) {
+        this.beforeSelectedState = state;
+    }
+    public void setAfterState(Collection<SelectableRectangle> state) {
+        this.afterSelectedState = state;
+    }
 
+    public Collection<SelectableRectangle> getAfterSelectedState() {
+        return afterSelectedState;
+    }
+
+    public Collection<SelectableRectangle> getBeforeSelectedState() {
+        return beforeSelectedState;
+    }
 }
 
 

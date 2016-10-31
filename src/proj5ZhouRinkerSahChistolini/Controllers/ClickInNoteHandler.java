@@ -15,6 +15,8 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
+import java.util.Collection;
+
 /**
  * Handles when we click in a note
  */
@@ -36,6 +38,7 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
      * @param event
      */
     public void handle(MouseEvent event) {
+        //Collection<SelectableRectangle> before = this.compController.getSelectedRectangles();
         SelectableRectangle rect = ((SelectableRectangle) event.getSource());
         // control-clicking
         if (event.isShortcutDown()) {
@@ -52,7 +55,10 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
                 rect.setSelected(true);
             }
         }
+        //Collection<SelectableRectangle> after = this.compController.getSelectedRectangles();
+        //this.compController.addAction(new SelectAction(before, after));
         //So that the border
+        System.out.println("click on note happened");
         event.consume();
     }
 }

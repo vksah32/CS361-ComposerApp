@@ -55,7 +55,7 @@ public class DragInPanelHandler {
     }
 
     /**
-     * Handles when the mosue is dragged
+     * Handles when the mouse is dragged
      * @param event The even associated with this mouse drag
      */
     public void handleDragged(MouseEvent event) {

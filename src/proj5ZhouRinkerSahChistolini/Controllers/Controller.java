@@ -51,7 +51,7 @@ public class Controller {
     @FXML
     private MenuItem undoButton;
     @FXML
-    private MenuItem reduButton;
+    private MenuItem redoButton;
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
@@ -97,6 +97,7 @@ public class Controller {
      * selects all the notes
      */
     public void selectAllNotes() {
+        this.compositionPanelController.addAction( new SelectAllAction(this.compositionPanelController.getSelectedRectangles()));
         this.compositionPanelController.selectAllNotes();
     }
 

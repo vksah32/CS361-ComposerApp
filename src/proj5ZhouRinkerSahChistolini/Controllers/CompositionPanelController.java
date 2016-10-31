@@ -413,6 +413,11 @@ public class CompositionPanelController {
      */
     @FXML
     public void handleMouseClick(MouseEvent event) {
+        this.actionController.setAfterState(this.getSelectedRectangles());
+        if (!this.actionController.getBeforeSelectedState().equals(
+                this.actionController.getAfterSelectedState())) {
+            this.addAction(new SelectAction(this.actionController.getBeforeSelectedState(), this.actionController.getAfterSelectedState()));
+        }
         if (event.isStillSincePress()) { //differentiate from drag and drop
             if (isPlaying.getValue()) {
                 this.stopComposition();
@@ -426,7 +431,9 @@ public class CompositionPanelController {
      * handles when the mouse is pressed
      */
     @FXML
-    public void handleMousePressed(MouseEvent event) {this.dragInPanelHandler.handleMousePressed(event);}
+    public void handleMousePressed(MouseEvent event) {
+        this.actionController.setBeforeState(this.getSelectedRectangles());
+        this.dragInPanelHandler.handleMousePressed(event);}
 
     /**
      * handles when the mouse is dragged

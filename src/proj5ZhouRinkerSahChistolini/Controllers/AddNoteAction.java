@@ -31,15 +31,13 @@ public class AddNoteAction implements Actionable {
 
     @Override
     public void reDoIt(Collection<Node> recs, Collection<Note> notes) {
-
+        for (SelectableRectangle  rec : this.selected) {
+            rec.setSelected(false);
+        }
         this.graphicalNote.setSelected(true);
         recs.add(this.graphicalNote);
 
         notes.add(this.modelNote);
-
-        for (SelectableRectangle  rec : this.selected) {
-            rec.setSelected(false);
-        }
 
 
     }
