@@ -1,0 +1,72 @@
+<!-- /**
+ * File: main.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 5
+ * Date: October 23, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@Main.css"
+            fx:controller="proj6ZhouRinkerSahChistolini.Controllers.Controller">
+    <top>
+        <MenuBar>
+            <Menu text="File">
+                <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
+            </Menu>
+            <Menu text="Edit">
+                <MenuItem fx:id="undoButton"
+                          text="Undo"
+                          onAction="#undo"
+                          accelerator="Shortcut+Z"/>
+                <MenuItem fx:id="redoButton"
+                          text="Redo"
+                          onAction="#redo"
+                          accelerator="Shortcut+SHIFT+Z"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="selectAllButton"
+                          text="Select All"
+                          onAction="#selectAllNotes"
+                          accelerator="Shortcut+A"/>
+                <MenuItem fx:id="deleteButton"
+                          text="Delete"
+                          onAction="#deleteSelectedNotes"
+                          accelerator="Shortcut+BACKSPACE"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="groupButton"
+                          text="Group"
+                          onAction="#groupSelected"
+                          accelerator="Shortcut+G"/>
+                <MenuItem fx:id="ungroupButton"
+                          text="Ungroup"
+                          onAction="#ungroupSelected"
+                          accelerator="Shortcut+U"/>
+            </Menu>
+            <Menu text="Action">
+                <MenuItem fx:id="startButton"
+                          text="Play"
+                          onAction="#playComposition"
+                          accelerator="Shortcut+P"/>
+                <MenuItem fx:id="stopButton"
+                          text="Stop"
+                          onAction="#stopComposition"
+                          accelerator="Shortcut+S"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <left>
+        <fx:include fx:id="instrumentPane"
+                    source="instrumentPanel.fxml"/>
+    </left>
+    <center>
+        <fx:include fx:id="compositionPanel"
+                    source="compositionPanel.fxml"/>
+    </center>
+
+</BorderPane>
