@@ -38,8 +38,10 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
      * @param event
      */
     public void handle(MouseEvent event) {
-        //Collection<SelectableRectangle> before = this.compController.getSelectedRectangles();
+        Collection<SelectableRectangle> before = this.compController.getSelectedRectangles();
+
         SelectableRectangle rect = ((SelectableRectangle) event.getSource());
+
         // control-clicking
         if (event.isShortcutDown()) {
             if (rect.isSelected()) {
@@ -55,10 +57,12 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
                 rect.setSelected(true);
             }
         }
-        //Collection<SelectableRectangle> after = this.compController.getSelectedRectangles();
-        //this.compController.addAction(new SelectAction(before, after));
-        //So that the border
-        System.out.println("click on note happened");
+
+        // add a new action
+        Collection<SelectableRectangle> after = this.compController.getSelectedRectangles();
+        this.compController.addAction(new SelectAction(before, after));
+
+        //So that the border pane doesn't get the action
         event.consume();
     }
 }
