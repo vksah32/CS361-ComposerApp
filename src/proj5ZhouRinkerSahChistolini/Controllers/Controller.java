@@ -1,12 +1,12 @@
 /**
  * File: Controller.java
  * @author Victoria Chistolini
- * @author Tiffany Lam
- * @author Joseph Malionek
+ * @author Edward (osan) Zhou
+ * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 4
- * Date: October 11, 2016
+ * Project: 5
+ * Date: Nov 1, 2016
  */
 
 package proj5ZhouRinkerSahChistolini.Controllers;
@@ -15,6 +15,9 @@ import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.scene.control.MenuItem;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
+
+import java.util.Collection;
 
 /**
  * Handles all user GUI interactions and coordinates with the MidiPlayer
@@ -88,8 +91,8 @@ public class Controller {
     public void deleteSelectedNotes() {
         DeleteNoteAction deletedNotes = new DeleteNoteAction(this.compositionPanelController.getSelectedRectangles(),
                             this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
-        this.compositionPanelController.addAction(deletedNotes);
         this.compositionPanelController.deleteSelectedNotes();
+        this.compositionPanelController.addAction(deletedNotes);
     }
 
     @FXML
@@ -98,10 +101,15 @@ public class Controller {
      */
     public void selectAllNotes() {
         //add
-        this.compositionPanelController.addAction( new SelectAction(this.compositionPanelController.getSelectedRectangles(),
-                    this.compositionPanelController.getRectangles(), this.compositionPanelController));
-
+        Collection<SelectableRectangle> before = this.compositionPanelController.getSelectedRectangles();
         this.compositionPanelController.selectAllNotes();
+        this.compositionPanelController.addAction(
+                new SelectAction(
+                        before,
+                        this.compositionPanelController.getRectangles(),
+                        this.compositionPanelController
+                )
+        );
     }
 
     @FXML
@@ -151,6 +159,22 @@ public class Controller {
         //deleteButton
         this.deleteButton.disableProperty().bind(
                 this.compositionPanelController.getSelectedNotesBinding()
+        );
+        //groupButton
+        this.groupButton.disableProperty().bind(
+                this.compositionPanelController.getMultipleSelectedBinding()
+        );
+        //UngroupButton
+        this.ungroupButton.disableProperty().bind(
+                this.compositionPanelController.getGroupSelectedBinding()
+        );
+        //redoButton
+        this.redoButton.disableProperty().bind(
+                this.compositionPanelController.getRedoEmptyBinding()
+        );
+        //undoButton
+        this.undoButton.disableProperty().bind(
+                this.compositionPanelController.getUndoEmptyBinding()
         );
     }
 }

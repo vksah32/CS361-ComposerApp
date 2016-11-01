@@ -1,27 +1,24 @@
 /**
  * File: DragInPanelHandler.java
  * @author Victoria Chistolini
- * @author Tiffany Lam
- * @author Joseph Malionek
+ * @author Edward (osan) Zhou
+ * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 4
- * Date: October 11, 2016
+ * Project: 5
+ * Date: Nov 1, 2016
  */
 
 package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.layout.Pane;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.Collection;
 
 public class DragInPanelHandler {
 
-    /** The panel that this handler actively edits and listens to */
-    private Pane panelToEdit;
     /** The controller of the composition panel */
     private CompositionPanelController compController;
     /** The rectangle which appears when you select a group of notes*/
@@ -38,11 +35,9 @@ public class DragInPanelHandler {
 
     /** Creates a new DragInPaneHandler
      *
-     * @param panelToEdit The panel which this handler edits
      * @param compController The main composition controller
      */
-    public DragInPanelHandler(Pane panelToEdit, Rectangle selectionRectangle, CompositionPanelController compController){
-        this.panelToEdit = panelToEdit;
+    public DragInPanelHandler(Rectangle selectionRectangle, CompositionPanelController compController){
         this.compController = compController;
         this.selectionRectangle = selectionRectangle;
     }

@@ -1,12 +1,12 @@
 /**
  * File: CompositionPanelController.java
  * @author Victoria Chistolini
- * @author Tiffany Lam
- * @author Joseph Malionek
+ * @author Edward (osan) Zhou
+ * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 4
- * Date: October 11, 2016
+ * Project: 5
+ * Date: Nov 1, 2016
  */
 
 package proj5ZhouRinkerSahChistolini.Controllers;
@@ -73,9 +73,6 @@ public class CompositionPanelController {
     /** a list property that keeps track of the children of our compositionpane */
     private ListProperty<Node> childrenProperty = new SimpleListProperty();
 
-    /** a boolean binding property that keeps track of whether or not any note is selected */
-    private BooleanBinding selectedNotesBinding;
-
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -85,59 +82,13 @@ public class CompositionPanelController {
         this.composition = new Composition();
         this.clickInPanelHandler = new ClickInPanelHandler(this);
         this.dragInPanelHandler = new DragInPanelHandler(
-                this.compositionPanel,
                 this.selectionRectangle,
                 this
         );
         this.compositionPanel.toFront();
         this.actionController = new ActionController();
-
-        //Bindings
         this.isPlaying.bind(this.tempoLine.getIsPlaying());
-
-        //Bind obp to children and list to obp
-        ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
-        obp.setValue(this.compositionPanel.getChildren());
-        this.childrenProperty.bind(obp);
-
-        //Set up custom BooleanBinding for our selectedNotes
-        this.selectedNotesBinding = Bindings.createBooleanBinding(() -> areNotesSelected(),
-                this.compositionPanel.getChildren()
-        );
     }
-
-    /**
-     * returns true if there is at least one selected note. False otherwise
-     * @return true or false
-     */
-    private boolean areNotesSelected(){
-        for(Node child : this.compositionPanel.getChildren()) {
-            if (child instanceof SelectableRectangle) {
-                if (((SelectableRectangle) child).isSelected()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * returns the children property
-     * @return this.childrenProperty
-     */
-    public ListProperty<Node> getChildrenProperty() { return this.childrenProperty; }
-
-    /**
-     * returns the areNotesSelected property
-     * @return this.areNotesSelected
-     */
-    public BooleanBinding getSelectedNotesBinding() {return this.selectedNotesBinding; }
-
-    /**
-     * returns whether or not the composition is playing
-     * @return this.isPlaying
-     */
-    public BooleanProperty getIsPlayingProperty() {return this.isPlaying; }
 
     /**
      * Initializes the controller with the parent controller
@@ -158,7 +109,6 @@ public class CompositionPanelController {
         this.compositionPanel.getChildren().add(rectangle);
     }
 
-
     /**
      * gets the composition pane
      *
@@ -178,7 +128,6 @@ public class CompositionPanelController {
             rectangle.setSelected(true);
         }
         this.compositionPanel.getChildren().add(rectangle);
-
     }
 
     /**
@@ -215,8 +164,10 @@ public class CompositionPanelController {
         return this.composition.getNotes();
     }
 
-
-
+    /**
+     * returns a collection consisting of the selected note objects
+     * @return selected a Collection of Notes
+     */
     public Collection<Note> getSelectedNotes(){
         Collection<Note> selected = new HashSet<>();
         for( Note n : this.composition.getNotes()){
@@ -227,6 +178,19 @@ public class CompositionPanelController {
         return selected;
     }
 
+    /**
+     * Returns a collection of selected group rectangles
+     * @return a collection
+     */
+    private Collection<GroupRectangle> getSelectedGroupRectangles(){
+        List<GroupRectangle> selectedList = new ArrayList<>();
+        for(SelectableRectangle rectangle : this.getRectangles()){
+            if(rectangle instanceof GroupRectangle){
+                selectedList.add((GroupRectangle) rectangle);
+            }
+        }
+        return selectedList;
+    }
 
     /**
      * gets the action controller
@@ -284,12 +248,6 @@ public class CompositionPanelController {
      * the length of the composition.
      */
     public void beginAnimation() {
-//        for( Node node : this.compositionPanel.getChildren()) {
-//            if (node instanceof SelectableRectangle) {
-//                SelectableRectangle temp = (SelectableRectangle) node;
-//                System.out.println(temp.isSelected());
-//            }
-//        }
         double maxX = 0;
         for(SelectableRectangle rectangle: this.getRectangles()){
             maxX = Math.max(maxX, rectangle.getX() + rectangle.getWidth());
@@ -326,7 +284,6 @@ public class CompositionPanelController {
     /**
      * removes the selected
      * @param selected list of selected rectangles
-     *                 TODO REMOVE CONVOLUION HERE
      */
     public void deleteSelected(Collection<SelectableRectangle> selected) {
         //first remove from the panel
@@ -343,7 +300,6 @@ public class CompositionPanelController {
                         n.getInstrument().getValue()==((NoteRectangle)rect).getInstrument() &&
                         n.selectedProperty().getValue().equals(((NoteRectangle)rect).selectedProperty().getValue()));
             }
-
         }
     }
 
@@ -377,10 +333,9 @@ public class CompositionPanelController {
     }
 
     /**
-     *Ungroups the selected group
+     * Ungroups the selected group
      */
     public void ungroupSelected(){
-
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
         for (SelectableRectangle rec : this.getSelectedRectangles()){
             if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
@@ -390,7 +345,21 @@ public class CompositionPanelController {
         selectedGroup.forEach(GroupRectangle::unbindChildren);
         this.addAction(new UngroupNoteAction(selectedGroup,this));
         this.deleteSelected(new HashSet<>(selectedGroup));
+    }
 
+    /**
+     * returns a Collection of the selected rectangles that have
+     * not been bound
+     * @return unboundList a Collection of SelectableRectangles
+     */
+    public Collection<SelectableRectangle> getUnboundSelected(){
+        ArrayList<SelectableRectangle> unboundList = new ArrayList<>();
+        for (SelectableRectangle rec :this.getSelectedRectangles() ){
+            if (!rec.xProperty().isBound()){
+                unboundList.add(rec);
+            }
+        }
+        return unboundList;
     }
 
     /**
@@ -443,4 +412,77 @@ public class CompositionPanelController {
     public void handleDragReleased(MouseEvent event) {
         dragInPanelHandler.handleDragReleased(event);
     }
+
+    /**
+     * returns the children property
+     * @return this.childrenProperty
+     */
+    public ListProperty<Node> getChildrenProperty() {
+        //Bind obp to children and list to obp
+        ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
+        obp.setValue(this.compositionPanel.getChildren());
+        this.childrenProperty.bind(obp);
+        return this.childrenProperty;
+    }
+
+    /**
+     * returns the areNotesSelected property which is a custom binding
+     * representing whether or not any note is selected
+     * @return this.areNotesSelected
+     */
+    public BooleanBinding getSelectedNotesBinding() {
+        BooleanBinding selectedNotesBinding = Bindings.createBooleanBinding(() -> getSelectedRectangles().size() == 0,
+                this.actionController.getUndoList()
+        );
+        return selectedNotesBinding; }
+
+    /**
+     * returns the multipleSelected BooleanBinding which represents
+     * whether or not there are multiple elements selected
+     * @return multipleSelectedBinding the BooleanBinding
+     */
+    public BooleanBinding getMultipleSelectedBinding() {
+        BooleanBinding multipleSelectedBinding = Bindings.createBooleanBinding(() -> getUnboundSelected().size() < 2,
+                this.actionController.getUndoList()
+        );
+        return multipleSelectedBinding; }
+
+    /**
+     * returns the groupsSelected Binding customly created
+     * for determining whether or not a group is selected
+     * @return groupsSelectedBinding
+     */
+    public BooleanBinding getGroupSelectedBinding() {
+        BooleanBinding groupSelectedBinding = Bindings.createBooleanBinding(
+                () -> getSelectedGroupRectangles().size() < 1,
+                this.actionController.getUndoList()
+        );
+        return groupSelectedBinding;
+    }
+
+    /**
+     * returns a newly created custom boolean binding
+     * @returns the redoEmptySize Binding
+     */
+    public BooleanBinding getRedoEmptyBinding() {
+        BooleanBinding redoEmptyBinding = Bindings.createBooleanBinding(
+                () -> this.actionController.getRedoList().isEmpty(),
+                this.actionController.getRedoList()
+        );
+        return redoEmptyBinding;
+    }
+    /**
+     * @returns the undoEmptySize Binding
+     */
+    public BooleanBinding getUndoEmptyBinding() {
+        BooleanBinding undoEmptyBinding = Bindings.createBooleanBinding(() -> this.actionController.getUndoList().isEmpty(),
+                this.actionController.getUndoList()
+        );
+        return undoEmptyBinding;}
+
+    /**
+     * returns whether or not the composition is playing
+     * @return this.isPlaying
+     */
+    public BooleanProperty getIsPlayingProperty() {return this.isPlaying; }
 }

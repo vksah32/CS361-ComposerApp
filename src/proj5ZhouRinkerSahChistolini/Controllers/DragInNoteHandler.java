@@ -148,7 +148,6 @@ public class DragInNoteHandler {
                 this.compController.addAction(translatedAction);
 
             }
-            System.out.println("translated");
 
             //reset control fields
             this.totalDeltaX = 0;
