@@ -1,31 +1,38 @@
 /**
  * File: CompositionPanelController.java
  * @author Victoria Chistolini
- * @author Tiffany Lam
- * @author Joseph Malionek
+ * @author Edward (osan) Zhou
+ * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 4
- * Date: October 11, 2016
+ * Project: 5
+ * Date: Nov 1, 2016
  */
 
 package proj5ZhouRinkerSahChistolini.Controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.*;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
 import proj5ZhouRinkerSahChistolini.Models.Note;
 import proj5ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj5ZhouRinkerSahChistolini.Models.Composition;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj5ZhouRinkerSahChistolini.Views.TempoLine;
+import java.util.Collection;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The pane in which all of the notes are stored and displayed.
@@ -44,6 +51,10 @@ public class CompositionPanelController {
     @FXML
     private TempoLine tempoLine;
 
+    /** The rectangle which appears when you select a group of notes*/
+    @FXML
+    private Rectangle selectionRectangle;
+
     /** a pointer to the main controller */
     private Controller mainController;
 
@@ -56,8 +67,14 @@ public class CompositionPanelController {
     /** The composition object */
     private Composition composition;
 
-    /** a boolean field that keeps track of whether the composition is being played */
-    private boolean isPlaying;
+    /** Holds redo and undo states */
+    private ActionController actionController;
+
+    /** a boolean property that keeps track of whether the composition is being played */
+    private BooleanProperty isPlaying = new SimpleBooleanProperty();
+
+    /** a list property that keeps track of the children of our compositionpane */
+    private ListProperty<Node> childrenProperty = new SimpleListProperty();
 
     /**
      * Constructs the Panel and draws the appropriate lines.
@@ -67,9 +84,13 @@ public class CompositionPanelController {
         this.drawLines();
         this.composition = new Composition();
         this.clickInPanelHandler = new ClickInPanelHandler(this);
-        this.dragInPanelHandler = new DragInPanelHandler(this.compositionPanel, this);
-        this.isPlaying=false;
+        this.dragInPanelHandler = new DragInPanelHandler(
+                this.selectionRectangle,
+                this
+        );
         this.compositionPanel.toFront();
+        this.actionController = new ActionController();
+        this.isPlaying.bind(this.tempoLine.getIsPlaying());
     }
 
     /**
@@ -85,22 +106,33 @@ public class CompositionPanelController {
      * @param selected
      */
     public void addNoteRectangle(NoteRectangle rectangle, boolean selected){
-        this.compositionPanel.getChildren().add(rectangle);
         if(selected){
             rectangle.setSelected(true);
         }
+        this.compositionPanel.getChildren().add(rectangle);
+    }
+
+    /**
+     * gets the composition pane
+     *
+     * @return the pane which contains notes
+     */
+    public Pane getCompositionPane(){
+        return this.compositionPanel;
     }
 
     /**
      * adds Rectangles
-     * @param rectangle
-     * @param selected
+     *
+     * @param rectangle rectangles to add
+     * @param selected if they are selected or not
+     *
      */
     public void addRectangle(SelectableRectangle rectangle, boolean selected){
-        this.compositionPanel.getChildren().add(rectangle);
         if(selected){
             rectangle.setSelected(true);
         }
+        this.compositionPanel.getChildren().add(rectangle);
     }
 
     /**
@@ -118,6 +150,7 @@ public class CompositionPanelController {
     /**
      * gets the rectangles
      * @return a collection of SelectableRectangles
+     *
      */
     public Collection<SelectableRectangle> getRectangles() {
         HashSet<SelectableRectangle> newSet = new HashSet<>();
@@ -127,6 +160,52 @@ public class CompositionPanelController {
             }
         }
         return newSet;
+    }
+
+    /**
+     * gets the Note objects from the composition
+     * @return the notes on Composition
+     *
+     */
+    public Collection<Note> getNotesfromComposition(){
+        return this.composition.getNotes();
+    }
+
+    /**
+     * returns a collection consisting of the selected note objects
+     * @return selected a Collection of Notes
+     */
+    public Collection<Note> getSelectedNotes(){
+        Collection<Note> selected = new HashSet<>();
+        for( Note n : this.composition.getNotes()){
+                if (n.selectedProperty().getValue()){
+                    selected.add(n);
+                }
+            }
+        return selected;
+    }
+
+    /**
+     * Returns a collection of selected group rectangles
+     * @return a collection
+     */
+    private Collection<GroupRectangle> getSelectedGroupRectangles(){
+        List<GroupRectangle> selectedList = new ArrayList<>();
+        for(SelectableRectangle rectangle : this.getRectangles()){
+            if(rectangle instanceof GroupRectangle){
+                selectedList.add((GroupRectangle) rectangle);
+            }
+        }
+        return selectedList;
+    }
+
+    /**
+     * gets the action controller
+     *
+     * @return the ActionController object
+     */
+    public ActionController getActionController() {
+        return this.actionController;
     }
 
     /**
@@ -149,7 +228,6 @@ public class CompositionPanelController {
      */
     public void addNoteToComposition(Note note){
         this.composition.appendNote(note);
-
     }
 
     /**
@@ -158,21 +236,16 @@ public class CompositionPanelController {
      */
     public void playComposition() {
         this.stopComposition();
-        this.isPlaying = true;
         this.composition.buildSong();
 
-        //only plays when there are rectangles
-        if (this.getRectangles().size() > 0) {
-            this.beginAnimation();
-            this.composition.play();
-        }
+        this.beginAnimation();
+        this.composition.play();
     }
 
     /**
      * Stops and clears the composition and destroys the animation if there is one.
      */
     public void stopComposition() {
-        this.isPlaying = false;
         this.stopAnimation();
         this.composition.stop();
     }
@@ -234,7 +307,6 @@ public class CompositionPanelController {
                         n.getInstrument().getValue()==((NoteRectangle)rect).getInstrument() &&
                         n.selectedProperty().getValue().equals(((NoteRectangle)rect).selectedProperty().getValue()));
             }
-
         }
     }
 
@@ -254,9 +326,7 @@ public class CompositionPanelController {
     public void groupSelected(){
         if(!this.getSelectedRectangles().isEmpty()) {
             GroupRectangle gesture = new GroupRectangle(this.getSelectedRectangles());
-            for (SelectableRectangle rec : gesture.getChildren()) {
-                rec.setBounded(true);
-            }
+
             DragInNoteHandler handler = new DragInNoteHandler(gesture, this);
             // sets the handlers of these events to be the
             // specified methods in its DragInNoteHandler object
@@ -265,23 +335,48 @@ public class CompositionPanelController {
             gesture.setOnMouseReleased(handler::handleMouseReleased);
             gesture.setOnMouseClicked(new ClickInNoteHandler(this));
             addRectangle(gesture, true);
+            this.addAction(new GroupNoteAction(gesture, this));
         }
     }
 
     /**
-     *Ungroups the selected group
+     * Ungroups the selected group
      */
     public void ungroupSelected(){
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
         for (SelectableRectangle rec : this.getSelectedRectangles()){
-            if (!rec.isBounded() && rec instanceof GroupRectangle){
+            if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
                 selectedGroup.add((GroupRectangle) rec);
             }
         }
         selectedGroup.forEach(GroupRectangle::unbindChildren);
+        this.addAction(new UngroupNoteAction(selectedGroup,this));
         this.deleteSelected(new HashSet<>(selectedGroup));
     }
 
+    /**
+     * returns a Collection of the selected rectangles that have
+     * not been bound
+     * @return unboundList a Collection of SelectableRectangles
+     */
+    public Collection<SelectableRectangle> getUnboundSelected(){
+        ArrayList<SelectableRectangle> unboundList = new ArrayList<>();
+        for (SelectableRectangle rec :this.getSelectedRectangles() ){
+            if (!rec.xProperty().isBound()){
+                unboundList.add(rec);
+            }
+        }
+        return unboundList;
+    }
+
+    /**
+     * adds a new acton event to the undo stack
+     *
+     * @param action the action being preformed
+     */
+    public void addAction(Actionable action){
+        this.actionController.addAction(action);
+    }
 
     /**
      * Handles mouse click events, extracts x,y coordinates
@@ -292,8 +387,9 @@ public class CompositionPanelController {
      */
     @FXML
     public void handleMouseClick(MouseEvent event) {
+
         if (event.isStillSincePress()) { //differentiate from drag and drop
-            if (isPlaying) {
+            if (isPlaying.getValue()) {
                 this.stopComposition();
             } else {
                 this.clickInPanelHandler.handle(event, this.mainController.getSelectedInstrument());
@@ -306,8 +402,7 @@ public class CompositionPanelController {
      */
     @FXML
     public void handleMousePressed(MouseEvent event) {
-        this.dragInPanelHandler.handleMousePressed(event);
-    }
+        this.dragInPanelHandler.handleMousePressed(event);}
 
     /**
      * handles when the mouse is dragged
@@ -324,4 +419,77 @@ public class CompositionPanelController {
     public void handleDragReleased(MouseEvent event) {
         dragInPanelHandler.handleDragReleased(event);
     }
+
+    /**
+     * returns the children property
+     * @return this.childrenProperty
+     */
+    public ListProperty<Node> getChildrenProperty() {
+        //Bind obp to children and list to obp
+        ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
+        obp.setValue(this.compositionPanel.getChildren());
+        this.childrenProperty.bind(obp);
+        return this.childrenProperty;
+    }
+
+    /**
+     * returns the areNotesSelected property which is a custom binding
+     * representing whether or not any note is selected
+     * @return this.areNotesSelected
+     */
+    public BooleanBinding getSelectedNotesBinding() {
+        BooleanBinding selectedNotesBinding = Bindings.createBooleanBinding(() -> getSelectedRectangles().size() == 0,
+                this.actionController.getUndoList()
+        );
+        return selectedNotesBinding; }
+
+    /**
+     * returns the multipleSelected BooleanBinding which represents
+     * whether or not there are multiple elements selected
+     * @return multipleSelectedBinding the BooleanBinding
+     */
+    public BooleanBinding getMultipleSelectedBinding() {
+        BooleanBinding multipleSelectedBinding = Bindings.createBooleanBinding(() -> getUnboundSelected().size() < 2,
+                this.actionController.getUndoList()
+        );
+        return multipleSelectedBinding; }
+
+    /**
+     * returns the groupsSelected Binding customly created
+     * for determining whether or not a group is selected
+     * @return groupsSelectedBinding
+     */
+    public BooleanBinding getGroupSelectedBinding() {
+        BooleanBinding groupSelectedBinding = Bindings.createBooleanBinding(
+                () -> getSelectedGroupRectangles().size() < 1,
+                this.actionController.getUndoList()
+        );
+        return groupSelectedBinding;
+    }
+
+    /**
+     * returns a newly created custom boolean binding
+     * @returns the redoEmptySize Binding
+     */
+    public BooleanBinding getRedoEmptyBinding() {
+        BooleanBinding redoEmptyBinding = Bindings.createBooleanBinding(
+                () -> this.actionController.getRedoList().isEmpty(),
+                this.actionController.getRedoList()
+        );
+        return redoEmptyBinding;
+    }
+    /**
+     * @returns the undoEmptySize Binding
+     */
+    public BooleanBinding getUndoEmptyBinding() {
+        BooleanBinding undoEmptyBinding = Bindings.createBooleanBinding(() -> this.actionController.getUndoList().isEmpty(),
+                this.actionController.getUndoList()
+        );
+        return undoEmptyBinding;}
+
+    /**
+     * returns whether or not the composition is playing
+     * @return this.isPlaying
+     */
+    public BooleanProperty getIsPlayingProperty() {return this.isPlaying; }
 }

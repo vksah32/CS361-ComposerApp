@@ -13,7 +13,14 @@
 package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.ExtendNoteAction;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.TranslateNoteAction;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**Handles when the user drags in a note rectangle*/
 public class DragInNoteHandler {
@@ -27,6 +34,16 @@ public class DragInNoteHandler {
     private SelectableRectangle sourceRectangle;
     /** The main CompositionController */
     private CompositionPanelController compController;
+    /**  if an extension occured */
+    private Boolean didExtend;
+    /** the final deltaX to move */
+    private double totalDeltaX;
+    /** the final deltaY to move */
+    private double totalDeltaY;
+    /** rectangles before current state action */
+    private Collection<SelectableRectangle> beforeState;
+    /** rectangles after current state action */
+    private Collection<SelectableRectangle> afterState;
 
     /**Creates a new DragInNoteHandler
      *
@@ -37,6 +54,9 @@ public class DragInNoteHandler {
                              CompositionPanelController compController) {
         this.sourceRectangle = sourceRectangle;
         this.compController = compController;
+        this.didExtend = false;
+        this.totalDeltaX = 0;
+        this.totalDeltaY = 0;
     }
 
     /**
@@ -52,6 +72,7 @@ public class DragInNoteHandler {
         }
         this.previousX = event.getX();
         this.previousY = event.getY();
+        this.beforeState = this.compController.getSelectedRectangles();
         event.consume();
     }
 
@@ -68,11 +89,11 @@ public class DragInNoteHandler {
         } else {
             if (this.extendEventHappening) {
                 this.handleNoteExtend(event);
+                this.didExtend = true;
             } else {
                 this.handleNoteTranslate(event);
             }
         }
-
         event.consume();
     }
 
@@ -84,11 +105,10 @@ public class DragInNoteHandler {
         double deltaX = event.getX() - this.previousX;
         double deltaY = event.getY() - this.previousY;
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            if (!rectangle.isBounded()){
-                rectangle.setX(rectangle.getX() + deltaX);
-                rectangle.setY(rectangle.getY() + deltaY);
-            }
+            rectangle.setUnboundPosition(rectangle.getX() + deltaX, rectangle.getY() + deltaY);
         }
+        this.totalDeltaX += deltaX;
+        this.totalDeltaY += deltaY;
         this.previousX = event.getX();
         this.previousY = event.getY();
     }
@@ -100,15 +120,14 @@ public class DragInNoteHandler {
     private void handleNoteExtend(MouseEvent event) {
         double deltaX = event.getX() - this.sourceRectangle.getWidth() - this.sourceRectangle.getX();
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            if (!rectangle.isBounded()) {
-                double width = rectangle.getWidth() + deltaX;
-                // makes sure the width is at least 5
-                width = Math.max(5, width);
-                // makes sure the note does not extend past the end of the player
-                // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
-                rectangle.setWidth(width);
-            }
+            double width = rectangle.getWidth() + deltaX;
+            // makes sure the width is at least 5
+            width = Math.max(5, width);
+            // makes sure the note does not extend past the end of the player
+            // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
+            rectangle.setUnboundWidth(width);
         }
+        this.totalDeltaX += deltaX;
 
     }
 
@@ -117,13 +136,37 @@ public class DragInNoteHandler {
      * @param event the MouseEvent fired when the mouse was released
      */
     public void handleMouseReleased(MouseEvent event) {
+        Collection<SelectableRectangle> changedRectangles = new ArrayList<>();
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            if (!rectangle.isBounded()) {
-                double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
-                rectangle.setY(newPitch);
-            }
+            double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
+            rectangle.setUnboundY(newPitch);
+            changedRectangles.add(rectangle);
+
         }
+        if (!event.isStillSincePress()) {
+            this.afterState = this.compController.getSelectedRectangles();
+            if (didExtend) {
+                if (!(this.compController.getActionController().getUndoList().get(this.compController.getActionController().getUndoList().size()-1) instanceof SelectAction))
+                    this.compController.addAction(new SelectAction(this.beforeState, this.afterState, this.compController));
+                Actionable extendedAction = new ExtendNoteAction(changedRectangles, totalDeltaX);
+                this.compController.addAction(extendedAction);
+            } else {
+                if (!(this.compController.getActionController().getUndoList().get(this.compController.getActionController().getUndoList().size()-1) instanceof SelectAction))
+                    this.compController.addAction(new SelectAction(this.beforeState, this.afterState,this.compController));
+                Actionable translatedAction = new TranslateNoteAction(changedRectangles, totalDeltaX, totalDeltaY, this.compController);
+                this.compController.addAction(translatedAction);
+
+            }
+
+            //reset control fields
+            this.totalDeltaX = 0;
+            this.totalDeltaY = 0;
+            this.didExtend = false;
+        }
+        event.consume();
     }
+
+
 }
 
 

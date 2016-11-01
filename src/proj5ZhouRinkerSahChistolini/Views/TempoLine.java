@@ -1,14 +1,16 @@
 package proj5ZhouRinkerSahChistolini.Views;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
-
+import javafx.beans.property.BooleanProperty;
 
 public class TempoLine extends Line {
     private TranslateTransition tempoAnimation = new TranslateTransition();
 
+    private BooleanProperty isPlaying = new SimpleBooleanProperty();
     /**
      * Initializes the tempoAnimation object with the default
      * values it needs
@@ -19,7 +21,8 @@ public class TempoLine extends Line {
     public TempoLine() {
         this.tempoAnimation.setNode(this);
         this.tempoAnimation.setInterpolator(Interpolator.LINEAR); // Don't ease
-        this.tempoAnimation.setOnFinished(event -> this.setVisible(false));
+        this.tempoAnimation.setOnFinished(event -> stopAnimation());
+        this.isPlaying.set(false);
     }
 
     /**
@@ -34,6 +37,7 @@ public class TempoLine extends Line {
         this.tempoAnimation.setDuration(new Duration(stopTime*10));
         this.tempoAnimation.setToX(stopTime);
         this.setVisible(true);
+        this.isPlaying.set(true);
     }
 
     /**
@@ -49,5 +53,11 @@ public class TempoLine extends Line {
     public void stopAnimation() {
         this.tempoAnimation.stop();
         this.setVisible(false);
+        this.isPlaying.set(false);
     }
+
+    /**
+     * returns the isPlaying property
+     */
+    public BooleanProperty getIsPlaying() { return this.isPlaying;}
 }

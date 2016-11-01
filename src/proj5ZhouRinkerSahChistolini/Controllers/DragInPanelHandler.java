@@ -1,25 +1,25 @@
 /**
  * File: DragInPanelHandler.java
  * @author Victoria Chistolini
- * @author Tiffany Lam
- * @author Joseph Malionek
+ * @author Edward (osan) Zhou
+ * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 4
- * Date: October 11, 2016
+ * Project: 5
+ * Date: Nov 1, 2016
  */
 
 package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.layout.Pane;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
+
+import java.util.Collection;
 
 public class DragInPanelHandler {
 
-    /** The panel that this handler actively edits and listens to */
-    private Pane panelToEdit;
     /** The controller of the composition panel */
     private CompositionPanelController compController;
     /** The rectangle which appears when you select a group of notes*/
@@ -31,20 +31,16 @@ public class DragInPanelHandler {
     /** Whether or not the control key is held down*/
     private boolean metaDown;
 
+    private Collection<SelectableRectangle> before;
+    private Collection<SelectableRectangle> after;
+
     /** Creates a new DragInPaneHandler
      *
-     * @param panelToEdit The panel which this handler edits
      * @param compController The main composition controller
      */
-    public DragInPanelHandler(Pane panelToEdit, CompositionPanelController compController){
-        this.panelToEdit = panelToEdit;
+    public DragInPanelHandler(Rectangle selectionRectangle, CompositionPanelController compController){
         this.compController = compController;
-        this.selectionRectangle = new Rectangle();
-        this.selectionRectangle.setVisible(false);
-
-        this.selectionRectangle.setId("selection-rectangle");
-
-        this.panelToEdit.getChildren().add(this.selectionRectangle);
+        this.selectionRectangle = selectionRectangle;
     }
 
     /**
@@ -57,10 +53,11 @@ public class DragInPanelHandler {
         this.selectionRectangle.setX(this.startX);
         this.selectionRectangle.setY(this.startY);
         this.metaDown = event.isShortcutDown();
+        before = this.compController.getSelectedRectangles();
     }
 
     /**
-     * Handles when the mosue is dragged
+     * Handles when the mouse is dragged
      * @param event The even associated with this mouse drag
      */
     public void handleDragged(MouseEvent event) {
@@ -89,6 +86,12 @@ public class DragInPanelHandler {
      * @param event The mouse event associated with this mouse release
      */
     public void handleDragReleased(MouseEvent event) {
+        if (this.selectionRectangle.isVisible()){
+            this.after = this.compController.getSelectedRectangles();
+            if (!this.before.equals(this.after)) {
+                this.compController.addAction(new SelectAction(this.before, this.after, this.compController));
+            }
+        }
         this.selectionRectangle.setVisible(false);
     }
 }

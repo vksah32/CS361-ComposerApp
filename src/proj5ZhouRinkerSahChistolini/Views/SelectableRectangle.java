@@ -11,7 +11,8 @@
 
 package proj5ZhouRinkerSahChistolini.Views;
 
-import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -19,9 +20,8 @@ import javafx.scene.shape.Rectangle;
  */
 public abstract class SelectableRectangle extends Rectangle {
     /** keeps track of whether the rectangle is selected */
-    protected boolean selected;
+    protected SimpleBooleanProperty selected = new SimpleBooleanProperty();
     /** keeps track of whether the rectangle is bounded */
-    protected boolean bounded;
 
     /**
      * Contructor which gets rid of the parent constructor since
@@ -40,7 +40,41 @@ public abstract class SelectableRectangle extends Rectangle {
     public SelectableRectangle(double x, double y,
                                double width, double height) {
         super(x, y, width, height);
-        bounded = false;
+    }
+
+    /**
+     * set the x and y position of the selectable rectangle only if unbinded
+     */
+    public void setUnboundPosition(double x, double y) {
+        this.setUnboundX(x);
+        this.setUnboundY(y);
+    }
+
+    /**
+     * set the x and y position of the selectable rectangle only if unbinded
+     */
+    public void setUnboundX(double x) {
+        if (!this.xProperty().isBound()){
+            this.setX(x);
+        }
+    }
+
+    /**
+     * set y position of the selectable rectangle only if unbinded
+     */
+    public void setUnboundY(double y) {
+        if (!this.yProperty().isBound()){
+            this.setY(y);
+        }
+    }
+
+    /**
+     * set the width of the selectable rectangle only if unbinded
+     */
+    public void setUnboundWidth(double width) {
+        if (!this.widthProperty().isBound()){
+            this.setWidth(width);
+        }
     }
 
     /**
@@ -49,7 +83,15 @@ public abstract class SelectableRectangle extends Rectangle {
      * the rectangle is selected
      */
     public boolean isSelected() {
-        return selected;
+        return selected.getValue();
+    }
+
+    /**
+     *  gets the selected property
+     * @return a BooleanProperty
+     */
+    public BooleanProperty SelectedProperty(){
+        return this.selected;
     }
 
     /**
@@ -58,23 +100,4 @@ public abstract class SelectableRectangle extends Rectangle {
      * to be selected or not
      */
     public abstract void setSelected(boolean bool);
-
-    /**
-     * returns whether or not the rectangle is bounded
-     * @return bounded boolean which represent whether or not
-     * the rectangle is bounded
-     */
-    public boolean isBounded(){
-        return bounded;
-    }
-
-    /**
-     * sets the bounded field
-     * @param bounded a boolean representing whether or not the rectangle is
-     * to be bounded or not
-     */
-    public void setBounded(boolean bounded) {
-        this.bounded = bounded;
-    }
-
 }

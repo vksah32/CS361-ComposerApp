@@ -16,6 +16,9 @@ import javafx.scene.input.MouseEvent;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
 import proj5ZhouRinkerSahChistolini.Models.Note;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
+import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
+
+import java.util.Collection;
 
 /**
  * Handles when we click in the panel
@@ -58,17 +61,21 @@ public class ClickInPanelHandler {
      * @param instrument the instrument object
      */
     public void addNote(double x, double y, Instrument instrument) {
+        Collection<SelectableRectangle> selectionStatusBeforeAdd = this.compController.getSelectedRectangles();
+
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,
                 10, instrument.getColor(), instrument.getValue());
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
+
         // sets the handlers of these events to be the
         // specified methods in its DragInNoteHandler object
         rectangle.setOnMousePressed(handler::handleMousePressed);
         rectangle.setOnMouseDragged(handler::handleDragged);
         rectangle.setOnMouseReleased(handler::handleMouseReleased);
+
         if (!isMetaDown) {
             this.compController.clearSelected();
         }
@@ -79,12 +86,22 @@ public class ClickInPanelHandler {
         this.compController.addNoteToComposition(note);
 
 
+        //add the undoable action
+        AddNoteAction actionPreformed = new AddNoteAction(
+                rectangle,
+                note,
+                selectionStatusBeforeAdd,
+                isMetaDown,
+                this.compController
+        );
+        this.compController.addAction(actionPreformed);
     }
 
     /**
      * bind a note's properties to rectangle's properties
      * @param note note which to be binded
      * @param rectangle rectangle to bind the note to
+     *
      */
     private void bindNotetoRectangle(Note note, NoteRectangle rectangle) {
         note.pitchProperty().bind(rectangle.yProperty() );
