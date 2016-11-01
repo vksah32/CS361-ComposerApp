@@ -36,10 +36,7 @@ public class AddNoteAction implements Actionable {
         }
         this.graphicalNote.setSelected(true);
         recs.add(this.graphicalNote);
-
         notes.add(this.modelNote);
-
-
     }
 
     @Override

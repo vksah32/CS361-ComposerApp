@@ -38,31 +38,35 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
      * @param event
      */
     public void handle(MouseEvent event) {
-        Collection<SelectableRectangle> before = this.compController.getSelectedRectangles();
+        if (event.isStillSincePress()) {
+            Collection<SelectableRectangle> before = this.compController.getSelectedRectangles();
 
-        SelectableRectangle rect = ((SelectableRectangle) event.getSource());
+            SelectableRectangle rect = ((SelectableRectangle) event.getSource());
 
-        // control-clicking
-        if (event.isShortcutDown()) {
-            if (rect.isSelected()) {
-                rect.setSelected(false);
-            } else {
-                rect.setSelected(true);
+            // control-clicking
+            if (event.isShortcutDown()) {
+                if (rect.isSelected()) {
+                    rect.setSelected(false);
+                } else {
+                    rect.setSelected(true);
+                }
             }
-        }
-        // clicking
-        else {
-            if (!rect.isSelected()) {
-                this.compController.clearSelected();
-                rect.setSelected(true);
+            // clicking
+            else {
+                if (!rect.isSelected()) {
+                    this.compController.clearSelected();
+                    rect.setSelected(true);
+                }
             }
+
+            // add a new action
+            System.out.println("adding new select action");
+
+            Collection<SelectableRectangle> after = this.compController.getSelectedRectangles();
+            this.compController.addAction(new SelectAction(before, after));
+
+            //So that the border pane doesn't get the action
+            event.consume();
         }
-
-        // add a new action
-        Collection<SelectableRectangle> after = this.compController.getSelectedRectangles();
-        this.compController.addAction(new SelectAction(before, after));
-
-        //So that the border pane doesn't get the action
-        event.consume();
     }
 }

@@ -64,6 +64,7 @@ public class TranslateNoteAction implements Actionable {
      */
     @Override
     public void unDoIt(Collection<Node> recs, Collection<Note> notes) {
+        System.out.println("undo called");
 
         for (SelectableRectangle rec : moved ){
 

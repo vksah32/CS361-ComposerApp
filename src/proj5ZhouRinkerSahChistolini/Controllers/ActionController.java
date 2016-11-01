@@ -44,6 +44,7 @@ public class ActionController {
         System.out.println(undoStack);
         if (!this.undoStack.isEmpty()) {
             Actionable prevState = this.undoStack.pop();
+            System.out.println(prevState.getClass().getName());
             prevState.unDoIt(this.graphicRectList, this.modelNoteList);
             this.redoStack.push(prevState);
         }
@@ -85,7 +86,9 @@ public class ActionController {
     public Collection<SelectableRectangle> getBeforeSelectedState() {
         return beforeSelectedState;
     }
+
 }
+
 
 
 

@@ -132,21 +132,23 @@ public class DragInNoteHandler {
             changedRectangles.add(rectangle);
 
         }
+        if (!event.isStillSincePress()) {
+            System.out.println("drag action added");
+            if (didExtend) {
+                Actionable extendedAction = new ExtendNoteAction(changedRectangles, totalDeltaX);
+                this.compController.addAction(extendedAction);
+            } else {
+                Actionable translatedAction = new TranslateNoteAction(changedRectangles, totalDeltaX, totalDeltaY);
+                this.compController.addAction(translatedAction);
 
-        if (didExtend){
-            Actionable extendedAction = new ExtendNoteAction(changedRectangles, totalDeltaX);
-            this.compController.addAction(extendedAction);
+            }
+
+            //reset control fields
+            this.totalDeltaX = 0;
+            this.totalDeltaY = 0;
+            this.didExtend = false;
         }
-        else {
-            Actionable translatedAction = new TranslateNoteAction(changedRectangles,totalDeltaX,totalDeltaY);
-            this.compController.addAction(translatedAction);
-
-        }
-
-        //reset control fields
-        this.totalDeltaX = 0;
-        this.totalDeltaY = 0;
-        this.didExtend = false;
+        event.consume();
     }
 
 
