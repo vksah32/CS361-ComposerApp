@@ -35,7 +35,8 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
 
     /**
      * handles when clicking in a note
-     * @param event
+     * @param event the mouse click
+     *
      */
     public void handle(MouseEvent event) {
         if (event.isStillSincePress()) {

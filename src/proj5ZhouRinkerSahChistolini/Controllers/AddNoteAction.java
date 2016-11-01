@@ -18,7 +18,7 @@ import javafx.scene.Node;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 /**
- * holds information necessary to redo and undo an addNoteEvent
+ * holds information necessary to redo and undo adding a note
  */
 public class AddNoteAction implements Actionable {
 

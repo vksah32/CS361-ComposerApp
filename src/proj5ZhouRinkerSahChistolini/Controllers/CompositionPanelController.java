@@ -120,8 +120,10 @@ public class CompositionPanelController {
 
     /**
      * adds Rectangles
-     * @param rectangle
-     * @param selected
+     *
+     * @param rectangle rectangles to add
+     * @param selected if they are selected or not
+     *
      */
     public void addRectangle(SelectableRectangle rectangle, boolean selected){
         if(selected){
@@ -145,6 +147,7 @@ public class CompositionPanelController {
     /**
      * gets the rectangles
      * @return a collection of SelectableRectangles
+     *
      */
     public Collection<SelectableRectangle> getRectangles() {
         HashSet<SelectableRectangle> newSet = new HashSet<>();
@@ -159,6 +162,7 @@ public class CompositionPanelController {
     /**
      * gets the Note objects from the composition
      * @return the notes on Composition
+     *
      */
     public Collection<Note> getNotesfromComposition(){
         return this.composition.getNotes();

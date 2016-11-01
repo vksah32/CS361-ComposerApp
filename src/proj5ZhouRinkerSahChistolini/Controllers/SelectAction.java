@@ -19,12 +19,25 @@ public class SelectAction implements Actionable{
     /** Collection of all rectangles on the composition panel */
     private Collection<SelectableRectangle> recs;
 
+
+    /**
+     * Initilize the SelectAction event, when a selection occurs
+     *
+     * @param before state of selection before event
+     * @param after state of selection after the event
+     * @param comp refernece to composition controller
+     *
+     */
     public SelectAction(Collection<SelectableRectangle> before, Collection<SelectableRectangle> after, CompositionPanelController comp ){
         this.before = before;
         this.after = after;
         this.recs = comp.getRectangles();
     }
 
+
+    /**
+     * redo by restoring the composition panel nodes to the state after the action occured
+     */
     @Override
     public void reDoIt() {
         recs.forEach(rec -> {
@@ -36,6 +49,10 @@ public class SelectAction implements Actionable{
             }
         });
     }
+
+    /**
+     * undo by restoring the compositon panel node to the state before action occured
+     */
 
     @Override
     public void unDoIt() {
