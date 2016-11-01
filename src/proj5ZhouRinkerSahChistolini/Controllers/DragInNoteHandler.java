@@ -15,6 +15,9 @@ package proj5ZhouRinkerSahChistolini.Controllers;
 import javafx.scene.input.MouseEvent;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**Handles when the user drags in a note rectangle*/
 public class DragInNoteHandler {
     /** The mouse x coordinate from the previous mouse event*/
@@ -28,6 +31,10 @@ public class DragInNoteHandler {
     /** The main CompositionController */
     private CompositionPanelController compController;
 
+    private Boolean didExtend;
+    private double totalDeltaX;
+    private double totalDeltaY;
+
     /**Creates a new DragInNoteHandler
      *
      * @param sourceRectangle The rectangle that this listens to
@@ -37,6 +44,9 @@ public class DragInNoteHandler {
                              CompositionPanelController compController) {
         this.sourceRectangle = sourceRectangle;
         this.compController = compController;
+        this.didExtend = false;
+        this.totalDeltaX = 0;
+        this.totalDeltaY = 0;
     }
 
     /**
@@ -68,11 +78,11 @@ public class DragInNoteHandler {
         } else {
             if (this.extendEventHappening) {
                 this.handleNoteExtend(event);
+                this.didExtend = true;
             } else {
                 this.handleNoteTranslate(event);
             }
         }
-
         event.consume();
     }
 
@@ -86,6 +96,8 @@ public class DragInNoteHandler {
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
             rectangle.setUnboundPosition(rectangle.getX() + deltaX, rectangle.getY() + deltaY);
         }
+        this.totalDeltaX += deltaX;
+        this.totalDeltaY += deltaY;
         this.previousX = event.getX();
         this.previousY = event.getY();
     }
@@ -103,8 +115,8 @@ public class DragInNoteHandler {
             // makes sure the note does not extend past the end of the player
             // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
             rectangle.setUnboundWidth(width);
-
         }
+        this.totalDeltaX += deltaX;
 
     }
 
@@ -113,11 +125,17 @@ public class DragInNoteHandler {
      * @param event the MouseEvent fired when the mouse was released
      */
     public void handleMouseReleased(MouseEvent event) {
+        Collection<SelectableRectangle> changedRectangles = new ArrayList<>();
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
             double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
             rectangle.setUnboundY(newPitch);
+            changedRectangles.add(rectangle);
 
         }
+        System.out.println("x:" + totalDeltaX + "y:" + totalDeltaY);
+        this.compController.addAction(new TranslateExtendNoteAction( changedRectangles, didExtend, totalDeltaX, totalDeltaY));
+        this.totalDeltaX = 0;
+        this.totalDeltaY = 0;
     }
 }
 
