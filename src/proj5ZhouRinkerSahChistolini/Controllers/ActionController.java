@@ -17,21 +17,11 @@ public class ActionController {
     /** stack to hold redone action states */
     private Stack<Actionable> redoStack;
 
-    /** refrence to selectable rectangles list */
-    private Collection<Node> graphicRectList;
-    /** refrence to Note in Model rectangle list */
-    private Collection<Note> modelNoteList;
-
-    private Collection<SelectableRectangle> beforeSelectedState;
-    private Collection<SelectableRectangle> afterSelectedState;
 
     /**
      * Initialized ActionContoroller with empty stacks
      */
-    public ActionController(CompositionPanelController compPane) {
-
-        this.graphicRectList = compPane.getCompositionPane().getChildren();
-        this.modelNoteList = compPane.getNotesfromComposition();
+    public ActionController() {
 
         this.undoStack = new Stack<>();
         this.redoStack = new Stack<>();
@@ -44,7 +34,7 @@ public class ActionController {
         if (!this.undoStack.isEmpty()) {
             Actionable prevState = this.undoStack.pop();
             System.out.println(prevState.getClass().getName());
-            prevState.unDoIt(this.graphicRectList, this.modelNoteList);
+            prevState.unDoIt();
             this.redoStack.push(prevState);
         }
     }
@@ -56,7 +46,7 @@ public class ActionController {
     public void redo(){
         if (!this.redoStack.isEmpty()) {
             Actionable undidState = this.redoStack.pop();
-            undidState.reDoIt(this.graphicRectList, this.modelNoteList);
+            undidState.reDoIt();
             this.undoStack.push(undidState);
         }
     }
@@ -70,20 +60,6 @@ public class ActionController {
         this.undoStack.push(action);
     }
 
-    public void setBeforeState(Collection<SelectableRectangle> state) {
-        this.beforeSelectedState = state;
-    }
-    public void setAfterState(Collection<SelectableRectangle> state) {
-        this.afterSelectedState = state;
-    }
-
-    public Collection<SelectableRectangle> getAfterSelectedState() {
-        return afterSelectedState;
-    }
-
-    public Collection<SelectableRectangle> getBeforeSelectedState() {
-        return beforeSelectedState;
-    }
 
 }
 

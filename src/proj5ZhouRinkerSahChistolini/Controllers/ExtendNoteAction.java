@@ -36,12 +36,9 @@ public class ExtendNoteAction implements Actionable {
 
     /**
      * Add the deltaX to the rectangle width
-     *
-     * @param recs
-     * @param notes
      */
     @Override
-    public void reDoIt(Collection<Node> recs, Collection<Note> notes) {
+    public void reDoIt() {
 
         for (SelectableRectangle rec : moved ){
 
@@ -53,12 +50,9 @@ public class ExtendNoteAction implements Actionable {
 
     /**
      * Subtract the deltaX from the rectangle width
-     *
-     * @param recs
-     * @param notes
      */
     @Override
-    public void unDoIt(Collection<Node> recs, Collection<Note> notes) {
+    public void unDoIt() {
 
         for (SelectableRectangle rec : moved ){
 

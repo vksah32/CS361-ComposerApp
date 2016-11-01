@@ -86,7 +86,7 @@ public class ClickInPanelHandler {
         this.compController.addNoteToComposition(note);
 
 
-        AddNoteAction actionPreformed = new AddNoteAction(rectangle, note, selectionStatusBeforeAdd, isMetaDown);
+        AddNoteAction actionPreformed = new AddNoteAction(rectangle, note, selectionStatusBeforeAdd, isMetaDown, this.compController);
         this.compController.addAction(actionPreformed);
 
 

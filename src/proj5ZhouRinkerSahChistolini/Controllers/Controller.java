@@ -87,7 +87,7 @@ public class Controller {
      */
     public void deleteSelectedNotes() {
         DeleteNoteAction deletedNotes = new DeleteNoteAction(this.compositionPanelController.getSelectedRectangles(),
-                            this.compositionPanelController.getSelectedNotes());
+                            this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
         this.compositionPanelController.addAction(deletedNotes);
         this.compositionPanelController.deleteSelectedNotes();
     }
@@ -97,7 +97,10 @@ public class Controller {
      * selects all the notes
      */
     public void selectAllNotes() {
-        this.compositionPanelController.addAction( new SelectAllAction(this.compositionPanelController.getSelectedRectangles()));
+        //add
+        this.compositionPanelController.addAction( new SelectAction(this.compositionPanelController.getSelectedRectangles(),
+                    this.compositionPanelController.getRectangles(), this.compositionPanelController));
+
         this.compositionPanelController.selectAllNotes();
     }
 

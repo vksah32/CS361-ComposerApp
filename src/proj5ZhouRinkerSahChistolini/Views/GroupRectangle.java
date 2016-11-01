@@ -58,7 +58,7 @@ public class GroupRectangle extends SelectableRectangle{
     /**
      * Binds the selected direct children to this rectangle
      */
-    private void bindSelection() {
+    public void bindSelection() {
         for (SelectableRectangle rect : this.children) {
             rect.xProperty().bind(
                     this.xProperty().add(

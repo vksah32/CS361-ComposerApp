@@ -14,13 +14,13 @@ public interface Actionable {
     /**
      * Preforms the original action
      */
-    public void reDoIt(Collection<Node> graphicNoteList, Collection<Note> modelNoteList);
+    public void reDoIt();
 
 
     /**
      * Undoes the origional action
      */
-    public void unDoIt(Collection<Node> graphicNoteList, Collection<Note> modelNoteList);
+    public void unDoIt();
     
     
     

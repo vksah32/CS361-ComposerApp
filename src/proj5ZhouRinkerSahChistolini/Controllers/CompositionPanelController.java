@@ -90,7 +90,7 @@ public class CompositionPanelController {
                 this
         );
         this.compositionPanel.toFront();
-        this.actionController = new ActionController(this);
+        this.actionController = new ActionController();
 
         //Bindings
         this.isPlaying.bind(this.tempoLine.getIsPlaying());
@@ -99,12 +99,6 @@ public class CompositionPanelController {
         ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
         obp.setValue(this.compositionPanel.getChildren());
         this.childrenProperty.bind(obp);
-
-//        List<Node> something = this.compositionPanel.getChildren().stream().filter(child ->{
-//            if (child instanceof SelectableRectangle){
-//                ((SelectableRectangle) child).isSelected();
-//            }
-//            return false;}).collect(Collectors.toList());
 
         //Set up custom BooleanBinding for our selectedNotes
         this.selectedNotesBinding = Bindings.createBooleanBinding(() -> areNotesSelected(),
@@ -378,6 +372,7 @@ public class CompositionPanelController {
             gesture.setOnMouseReleased(handler::handleMouseReleased);
             gesture.setOnMouseClicked(new ClickInNoteHandler(this));
             addRectangle(gesture, true);
+            this.addAction(new GroupNoteAction(gesture, this));
         }
     }
 
@@ -385,6 +380,7 @@ public class CompositionPanelController {
      *Ungroups the selected group
      */
     public void ungroupSelected(){
+
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
         for (SelectableRectangle rec : this.getSelectedRectangles()){
             if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
@@ -392,7 +388,9 @@ public class CompositionPanelController {
             }
         }
         selectedGroup.forEach(GroupRectangle::unbindChildren);
+        this.addAction(new UngroupNoteAction(selectedGroup,this));
         this.deleteSelected(new HashSet<>(selectedGroup));
+
     }
 
     /**
@@ -414,19 +412,6 @@ public class CompositionPanelController {
     @FXML
     public void handleMouseClick(MouseEvent event) {
 
-        this.actionController.setAfterState(this.getSelectedRectangles());
-
-        if (!this.actionController.getBeforeSelectedState().equals(
-                this.actionController.getAfterSelectedState())) {
-//            if (this.actionController.getAfterSelectedState().size() == this.actionController.getBeforeSelectedState().size()){
-//
-//            }
-//            else{
-//                System.out.println("running");
-//                this.addAction(new SelectAction(this.actionController.getBeforeSelectedState(), this.actionController.getAfterSelectedState()));
-//            }
-        }
-
         if (event.isStillSincePress()) { //differentiate from drag and drop
             if (isPlaying.getValue()) {
                 this.stopComposition();
@@ -441,7 +426,6 @@ public class CompositionPanelController {
      */
     @FXML
     public void handleMousePressed(MouseEvent event) {
-        this.actionController.setBeforeState(this.getSelectedRectangles());
         this.dragInPanelHandler.handleMousePressed(event);}
 
     /**

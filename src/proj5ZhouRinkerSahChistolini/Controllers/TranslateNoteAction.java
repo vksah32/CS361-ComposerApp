@@ -17,6 +17,8 @@ public class TranslateNoteAction implements Actionable {
     private Collection<SelectableRectangle> moved;
     /** distance that notes have moved vertically */
     private Double deltaY;
+    /** all rectangles on the composition panel */
+    private Collection<SelectableRectangle> recs;
 
     /**
      * set up translate action
@@ -24,77 +26,59 @@ public class TranslateNoteAction implements Actionable {
      * @param moved list of rectangles that have moved
      * @param deltaX x distance that rectangles have moved
      * @param deltaY y distance that rectangles have moved
+     * @param comp  the composition panel
      *
      */
-    public TranslateNoteAction(Collection<SelectableRectangle> moved, Double deltaX, Double deltaY){
+    public TranslateNoteAction(Collection<SelectableRectangle> moved, Double deltaX, Double deltaY, CompositionPanelController comp){
 
         this.deltaX =deltaX;
         this.moved = moved;
         this.deltaY =deltaY;
+        this.recs = comp.getRectangles();
+
+
 
     }
 
 
     /**
+     *
      * Add the deltaX to the x-variable and add the deltaY to
      * the y-variables in all moved rectangles
      *
-     * @param recs
-     * @param notes
      */
     @Override
-    public void reDoIt(Collection<Node> recs, Collection<Note> notes) {
-
+    public void reDoIt() {
         moved.forEach(rec -> {
             if(recs.contains(rec)){
                 Double currentXval = rec.getX();
                 Double currentYval = rec.getY();
 
-                rec.setX(currentXval + this.deltaX);
-                rec.setY(currentYval + this.deltaY);
+                rec.setUnboundX(currentXval + this.deltaX);
+                rec.setUnboundY(currentYval + this.deltaY);
 
             }
         });
-
-//        for (SelectableRectangle rec : moved ){
-//
-//            Double currentXval = rec.getX();
-//            Double currentYval = rec.getY();
-//
-//            rec.setX(currentXval + this.deltaX);
-//            rec.setY(currentYval + this.deltaY);
-//            rec.setSelected(true);
-//        }
 
     }
 
     /**
+     *
      * Subtract the deltaX from the x-variables and deltaY from the y-variables.
      *
-     * @param recs
-     * @param notes
      */
     @Override
-    public void unDoIt(Collection<Node> recs, Collection<Note> notes) {
-        System.out.println("undo called");
+    public void unDoIt() {
         moved.forEach(rec -> {
             if(recs.contains(rec)){
                 Double currentXval = rec.getX();
                 Double currentYval = rec.getY();
 
-                rec.setX(currentXval - this.deltaX);
-                rec.setY(currentYval - this.deltaY);
+                rec.setUnboundX(currentXval - this.deltaX);
+                rec.setUnboundY(currentYval - this.deltaY);
             }
         });
-//        for (SelectableRectangle rec : moved ){
-//
-//            Double currentXval = rec.getX();
-//            Double currentYval = rec.getY();
-//
-//            rec.setX(currentXval - this.deltaX);
-//            rec.setY(currentYval - this.deltaY);
-//            rec.setSelected(true);
-//        }
+
 
     }
 

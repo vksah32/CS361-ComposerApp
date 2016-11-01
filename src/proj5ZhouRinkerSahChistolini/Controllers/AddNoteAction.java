@@ -18,20 +18,24 @@ public class AddNoteAction implements Actionable {
 
     private Note modelNote;
     private boolean isMetaDown;
+    private Collection<Node> recs;
+    private Collection<Note> notes;
 
     private Collection<SelectableRectangle> selected;
 
-    public AddNoteAction(NoteRectangle graphicalNote, Note modelNote, Collection<SelectableRectangle> selected, boolean metaDown ){
+    public AddNoteAction(NoteRectangle graphicalNote, Note modelNote, Collection<SelectableRectangle> selected, boolean metaDown, CompositionPanelController comp ){
         this.isMetaDown = metaDown;
         this.selected = selected;
 
         this.graphicalNote = graphicalNote;
         this.modelNote = modelNote;
+        this.recs = comp.getCompositionPane().getChildren();
+        this.notes = comp.getNotesfromComposition();
 
     }
 
     @Override
-    public void reDoIt(Collection<Node> recs, Collection<Note> notes) {
+    public void reDoIt() {
         for (SelectableRectangle  rec : this.selected) {
             rec.setSelected(false);
         }
@@ -41,7 +45,7 @@ public class AddNoteAction implements Actionable {
     }
 
     @Override
-    public void unDoIt(Collection<Node> recs, Collection<Note> notes) {
+    public void unDoIt() {
         recs.remove(this.graphicalNote);
         notes.remove(this.modelNote);
         for (SelectableRectangle  rec : this.selected) {

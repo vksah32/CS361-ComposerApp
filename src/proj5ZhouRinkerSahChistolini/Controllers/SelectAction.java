@@ -7,39 +7,44 @@ import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import java.util.Collection;
 
 /**
- * Created by Remis on 10/31/2016.
+ * Stores the state after a selection action has occured
+ * Can undo and redo this action
  */
 public class SelectAction implements Actionable{
 
-    /** Collection of previously selected notes*/
+    /** Collection of previously selected notes */
     private Collection<SelectableRectangle> before;
+    /** Collection of currently selected notes */
     private Collection<SelectableRectangle> after;
+    /** Collection of all rectangles on the composition panel */
+    private Collection<SelectableRectangle> recs;
 
-    public SelectAction(Collection<SelectableRectangle> before, Collection<SelectableRectangle> after ){
+    public SelectAction(Collection<SelectableRectangle> before, Collection<SelectableRectangle> after, CompositionPanelController comp ){
         this.before = before;
         this.after = after;
+        this.recs = comp.getRectangles();
     }
 
     @Override
-    public void reDoIt(Collection<Node> recs, Collection<Note> notes) {
+    public void reDoIt() {
         recs.forEach(rec -> {
             if (this.after.contains(rec)) {
-                ((SelectableRectangle)rec).setSelected(true);
+                rec.setSelected(true);
             }
             else{
-                ((SelectableRectangle)rec).setSelected(false);
+                rec.setSelected(false);
             }
         });
     }
 
     @Override
-    public void unDoIt(Collection<Node> recs, Collection<Note> notes) {
+    public void unDoIt() {
         recs.forEach(rec -> {
             if (this.before.contains(rec)) {
-                ((SelectableRectangle)rec).setSelected(true);
+                rec.setSelected(true);
             }
             else{
-                ((SelectableRectangle)rec).setSelected(false);
+                rec.setSelected(false);
             }
         });
     }

@@ -91,9 +91,8 @@ public class DragInPanelHandler {
      */
     public void handleDragReleased(MouseEvent event) {
         if (this.selectionRectangle.isVisible()){
-            System.out.println("selectable rectangle is here");
             this.after = this.compController.getSelectedRectangles();
-            this.compController.addAction(new SelectAction(this.before, this.after));
+            this.compController.addAction(new SelectAction(this.before, this.after, this.compController));
         }
         this.selectionRectangle.setVisible(false);
     }

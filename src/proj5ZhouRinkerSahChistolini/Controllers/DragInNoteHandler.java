@@ -138,15 +138,17 @@ public class DragInNoteHandler {
         if (!event.isStillSincePress()) {
             this.afterState = this.compController.getSelectedRectangles();
             if (didExtend) {
-                this.compController.addAction(new SelectAction(this.beforeState, this.afterState));
+                //if (this.compController.getActionController().)
+                this.compController.addAction(new SelectAction(this.beforeState, this.afterState, this.compController));
                 Actionable extendedAction = new ExtendNoteAction(changedRectangles, totalDeltaX);
                 this.compController.addAction(extendedAction);
             } else {
-                this.compController.addAction(new SelectAction(this.beforeState, this.afterState));
-                Actionable translatedAction = new TranslateNoteAction(changedRectangles, totalDeltaX, totalDeltaY);
+                this.compController.addAction(new SelectAction(this.beforeState, this.afterState,this.compController));
+                Actionable translatedAction = new TranslateNoteAction(changedRectangles, totalDeltaX, totalDeltaY, this.compController);
                 this.compController.addAction(translatedAction);
 
             }
+            System.out.println("translated");
 
             //reset control fields
             this.totalDeltaX = 0;
