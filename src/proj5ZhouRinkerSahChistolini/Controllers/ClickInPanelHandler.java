@@ -86,7 +86,8 @@ public class ClickInPanelHandler {
         this.compController.addNoteToComposition(note);
 
 
-        AddNoteAction actionPreformed = new AddNoteAction(rectangle, note, selectionStatusBeforeAdd, isMetaDown, this.compController);
+        //add the undoable action
+        AddNoteAction actionPreformed = new AddNoteAction(rectangle, note, selectionStatusBeforeAdd,this.compController);
         this.compController.addAction(actionPreformed);
 
 
@@ -96,6 +97,7 @@ public class ClickInPanelHandler {
      * bind a note's properties to rectangle's properties
      * @param note note which to be binded
      * @param rectangle rectangle to bind the note to
+     *
      */
     private void bindNotetoRectangle(Note note, NoteRectangle rectangle) {
         note.pitchProperty().bind(rectangle.yProperty() );

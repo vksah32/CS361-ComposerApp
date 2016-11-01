@@ -6,7 +6,7 @@ import javafx.scene.Node;
 
 /**
  * Preforms an action on the views and models
- * to redo and undo thier states
+ * to redo and undo their states
  */
 public interface Actionable {
 
@@ -18,7 +18,7 @@ public interface Actionable {
 
 
     /**
-     * Undoes the origional action
+     * Undoes the original action
      */
     public void unDoIt();
     

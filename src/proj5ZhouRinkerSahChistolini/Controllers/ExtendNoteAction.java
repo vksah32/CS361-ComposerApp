@@ -15,8 +15,8 @@ public class ExtendNoteAction implements Actionable {
     private Double deltaX;
     /** rectangles that have mvoed */
     private Collection<SelectableRectangle> moved;
-    /** distance that notes have moved vertically */
-    private Double deltaY;
+
+
 
     /**
      * set up translate action
@@ -27,9 +27,9 @@ public class ExtendNoteAction implements Actionable {
      */
     public ExtendNoteAction(Collection<SelectableRectangle> moved, Double deltaX){
 
-        this.deltaX =deltaX;
+        this.deltaX = deltaX;
         this.moved = moved;
-        this.deltaY =deltaY;
+
 
     }
 

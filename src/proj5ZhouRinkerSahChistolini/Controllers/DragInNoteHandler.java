@@ -30,11 +30,15 @@ public class DragInNoteHandler {
     private SelectableRectangle sourceRectangle;
     /** The main CompositionController */
     private CompositionPanelController compController;
-
+    /**  if an extension occured */
     private Boolean didExtend;
+    /** the final deltaX to move */
     private double totalDeltaX;
+    /** the final deltaY to move */
     private double totalDeltaY;
+    /** rectangles before current state action */
     private Collection<SelectableRectangle> beforeState;
+    /** rectangles after current state action */
     private Collection<SelectableRectangle> afterState;
 
     /**Creates a new DragInNoteHandler

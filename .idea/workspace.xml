@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8c029182-ecd8-4ad9-982c-8b759c6ee8ac" name="Default" comment="alex sucks and woooooo. Implementation of redoing and undoing. Fix the thing ed - Ed">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/UngroupNoteAction.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAllAction.java" afterPath="" />
+    <list default="true" id="8c029182-ecd8-4ad9-982c-8b759c6ee8ac" name="Default" comment="added comments">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ActionController.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ActionController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Actionable.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Actionable.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/AddNoteAction.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/AddNoteAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInNoteHandler.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInNoteHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInPanelHandler.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInPanelHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/CompositionPanelController.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/CompositionPanelController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Controller.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Controller.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInNoteHandler.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInNoteHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInPanelHandler.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInPanelHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ExtendNoteAction.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ExtendNoteAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAction.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/TranslateNoteAction.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/TranslateNoteAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Views/GroupRectangle.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Views/GroupRectangle.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/UngroupNoteAction.java" afterPath="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/UngroupNoteAction.java" />
     </list>
     <ignored path="proj5.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,11 +34,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Controller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-343">
+              <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DeleteNoteAction.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="56" column="44" selection-start-line="56" selection-start-column="44" selection-end-line="56" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="DragInNoteHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInNoteHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="150" column="42" selection-start-line="150" selection-start-column="42" selection-end-line="150" selection-end-column="42" />
+            <state relative-caret-position="390">
+              <caret line="40" column="48" selection-start-line="40" selection-start-column="48" selection-end-line="40" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -53,7 +67,7 @@
       <file leaf-file-name="DragInPanelHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInPanelHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
+            <state relative-caret-position="1245">
               <caret line="97" column="5" selection-start-line="97" selection-start-column="5" selection-end-line="97" selection-end-column="5" />
               <folding />
             </state>
@@ -63,18 +77,18 @@
       <file leaf-file-name="ExtendNoteAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ExtendNoteAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="77">
-              <caret line="37" column="44" selection-start-line="37" selection-start-column="44" selection-end-line="37" selection-end-column="44" />
+            <state relative-caret-position="195">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GroupNoteAction.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GroupNoteAction.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            <state relative-caret-position="615">
+              <caret line="41" column="58" selection-start-line="41" selection-start-column="58" selection-end-line="41" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -85,18 +99,8 @@
       <file leaf-file-name="InstrumentPanelController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/InstrumentPanelController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="-553">
               <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TranslateNoteAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/TranslateNoteAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -105,41 +109,32 @@
       <file leaf-file-name="SelectAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="18" column="64" selection-start-line="18" selection-start-column="64" selection-end-line="18" selection-end-column="64" />
+            <state relative-caret-position="93">
+              <caret line="50" column="5" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UngroupNoteAction.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TranslateNoteAction.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/TranslateNoteAction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UngroupNoteAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/UngroupNoteAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
+            <state relative-caret-position="182">
+              <caret line="44" column="49" selection-start-line="44" selection-start-column="49" selection-end-line="44" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <marker date="1477979031000" expanded="true" signature="1160:1221" ph="/**...*/" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeleteNoteAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Controller.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -169,23 +164,23 @@
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Models/Composition.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Models/Instrument.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Models/Note.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Actionable.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAllAction.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAction.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInNoteHandler.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInPanelHandler.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Controller.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInPanelHandler.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/AddNoteAction.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ActionController.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Views/GroupRectangle.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/CompositionPanelController.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/UngroupNoteAction.java" />
-        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInNoteHandler.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/TranslateNoteAction.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Actionable.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/AddNoteAction.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInNoteHandler.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInPanelHandler.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/CompositionPanelController.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInNoteHandler.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java" />
         <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ExtendNoteAction.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAction.java" />
+        <option value="$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/UngroupNoteAction.java" />
       </list>
     </option>
   </component>
@@ -634,7 +629,14 @@
       <option name="project" value="LOCAL" />
       <updated>1477969179224</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="alex sucks and woooooo. Implementation of redoing and undoing. Fix the thing ed - Ed">
+      <created>1477975119396</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1477975119396</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1020,8 +1022,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Actionable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="27" column="1" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
+        <state relative-caret-position="135">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1034,67 +1036,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInNoteHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="593">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/AddNoteAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        <state relative-caret-position="183">
+          <caret line="60" column="64" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInNoteHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ClickInPanelHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+        <state relative-caret-position="495">
+          <caret line="88" column="33" selection-start-line="88" selection-start-column="33" selection-end-line="88" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/CompositionPanelController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="93">
-          <caret line="382" column="0" selection-start-line="382" selection-start-column="0" selection-end-line="382" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
+        <state relative-caret-position="-1107">
+          <caret line="331" column="22" selection-start-line="331" selection-start-column="22" selection-end-line="331" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
+        <state relative-caret-position="-343">
           <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DeleteNoteAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="56" column="44" selection-start-line="56" selection-start-column="44" selection-end-line="56" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInNoteHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="150" column="42" selection-start-line="150" selection-start-column="42" selection-end-line="150" selection-end-column="42" />
+        <state relative-caret-position="390">
+          <caret line="40" column="48" selection-start-line="40" selection-start-column="48" selection-end-line="40" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/DragInPanelHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
+        <state relative-caret-position="1245">
           <caret line="97" column="5" selection-start-line="97" selection-start-column="5" selection-end-line="97" selection-end-column="5" />
           <folding />
         </state>
@@ -1102,50 +1104,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/ExtendNoteAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="37" column="44" selection-start-line="37" selection-start-column="44" selection-end-line="37" selection-end-column="44" />
+        <state relative-caret-position="195">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/InstrumentPanelController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="-553">
           <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/TranslateNoteAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/SelectAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" column="64" selection-start-line="18" selection-start-column="64" selection-end-line="18" selection-end-column="64" />
+        <state relative-caret-position="93">
+          <caret line="50" column="5" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/UngroupNoteAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
+        <state relative-caret-position="182">
+          <caret line="44" column="49" selection-start-line="44" selection-start-column="49" selection-end-line="44" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1477979031000" expanded="true" signature="1160:1221" ph="/**...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/TranslateNoteAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/proj5ZhouRinkerSahChistolini/Controllers/GroupNoteAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="41" column="58" selection-start-line="41" selection-start-column="58" selection-end-line="41" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

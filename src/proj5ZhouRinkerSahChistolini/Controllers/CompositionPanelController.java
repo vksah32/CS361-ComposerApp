@@ -170,8 +170,10 @@ public class CompositionPanelController {
 
     /**
      * adds Rectangles
-     * @param rectangle
-     * @param selected
+     *
+     * @param rectangle rectangles to add
+     * @param selected if they are selected or not
+     *
      */
     public void addRectangle(SelectableRectangle rectangle, boolean selected){
         if(selected){
@@ -196,6 +198,7 @@ public class CompositionPanelController {
     /**
      * gets the rectangles
      * @return a collection of SelectableRectangles
+     *
      */
     public Collection<SelectableRectangle> getRectangles() {
         HashSet<SelectableRectangle> newSet = new HashSet<>();
@@ -210,13 +213,18 @@ public class CompositionPanelController {
     /**
      * gets the Note objects from the composition
      * @return the notes on Composition
+     *
      */
     public Collection<Note> getNotesfromComposition(){
         return this.composition.getNotes();
     }
 
 
-
+    /**
+     * get selected composition notes
+     *
+     * @return selected notes from the composition
+     */
     public Collection<Note> getSelectedNotes(){
         Collection<Note> selected = new HashSet<>();
         for( Note n : this.composition.getNotes()){
@@ -284,12 +292,7 @@ public class CompositionPanelController {
      * the length of the composition.
      */
     public void beginAnimation() {
-//        for( Node node : this.compositionPanel.getChildren()) {
-//            if (node instanceof SelectableRectangle) {
-//                SelectableRectangle temp = (SelectableRectangle) node;
-//                System.out.println(temp.isSelected());
-//            }
-//        }
+
         double maxX = 0;
         for(SelectableRectangle rectangle: this.getRectangles()){
             maxX = Math.max(maxX, rectangle.getX() + rectangle.getWidth());
@@ -326,7 +329,7 @@ public class CompositionPanelController {
     /**
      * removes the selected
      * @param selected list of selected rectangles
-     *                 TODO REMOVE CONVOLUION HERE
+     *
      */
     public void deleteSelected(Collection<SelectableRectangle> selected) {
         //first remove from the panel
