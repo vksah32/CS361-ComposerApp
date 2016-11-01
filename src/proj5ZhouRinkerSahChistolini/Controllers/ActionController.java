@@ -41,7 +41,6 @@ public class ActionController {
      * Reverts the state of the application to previous state
      */
     public void undo() {
-        System.out.println(undoStack);
         if (!this.undoStack.isEmpty()) {
             Actionable prevState = this.undoStack.pop();
             System.out.println(prevState.getClass().getName());
@@ -55,7 +54,6 @@ public class ActionController {
      * Redoes the changes that have been undone
      */
     public void redo(){
-        System.out.println(undoStack);
         if (!this.redoStack.isEmpty()) {
             Actionable undidState = this.redoStack.pop();
             undidState.reDoIt(this.graphicRectList, this.modelNoteList);

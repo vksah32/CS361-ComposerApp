@@ -16,6 +16,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
+import java.util.Collection;
+
 public class DragInPanelHandler {
 
     /** The panel that this handler actively edits and listens to */
@@ -30,6 +32,9 @@ public class DragInPanelHandler {
     private double startY;
     /** Whether or not the control key is held down*/
     private boolean metaDown;
+
+    private Collection<SelectableRectangle> before;
+    private Collection<SelectableRectangle> after;
 
     /** Creates a new DragInPaneHandler
      *
@@ -52,6 +57,7 @@ public class DragInPanelHandler {
         this.selectionRectangle.setX(this.startX);
         this.selectionRectangle.setY(this.startY);
         this.metaDown = event.isShortcutDown();
+        before = this.compController.getSelectedRectangles();
     }
 
     /**
@@ -84,6 +90,11 @@ public class DragInPanelHandler {
      * @param event The mouse event associated with this mouse release
      */
     public void handleDragReleased(MouseEvent event) {
+        if (this.selectionRectangle.isVisible()){
+            System.out.println("selectable rectangle is here");
+            this.after = this.compController.getSelectedRectangles();
+            this.compController.addAction(new SelectAction(this.before, this.after));
+        }
         this.selectionRectangle.setVisible(false);
     }
 }

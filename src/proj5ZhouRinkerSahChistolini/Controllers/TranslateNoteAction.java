@@ -45,14 +45,26 @@ public class TranslateNoteAction implements Actionable {
     @Override
     public void reDoIt(Collection<Node> recs, Collection<Note> notes) {
 
-        for (SelectableRectangle rec : moved ){
+        moved.forEach(rec -> {
+            if(recs.contains(rec)){
+                Double currentXval = rec.getX();
+                Double currentYval = rec.getY();
 
-            Double currentXval = rec.getX();
-            Double currentYval = rec.getY();
+                rec.setX(currentXval + this.deltaX);
+                rec.setY(currentYval + this.deltaY);
 
-            rec.setX(currentXval + this.deltaX);
-            rec.setY(currentYval + this.deltaY);
-        }
+            }
+        });
+
+//        for (SelectableRectangle rec : moved ){
+//
+//            Double currentXval = rec.getX();
+//            Double currentYval = rec.getY();
+//
+//            rec.setX(currentXval + this.deltaX);
+//            rec.setY(currentYval + this.deltaY);
+//            rec.setSelected(true);
+//        }
 
     }
 
@@ -65,15 +77,24 @@ public class TranslateNoteAction implements Actionable {
     @Override
     public void unDoIt(Collection<Node> recs, Collection<Note> notes) {
         System.out.println("undo called");
+        moved.forEach(rec -> {
+            if(recs.contains(rec)){
+                Double currentXval = rec.getX();
+                Double currentYval = rec.getY();
 
-        for (SelectableRectangle rec : moved ){
-
-            Double currentXval = rec.getX();
-            Double currentYval = rec.getY();
-
-            rec.setX(currentXval - this.deltaX);
-            rec.setY(currentYval - this.deltaY);
-        }
+                rec.setX(currentXval - this.deltaX);
+                rec.setY(currentYval - this.deltaY);
+            }
+        });
+//        for (SelectableRectangle rec : moved ){
+//
+//            Double currentXval = rec.getX();
+//            Double currentYval = rec.getY();
+//
+//            rec.setX(currentXval - this.deltaX);
+//            rec.setY(currentYval - this.deltaY);
+//            rec.setSelected(true);
+//        }
 
     }
 

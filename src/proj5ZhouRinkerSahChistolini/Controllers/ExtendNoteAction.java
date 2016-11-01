@@ -46,7 +46,7 @@ public class ExtendNoteAction implements Actionable {
         for (SelectableRectangle rec : moved ){
 
             Double currentWidth = rec.getWidth();
-            rec.setX(currentWidth + this.deltaX);
+            rec.setWidth(currentWidth + this.deltaX);
         }
 
     }
@@ -63,7 +63,7 @@ public class ExtendNoteAction implements Actionable {
         for (SelectableRectangle rec : moved ){
 
             Double currentWidth = rec.getWidth();
-            rec.setX(currentWidth - this.deltaX);
+            rec.setWidth(currentWidth - this.deltaX);
 
         }
 

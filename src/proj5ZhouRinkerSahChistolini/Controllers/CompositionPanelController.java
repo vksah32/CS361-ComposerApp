@@ -413,11 +413,20 @@ public class CompositionPanelController {
      */
     @FXML
     public void handleMouseClick(MouseEvent event) {
+
         this.actionController.setAfterState(this.getSelectedRectangles());
-//        if (!this.actionController.getBeforeSelectedState().equals(
-//                this.actionController.getAfterSelectedState())) {
-//            this.addAction(new SelectAction(this.actionController.getBeforeSelectedState(), this.actionController.getAfterSelectedState()));
-//        }
+
+        if (!this.actionController.getBeforeSelectedState().equals(
+                this.actionController.getAfterSelectedState())) {
+//            if (this.actionController.getAfterSelectedState().size() == this.actionController.getBeforeSelectedState().size()){
+//
+//            }
+//            else{
+//                System.out.println("running");
+//                this.addAction(new SelectAction(this.actionController.getBeforeSelectedState(), this.actionController.getAfterSelectedState()));
+//            }
+        }
+
         if (event.isStillSincePress()) { //differentiate from drag and drop
             if (isPlaying.getValue()) {
                 this.stopComposition();

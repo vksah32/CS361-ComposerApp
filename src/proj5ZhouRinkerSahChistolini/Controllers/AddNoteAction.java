@@ -17,11 +17,12 @@ public class AddNoteAction implements Actionable {
     private NoteRectangle graphicalNote;
 
     private Note modelNote;
+    private boolean isMetaDown;
 
     private Collection<SelectableRectangle> selected;
 
-    public AddNoteAction(NoteRectangle graphicalNote, Note modelNote, Collection<SelectableRectangle> selected ){
-
+    public AddNoteAction(NoteRectangle graphicalNote, Note modelNote, Collection<SelectableRectangle> selected, boolean metaDown ){
+        this.isMetaDown = metaDown;
         this.selected = selected;
 
         this.graphicalNote = graphicalNote;

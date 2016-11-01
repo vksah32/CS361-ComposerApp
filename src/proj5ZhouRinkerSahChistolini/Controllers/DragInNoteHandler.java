@@ -34,6 +34,8 @@ public class DragInNoteHandler {
     private Boolean didExtend;
     private double totalDeltaX;
     private double totalDeltaY;
+    private Collection<SelectableRectangle> beforeState;
+    private Collection<SelectableRectangle> afterState;
 
     /**Creates a new DragInNoteHandler
      *
@@ -62,6 +64,7 @@ public class DragInNoteHandler {
         }
         this.previousX = event.getX();
         this.previousY = event.getY();
+        this.beforeState = this.compController.getSelectedRectangles();
         event.consume();
     }
 
@@ -133,11 +136,13 @@ public class DragInNoteHandler {
 
         }
         if (!event.isStillSincePress()) {
-            System.out.println("drag action added");
+            this.afterState = this.compController.getSelectedRectangles();
             if (didExtend) {
+                this.compController.addAction(new SelectAction(this.beforeState, this.afterState));
                 Actionable extendedAction = new ExtendNoteAction(changedRectangles, totalDeltaX);
                 this.compController.addAction(extendedAction);
             } else {
+                this.compController.addAction(new SelectAction(this.beforeState, this.afterState));
                 Actionable translatedAction = new TranslateNoteAction(changedRectangles, totalDeltaX, totalDeltaY);
                 this.compController.addAction(translatedAction);
 
