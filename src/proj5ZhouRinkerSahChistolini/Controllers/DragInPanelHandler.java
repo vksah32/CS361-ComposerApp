@@ -13,6 +13,7 @@ package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.Collection;
@@ -87,7 +88,9 @@ public class DragInPanelHandler {
     public void handleDragReleased(MouseEvent event) {
         if (this.selectionRectangle.isVisible()){
             this.after = this.compController.getSelectedRectangles();
-            this.compController.addAction(new SelectAction(this.before, this.after, this.compController));
+            if (!this.before.equals(this.after)) {
+                this.compController.addAction(new SelectAction(this.before, this.after, this.compController));
+            }
         }
         this.selectionRectangle.setVisible(false);
     }

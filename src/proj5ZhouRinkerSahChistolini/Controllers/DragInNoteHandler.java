@@ -13,6 +13,10 @@
 package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.ExtendNoteAction;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.TranslateNoteAction;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.ArrayList;
@@ -142,12 +146,13 @@ public class DragInNoteHandler {
         if (!event.isStillSincePress()) {
             this.afterState = this.compController.getSelectedRectangles();
             if (didExtend) {
-                //if (this.compController.getActionController().)
-                this.compController.addAction(new SelectAction(this.beforeState, this.afterState, this.compController));
+                if (!(this.compController.getActionController().getUndoList().get(this.compController.getActionController().getUndoList().size()-1) instanceof SelectAction))
+                    this.compController.addAction(new SelectAction(this.beforeState, this.afterState, this.compController));
                 Actionable extendedAction = new ExtendNoteAction(changedRectangles, totalDeltaX);
                 this.compController.addAction(extendedAction);
             } else {
-                this.compController.addAction(new SelectAction(this.beforeState, this.afterState,this.compController));
+                if (!(this.compController.getActionController().getUndoList().get(this.compController.getActionController().getUndoList().size()-1) instanceof SelectAction))
+                    this.compController.addAction(new SelectAction(this.beforeState, this.afterState,this.compController));
                 Actionable translatedAction = new TranslateNoteAction(changedRectangles, totalDeltaX, totalDeltaY, this.compController);
                 this.compController.addAction(translatedAction);
 

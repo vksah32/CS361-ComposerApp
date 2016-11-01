@@ -14,6 +14,8 @@ package proj5ZhouRinkerSahChistolini.Controllers;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.scene.control.MenuItem;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj5ZhouRinkerSahChistolini.Models.Instrument;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 

@@ -13,6 +13,7 @@ package proj5ZhouRinkerSahChistolini.Controllers;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.Collection;
@@ -63,8 +64,9 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
             // add a new action
 
             Collection<SelectableRectangle> after = this.compController.getSelectedRectangles();
-            this.compController.addAction(new SelectAction(before, after, this.compController));
-
+            if (!before.equals(after)) {
+                this.compController.addAction(new SelectAction(before, after, this.compController));
+            }
             //So that the border pane doesn't get the action
             event.consume();
         }

@@ -61,6 +61,8 @@ public class ClickInPanelHandler {
      * @param instrument the instrument object
      */
     public void addNote(double x, double y, Instrument instrument) {
+        Collection<SelectableRectangle> selectionStatusBeforeAdd = this.compController.getSelectedRectangles();
+
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
@@ -73,8 +75,6 @@ public class ClickInPanelHandler {
         rectangle.setOnMousePressed(handler::handleMousePressed);
         rectangle.setOnMouseDragged(handler::handleDragged);
         rectangle.setOnMouseReleased(handler::handleMouseReleased);
-
-        Collection<SelectableRectangle> selectionStatusBeforeAdd = this.compController.getSelectedRectangles();
 
         if (!isMetaDown) {
             this.compController.clearSelected();

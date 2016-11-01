@@ -10,6 +10,7 @@
  */
 package proj5ZhouRinkerSahChistolini.Controllers;
 
+import proj5ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj5ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj5ZhouRinkerSahChistolini.Models.Note;
 

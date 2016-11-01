@@ -1,4 +1,4 @@
-package proj5ZhouRinkerSahChistolini.Controllers;
+package proj5ZhouRinkerSahChistolini.Controllers.Actions;
 
 /**
  * Preforms an action on the views and models

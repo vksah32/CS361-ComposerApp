@@ -1,7 +1,6 @@
-package proj5ZhouRinkerSahChistolini.Controllers;
+package proj5ZhouRinkerSahChistolini.Controllers.Actions;
 
-import javafx.scene.Node;
-import proj5ZhouRinkerSahChistolini.Models.Note;
+import proj5ZhouRinkerSahChistolini.Controllers.CompositionPanelController;
 import proj5ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.Collection;

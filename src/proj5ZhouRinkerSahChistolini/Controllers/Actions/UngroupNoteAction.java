@@ -1,6 +1,7 @@
-package proj5ZhouRinkerSahChistolini.Controllers;
+package proj5ZhouRinkerSahChistolini.Controllers.Actions;
 
 import javafx.scene.Node;
+import proj5ZhouRinkerSahChistolini.Controllers.CompositionPanelController;
 import proj5ZhouRinkerSahChistolini.Views.GroupRectangle;
 
 import java.util.Collection;
