@@ -36,7 +36,7 @@ public class GroupRectangle extends SelectableRectangle{
         this.setHeight(bot.getY() + bot.getHeight() - top.getY());
 
         this.setDirectChildren(selection);
-        this.bindSelection();
+        this.bindChildren();
         this.getStyleClass().add("group-note");
     }
 
@@ -58,7 +58,7 @@ public class GroupRectangle extends SelectableRectangle{
     /**
      * Binds the selected direct children to this rectangle
      */
-    public void bindSelection() {
+    public void bindChildren() {
         for (SelectableRectangle rect : this.children) {
             rect.xProperty().bind(
                     this.xProperty().add(

@@ -11,8 +11,13 @@
 
 package proj6ZhouRinkerSahChistolini.Controllers;
 
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
@@ -34,6 +39,9 @@ public class Controller {
     /** an instrumentController field which allows us to talk to the InstrumentPanel */
     @FXML
     private InstrumentPanelController instrumentPaneController;
+
+    /** a controller to assist in bindings between the menus and controllers*/
+    private BindingController bindingController;
 
     /**
      * All of our MenuItem are put into fields
@@ -62,6 +70,7 @@ public class Controller {
     @FXML
     public void initialize() {
         this.compositionPanelController.init(this);
+        this.bindingController = new BindingController(this, this.compositionPanelController);
         bindMenuItems();
     }
 
@@ -148,35 +157,35 @@ public class Controller {
     public void bindMenuItems() {
         //stopButton
         this.stopButton.disableProperty().bind(
-                this.compositionPanelController.getIsPlayingProperty().not()
+                this.compositionPanelController.getTempoLine().isPlayingProperty().not()
         );
         //startButton
         this.startButton.disableProperty().bind(
-                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(0)
+                this.bindingController.getChildrenProperty().sizeProperty().isEqualTo(0)
         );
         //selectAllButton
         this.selectAllButton.disableProperty().bind(
-                this.compositionPanelController.getChildrenProperty().sizeProperty().isEqualTo(0)
+                this.bindingController.getChildrenProperty().sizeProperty().isEqualTo(0)
         );
         //deleteButton
         this.deleteButton.disableProperty().bind(
-                this.compositionPanelController.getSelectedNotesBinding()
+                this.bindingController.getAreNotesSelectedBinding()
         );
         //groupButton
         this.groupButton.disableProperty().bind(
-                this.compositionPanelController.getMultipleSelectedBinding()
+                this.bindingController.getMultipleSelectedBinding()
         );
         //UngroupButton
         this.ungroupButton.disableProperty().bind(
-                this.compositionPanelController.getGroupSelectedBinding()
+                this.bindingController.getGroupSelectedBinding()
         );
         //redoButton
         this.redoButton.disableProperty().bind(
-                this.compositionPanelController.getRedoEmptyBinding()
+                this.bindingController.getRedoEmptyBinding()
         );
         //undoButton
         this.undoButton.disableProperty().bind(
-                this.compositionPanelController.getUndoEmptyBinding()
+                this.bindingController.getUndoEmptyBinding()
         );
     }
 }

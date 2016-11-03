@@ -59,5 +59,5 @@ public class TempoLine extends Line {
     /**
      * returns the isPlaying property
      */
-    public BooleanProperty getIsPlaying() { return this.isPlaying;}
+    public BooleanProperty isPlayingProperty() { return this.isPlaying;}
 }

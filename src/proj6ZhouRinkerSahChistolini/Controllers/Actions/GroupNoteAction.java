@@ -30,11 +30,11 @@ public class GroupNoteAction implements Actionable {
     }
 
     /**
-     * redo the ground action by re-addding the group
+     * redo the ground action by re-adding the group
      */
     @Override
     public void reDoIt() {
-        groupedRectangle.bindSelection();
+        groupedRectangle.bindChildren();
         panelChildren.add(groupedRectangle);
 
     }

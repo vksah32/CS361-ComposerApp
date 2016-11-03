@@ -11,10 +11,7 @@
 
 package proj6ZhouRinkerSahChistolini.Controllers;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -56,7 +53,7 @@ public class CompositionPanelController {
     private Rectangle selectionRectangle;
 
     /** a pointer to the main controller */
-    private Controller mainController;
+    Controller mainController;
 
     /** The clickInPaneHandler object */
     private ClickInPanelHandler clickInPanelHandler;
@@ -73,9 +70,6 @@ public class CompositionPanelController {
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
-    /** a list property that keeps track of the children of our compositionpane */
-    private ListProperty<Node> childrenProperty = new SimpleListProperty();
-
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -90,7 +84,8 @@ public class CompositionPanelController {
         );
         this.compositionPanel.toFront();
         this.actionController = new ActionController();
-        this.isPlaying.bind(this.tempoLine.getIsPlaying());
+        //bind to tempoLine
+        this.isPlaying.bind(this.tempoLine.isPlayingProperty());
     }
 
     /**
@@ -110,15 +105,6 @@ public class CompositionPanelController {
             rectangle.setSelected(true);
         }
         this.compositionPanel.getChildren().add(rectangle);
-    }
-
-    /**
-     * gets the composition pane
-     *
-     * @return the pane which contains notes
-     */
-    public Pane getCompositionPane(){
-        return this.compositionPanel;
     }
 
     /**
@@ -183,20 +169,6 @@ public class CompositionPanelController {
                 }
             }
         return selected;
-    }
-
-    /**
-     * Returns a collection of selected group rectangles
-     * @return a collection
-     */
-    private Collection<GroupRectangle> getSelectedGroupRectangles(){
-        List<GroupRectangle> selectedList = new ArrayList<>();
-        for(SelectableRectangle rectangle : this.getRectangles()){
-            if(rectangle instanceof GroupRectangle){
-                selectedList.add((GroupRectangle) rectangle);
-            }
-        }
-        return selectedList;
     }
 
     /**
@@ -355,21 +327,6 @@ public class CompositionPanelController {
     }
 
     /**
-     * returns a Collection of the selected rectangles that have
-     * not been bound
-     * @return unboundList a Collection of SelectableRectangles
-     */
-    public Collection<SelectableRectangle> getUnboundSelected(){
-        ArrayList<SelectableRectangle> unboundList = new ArrayList<>();
-        for (SelectableRectangle rec :this.getSelectedRectangles() ){
-            if (!rec.xProperty().isBound()){
-                unboundList.add(rec);
-            }
-        }
-        return unboundList;
-    }
-
-    /**
      * adds a new acton event to the undo stack
      *
      * @param action the action being preformed
@@ -421,75 +378,19 @@ public class CompositionPanelController {
     }
 
     /**
-     * returns the children property
-     * @return this.childrenProperty
+     * returns the Pane's tempoline
+     * @return a tempoLine
      */
-    public ListProperty<Node> getChildrenProperty() {
-        //Bind obp to children and list to obp
-        ObjectProperty<ObservableList<Node>> obp = new SimpleObjectProperty();
-        obp.setValue(this.compositionPanel.getChildren());
-        this.childrenProperty.bind(obp);
-        return this.childrenProperty;
+    public TempoLine getTempoLine() {
+        return this.tempoLine;
     }
 
     /**
-     * returns the areNotesSelected property which is a custom binding
-     * representing whether or not any note is selected
-     * @return this.areNotesSelected
+     * gets the composition pane
+     *
+     * @return the pane which contains notes
      */
-    public BooleanBinding getSelectedNotesBinding() {
-        BooleanBinding selectedNotesBinding = Bindings.createBooleanBinding(() -> getSelectedRectangles().size() == 0,
-                this.actionController.getUndoList()
-        );
-        return selectedNotesBinding; }
-
-    /**
-     * returns the multipleSelected BooleanBinding which represents
-     * whether or not there are multiple elements selected
-     * @return multipleSelectedBinding the BooleanBinding
-     */
-    public BooleanBinding getMultipleSelectedBinding() {
-        BooleanBinding multipleSelectedBinding = Bindings.createBooleanBinding(() -> getUnboundSelected().size() < 2,
-                this.actionController.getUndoList()
-        );
-        return multipleSelectedBinding; }
-
-    /**
-     * returns the groupsSelected Binding customly created
-     * for determining whether or not a group is selected
-     * @return groupsSelectedBinding
-     */
-    public BooleanBinding getGroupSelectedBinding() {
-        BooleanBinding groupSelectedBinding = Bindings.createBooleanBinding(
-                () -> getSelectedGroupRectangles().size() < 1,
-                this.actionController.getUndoList()
-        );
-        return groupSelectedBinding;
+    public Pane getCompositionPane(){
+        return this.compositionPanel;
     }
-
-    /**
-     * returns a newly created custom boolean binding
-     * @returns the redoEmptySize Binding
-     */
-    public BooleanBinding getRedoEmptyBinding() {
-        BooleanBinding redoEmptyBinding = Bindings.createBooleanBinding(
-                () -> this.actionController.getRedoList().isEmpty(),
-                this.actionController.getRedoList()
-        );
-        return redoEmptyBinding;
-    }
-    /**
-     * @returns the undoEmptySize Binding
-     */
-    public BooleanBinding getUndoEmptyBinding() {
-        BooleanBinding undoEmptyBinding = Bindings.createBooleanBinding(() -> this.actionController.getUndoList().isEmpty(),
-                this.actionController.getUndoList()
-        );
-        return undoEmptyBinding;}
-
-    /**
-     * returns whether or not the composition is playing
-     * @return this.isPlaying
-     */
-    public BooleanProperty getIsPlayingProperty() {return this.isPlaying; }
 }

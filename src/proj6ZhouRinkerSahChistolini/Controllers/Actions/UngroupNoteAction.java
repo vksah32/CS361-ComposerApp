@@ -35,7 +35,7 @@ public class UngroupNoteAction implements Actionable {
     @Override
     public void unDoIt() {
         for (GroupRectangle group : this.groupedRectangles){
-            group.bindSelection();
+            group.bindChildren();
             panelChildren.add(group);
         }
 
