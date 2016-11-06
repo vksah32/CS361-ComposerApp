@@ -13,6 +13,7 @@
 package proj6ZhouRinkerSahChistolini.Controllers;
 
 import javafx.scene.input.MouseEvent;
+import proj6ZhouRinkerSahChistolini.Controllers.Actions.AddNoteAction;
 import proj6ZhouRinkerSahChistolini.Models.Instrument;
 import proj6ZhouRinkerSahChistolini.Models.Note;
 import proj6ZhouRinkerSahChistolini.Views.NoteRectangle;

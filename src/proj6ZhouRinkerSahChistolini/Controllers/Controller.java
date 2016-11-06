@@ -27,8 +27,7 @@ import proj6ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import java.util.Collection;
 
 /**
- * Handles all user GUI interactions and coordinates with the MidiPlayer
- * and Composition.
+ * Handles menu GUI interactions with other controllers
  */
 public class Controller {
 

@@ -8,9 +8,10 @@
  * Project: 5
  * Date: Nov 1, 2016
  */
-package proj6ZhouRinkerSahChistolini.Controllers;
+package proj6ZhouRinkerSahChistolini.Controllers.Actions;
 
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
+import proj6ZhouRinkerSahChistolini.Controllers.CompositionPanelController;
 import proj6ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj6ZhouRinkerSahChistolini.Models.Note;
 
