@@ -128,6 +128,28 @@ public class Controller {
      */
     public void groupSelected() { this.compositionPanelController.groupSelected(); }
 
+    /**
+     * copies the selected rectangles
+     */
+    public void copySelected() {
+        System.out.println("copying");
+    }
+
+    /**
+     * cut the selected rectangles
+     */
+    public void cutSelected() {
+        System.out.println("cutting");
+    }
+
+    /**
+     * paste the copied rectangles
+     */
+    public void pasteSelected(){
+        System.out.println("pasting");
+
+    }
+
     @FXML
     /**
      * ungroup the selected notes
