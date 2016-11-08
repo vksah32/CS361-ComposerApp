@@ -29,7 +29,7 @@ public class BindingController {
 
     /**
      * returns the children property of the composition panel
-     * @return this.childrenProperty
+     * @return ListProperty childrenProperty
      */
     public ListProperty<Node> getChildrenProperty() {
         //Bind obp to children and list to obp
@@ -48,7 +48,7 @@ public class BindingController {
     public BooleanBinding getAreNotesSelectedBinding() {
         BooleanBinding selectedNotesBinding = Bindings.createBooleanBinding(() ->
                         this.compositionController.getSelectedRectangles().size() == 0,
-                        this.compositionController.getActionController().getUndoList()
+                        this.compositionController.getActionController().getUndoActionsProperty()
         );
         return selectedNotesBinding;
     }
@@ -60,8 +60,8 @@ public class BindingController {
      */
     public BooleanBinding getMultipleSelectedBinding() {
         BooleanBinding multipleSelectedBinding = Bindings.createBooleanBinding(() ->
-                        this.getUnboundSelected().size() < 2, //edit this
-                        this.compositionController.getActionController().getUndoList()
+                        this.getUnboundSelected().size() < 2,
+                        this.compositionController.getActionController().getUndoActionsProperty()
         );
         return multipleSelectedBinding; }
 
@@ -73,7 +73,7 @@ public class BindingController {
     public BooleanBinding getGroupSelectedBinding() {
         BooleanBinding groupSelectedBinding = Bindings.createBooleanBinding(() ->
                         this.getSelectedGroupRectangles().size() < 1,
-                        this.compositionController.getActionController().getUndoList()
+                        this.compositionController.getActionController().getUndoActionsProperty()
         );
         return groupSelectedBinding;
     }
@@ -83,23 +83,15 @@ public class BindingController {
      * @returns the redoEmptySize Binding
      */
     public BooleanBinding getRedoEmptyBinding() {
-        BooleanBinding redoEmptyBinding = Bindings.createBooleanBinding(() ->
-                        this.compositionController.getActionController().getRedoList().isEmpty(),
-                        this.compositionController.getActionController().getRedoList()
-        );
-        return redoEmptyBinding;
+        return this.compositionController.getActionController().isRedoEmpty();
     }
     /**
      * Binding if the undo observable list is empty
      * @returns the undoEmptySize Binding
      */
     public BooleanBinding getUndoEmptyBinding() {
-        BooleanBinding undoEmptyBinding = Bindings.createBooleanBinding(() ->
-                        this.compositionController.getActionController().getUndoList().isEmpty(),
-                        this.compositionController.getActionController().getUndoList()
-        );
-        return undoEmptyBinding;}
-
+        return this.compositionController.getActionController().isUndoEmpty();
+    }
 
     //helper methods
     /**
