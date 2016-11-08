@@ -13,7 +13,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Controller to assist in creating custom bindings between controllers and view/model
+ * Controller to assist in creating custom bindings
+ * between controllers and view/model
  */
 public class BindingController {
     /** The application's main controller*/
@@ -22,7 +23,10 @@ public class BindingController {
     /** The application's composition panel controller*/
     private CompositionPanelController compositionController;
 
-    public BindingController(Controller mainController, CompositionPanelController compositionPanelController){
+    public BindingController(
+        Controller mainController,
+        CompositionPanelController compositionPanelController
+    ){
         this.mainController = mainController;
         this.compositionController = compositionPanelController;
     }
@@ -47,8 +51,8 @@ public class BindingController {
      */
     public BooleanBinding getAreNotesSelectedBinding() {
         BooleanBinding selectedNotesBinding = Bindings.createBooleanBinding(() ->
-                        this.compositionController.getSelectedRectangles().size() == 0,
-                        this.compositionController.getActionController().getUndoActionsProperty()
+            this.compositionController.getSelectedRectangles().size() == 0,
+            this.compositionController.getActionController().getUndoActionsProperty()
         );
         return selectedNotesBinding;
     }
@@ -60,8 +64,8 @@ public class BindingController {
      */
     public BooleanBinding getMultipleSelectedBinding() {
         BooleanBinding multipleSelectedBinding = Bindings.createBooleanBinding(() ->
-                        this.getUnboundSelected().size() < 2,
-                        this.compositionController.getActionController().getUndoActionsProperty()
+            this.getUnboundSelected().size() < 2,
+            this.compositionController.getActionController().getUndoActionsProperty()
         );
         return multipleSelectedBinding; }
 
@@ -72,8 +76,8 @@ public class BindingController {
      */
     public BooleanBinding getGroupSelectedBinding() {
         BooleanBinding groupSelectedBinding = Bindings.createBooleanBinding(() ->
-                        this.getSelectedGroupRectangles().size() < 1,
-                        this.compositionController.getActionController().getUndoActionsProperty()
+            this.getSelectedGroupRectangles().size() < 1,
+            this.compositionController.getActionController().getUndoActionsProperty()
         );
         return groupSelectedBinding;
     }

@@ -38,7 +38,8 @@ public class DragInPanelHandler {
      *
      * @param compController The main composition controller
      */
-    public DragInPanelHandler(Rectangle selectionRectangle, CompositionPanelController compController){
+    public DragInPanelHandler(Rectangle selectionRectangle,
+                              CompositionPanelController compController){
         this.compController = compController;
         this.selectionRectangle = selectionRectangle;
     }
@@ -89,7 +90,9 @@ public class DragInPanelHandler {
         if (this.selectionRectangle.isVisible()){
             this.after = this.compController.getSelectedRectangles();
             if (!this.before.equals(this.after)) {
-                this.compController.addAction(new SelectAction(this.before, this.after, this.compController));
+                this.compController.addAction(new SelectAction(this.before,
+                                                               this.after,
+                                                               this.compController));
             }
         }
         this.selectionRectangle.setVisible(false);

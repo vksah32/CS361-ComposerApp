@@ -62,14 +62,17 @@ public class ClickInPanelHandler {
      * @param instrument the instrument object
      */
     public void addNote(double x, double y, Instrument instrument) {
-        Collection<SelectableRectangle> selectionStatusBeforeAdd = this.compController.getSelectedRectangles();
+        Collection<SelectableRectangle> selectionStatusBeforeAdd = (
+            this.compController.getSelectedRectangles()
+        );
 
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,
                 10, instrument.getName(), instrument.getValue());
-        DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
+        DragInNoteHandler handler = new DragInNoteHandler(rectangle,
+                                                          this.compController);
 
         // sets the handlers of these events to be the
         // specified methods in its DragInNoteHandler object

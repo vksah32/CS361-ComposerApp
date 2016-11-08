@@ -11,13 +11,8 @@
 
 package proj6ZhouRinkerSahChistolini.Controllers;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
@@ -99,8 +94,11 @@ public class Controller {
      * deletes the selected notes
      */
     public void deleteSelectedNotes() {
-        DeleteNoteAction deletedNotes = new DeleteNoteAction(this.compositionPanelController.getSelectedRectangles(),
-                            this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
+        DeleteNoteAction deletedNotes = new DeleteNoteAction(
+            this.compositionPanelController.getSelectedRectangles(),
+            this.compositionPanelController.getSelectedNotes(),
+            this.compositionPanelController
+        );
         this.compositionPanelController.deleteSelectedNotes();
         this.compositionPanelController.addAction(deletedNotes);
     }
@@ -111,7 +109,9 @@ public class Controller {
      */
     public void selectAllNotes() {
         //add
-        Collection<SelectableRectangle> before = this.compositionPanelController.getSelectedRectangles();
+        Collection<SelectableRectangle> before = (
+            this.compositionPanelController.getSelectedRectangles()
+        );
         this.compositionPanelController.selectAllNotes();
         this.compositionPanelController.addAction(
                 new SelectAction(

@@ -28,7 +28,9 @@ public class DragInNoteHandler {
     private double previousX;
     /** The mouse y coordinate from the previous mouse event*/
     private double previousY;
-    /** Keeps track of whether the current drag action is extending rectangles or dragging rectangles */
+    /** Keeps track of whether the current drag action is extending
+     *  rectangles or dragging rectangles
+     */
     private boolean extendEventHappening;
     /** The rectangle that this handler is assigned to */
     private SelectableRectangle sourceRectangle;
@@ -65,7 +67,9 @@ public class DragInNoteHandler {
      */
     public void handleMousePressed(MouseEvent event) {
         this.compController.stopComposition();
-        if (event.getX() >= this.sourceRectangle.getX() + this.sourceRectangle.getWidth() - 5) {
+        if (event.getX() >= this.sourceRectangle.getX() +
+                            this.sourceRectangle.getWidth() - 5
+        ) {
             this.extendEventHappening = true;
         } else {
             this.extendEventHappening = false;
@@ -104,8 +108,11 @@ public class DragInNoteHandler {
     private void handleNoteTranslate(MouseEvent event) {
         double deltaX = event.getX() - this.previousX;
         double deltaY = event.getY() - this.previousY;
-        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            rectangle.setUnboundPosition(rectangle.getX() + deltaX, rectangle.getY() + deltaY);
+        for (
+            SelectableRectangle rectangle : this.compController.getSelectedRectangles()
+        ) {
+            rectangle.setUnboundPosition(rectangle.getX() + deltaX,
+                                         rectangle.getY() + deltaY);
         }
         this.totalDeltaX += deltaX;
         this.totalDeltaY += deltaY;
@@ -118,13 +125,14 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteExtend(MouseEvent event) {
-        double deltaX = event.getX() - this.sourceRectangle.getWidth() - this.sourceRectangle.getX();
+        double deltaX = event.getX() -
+                        this.sourceRectangle.getWidth() -
+                        this.sourceRectangle.getX();
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
             double width = rectangle.getWidth() + deltaX;
             // makes sure the width is at least 5
             width = Math.max(5, width);
             // makes sure the note does not extend past the end of the player
-            // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
             rectangle.setUnboundWidth(width);
         }
         this.totalDeltaX += deltaX;
