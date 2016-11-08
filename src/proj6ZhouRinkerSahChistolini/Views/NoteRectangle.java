@@ -19,12 +19,8 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class NoteRectangle extends SelectableRectangle {
 
-    /**selectedProperty to bind with Note's selectedProperty **/
-    private BooleanProperty selectedProperty;
-
     /**int value for the instrument**/
     private int instrument;
-
 
     /**
      * The constructor of the NoteRectangle
@@ -36,12 +32,11 @@ public class NoteRectangle extends SelectableRectangle {
      */
     public NoteRectangle(double x, double y,
                          double width, double height,
-                         String color, int instrument ) {
+                         String name, int instrument ) {
         super(x, y, width, height);
-        this.setStyle(String.format("-fx-fill: %s", color));
         this.getStyleClass().add("note");
+        this.getStyleClass().add(name.toLowerCase().replace(" ", "-"));
         this.instrument = instrument;
-        this.selectedProperty = new SimpleBooleanProperty();
     }
 
     /**
@@ -66,7 +61,6 @@ public class NoteRectangle extends SelectableRectangle {
             this.getStyleClass().add("note");
         }
         this.selected.set(selected);
-        this.selectedProperty.set(selected);
     }
 
     /**
@@ -74,7 +68,6 @@ public class NoteRectangle extends SelectableRectangle {
      * @return selectedProperty
      */
     public BooleanProperty selectedProperty() {
-        return selectedProperty;
+        return this.selected;
     }
-
 }

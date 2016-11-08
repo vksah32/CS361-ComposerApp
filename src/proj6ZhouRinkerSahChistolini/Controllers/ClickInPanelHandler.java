@@ -68,7 +68,7 @@ public class ClickInPanelHandler {
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,
-                10, instrument.getColor(), instrument.getValue());
+                10, instrument.getName(), instrument.getValue());
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
 
         // sets the handlers of these events to be the

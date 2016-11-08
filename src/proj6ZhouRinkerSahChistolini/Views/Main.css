@@ -64,3 +64,36 @@
     -fx-stroke: gold;
     -fx-fill: null;
 }
+
+/* instrument styles to set the color of the notes */
+.harpsichord {
+  -fx-fill: green;
+}
+
+.marimba {
+  -fx-fill: blue;
+}
+
+.organ {
+  -fx-fill: gold;
+}
+
+.accordion {
+  -fx-fill: magenta;
+}
+
+.guitar {
+  -fx-fill: blue;
+}
+
+.violin {
+  -fx-fill: black;
+}
+
+.french-horn {
+  -fx-fill: pink;
+}
+
+.piano {
+  -fx-fill: grey;
+}
