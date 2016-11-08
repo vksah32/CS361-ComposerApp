@@ -109,6 +109,14 @@ public class GroupRectangle extends SelectableRectangle{
         this.selected.set(selected);
     }
 
+   // public String toString(){
+
+
+
+    //}
+
+
+
     /**
      * returns this node's children
      * @returns this.children this class' children field

@@ -53,7 +53,7 @@
                           onAction="#copySelected"
                           accelerator="Shortcut+C"/>
                 <MenuItem fx:id="cut"
-                          text="Copy"
+                          text="Cut"
                           onAction="#cutSelected"
                           accelerator="Shortcut+X"/>
                 <MenuItem fx:id="paste"

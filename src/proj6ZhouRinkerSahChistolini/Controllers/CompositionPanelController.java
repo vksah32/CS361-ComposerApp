@@ -67,6 +67,9 @@ public class CompositionPanelController {
     /** Holds redo and undo states */
     private ActionController actionController;
 
+    /** holds data on the clipboard to be pasted and cut/copied */
+    private ClipBoardController clipboard;
+
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
@@ -84,6 +87,8 @@ public class CompositionPanelController {
         );
         this.compositionPanel.toFront();
         this.actionController = new ActionController();
+        this.clipboard = new ClipBoardController();
+
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
     }
@@ -326,6 +331,18 @@ public class CompositionPanelController {
         this.deleteSelected(new HashSet<>(selectedGroup));
     }
 
+
+    public void pasteSelected(){
+
+    }
+
+    public void copySelected(){
+
+    }
+    public void cutSelected(){
+
+    }
+
     /**
      * adds a new acton event to the undo stack
      *
@@ -394,3 +411,4 @@ public class CompositionPanelController {
         return this.compositionPanel;
     }
 }
+

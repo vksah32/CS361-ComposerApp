@@ -42,6 +42,7 @@ public class Controller {
     /** a controller to assist in bindings between the menus and controllers*/
     private BindingController bindingController;
 
+
     /**
      * All of our MenuItem are put into fields
      * Each of the following FXML elements are MenuItems defined in
@@ -128,27 +129,27 @@ public class Controller {
      */
     public void groupSelected() { this.compositionPanelController.groupSelected(); }
 
+    @FXML
     /**
      * copies the selected rectangles
      */
     public void copySelected() {
-        System.out.println("copying");
+        this.compositionPanelController.copySelected();
     }
 
+    @FXML
     /**
      * cut the selected rectangles
      */
     public void cutSelected() {
-        System.out.println("cutting");
+        this.compositionPanelController.cutSelected();
     }
 
+    @FXML
     /**
      * paste the copied rectangles
      */
-    public void pasteSelected(){
-        System.out.println("pasting");
-
-    }
+    public void pasteSelected(){ this.compositionPanelController.pasteSelected();}
 
     @FXML
     /**

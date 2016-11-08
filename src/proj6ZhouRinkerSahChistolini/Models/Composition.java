@@ -108,4 +108,18 @@ public class Composition {
     public HashSet<Note> getNotes() {
         return notes;
     }
+
+
+
+    public HashSet<Note> getSelectedCompositionNotes() {
+        HashSet<Note> selectedNotes = new HashSet<>();
+
+        for (Note note : notes) {
+            if (note.selectedProperty().getValue()) {
+                selectedNotes.add(note);
+            }
+        }
+
+        return selectedNotes;
+    }
 }
