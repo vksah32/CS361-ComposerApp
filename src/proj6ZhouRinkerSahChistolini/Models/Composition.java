@@ -12,6 +12,7 @@
 package proj6ZhouRinkerSahChistolini.Models;
 
 import java.util.HashSet;
+import java.util.Collection;
 
 /**
  * The central logic for creating and playing back a composition.
@@ -111,7 +112,7 @@ public class Composition {
 
 
 
-    public HashSet<Note> getSelectedCompositionNotes() {
+    public Collection<Note> getSelectedCompositionNotes() {
         HashSet<Note> selectedNotes = new HashSet<>();
 
         for (Note note : notes) {

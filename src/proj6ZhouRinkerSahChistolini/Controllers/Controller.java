@@ -144,7 +144,8 @@ public class Controller {
      * cut the selected rectangles
      */
     public void cutSelected() {
-        this.compositionPanelController.cutSelected();
+        this.compositionPanelController.copySelected();
+        this.deleteSelectedNotes();
     }
 
     @FXML

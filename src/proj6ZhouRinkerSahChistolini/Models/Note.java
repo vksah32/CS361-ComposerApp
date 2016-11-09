@@ -119,7 +119,7 @@ public class Note {
      * @return
      */
     public String toString() {
-        
+
         String noteString = this.startTick.intValue()    +" "+
                             this.pitchProperty().intValue()             +" "+
                             this.duration.getValue()     +" " +

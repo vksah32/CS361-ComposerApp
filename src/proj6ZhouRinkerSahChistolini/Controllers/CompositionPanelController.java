@@ -172,15 +172,7 @@ public class CompositionPanelController {
      * returns a collection consisting of the selected note objects
      * @return selected a Collection of Notes
      */
-    public Collection<Note> getSelectedNotes(){
-        Collection<Note> selected = new HashSet<>();
-        for( Note n : this.composition.getNotes()){
-                if (n.selectedProperty().getValue()){
-                    selected.add(n);
-                }
-            }
-        return selected;
-    }
+    public Collection<Note> getSelectedNotes() {return this.composition.getSelectedCompositionNotes();}
 
     /**
      * gets the action controller
@@ -389,21 +381,12 @@ public class CompositionPanelController {
 
         String mainString = new String();
 
-        HashSet<Note> selectedCompNote = this.composition.getSelectedCompositionNotes();
+        Collection<Note> selectedCompNote = this.getSelectedNotes();
         for (Note note : selectedCompNote) {
            mainString += note.toString();
         }
 
         this.clipboard.addStringContent(mainString);
-    }
-
-    public void cutSelected(){
-
-        //delete notes being selected
-       // this.deleteSelected();
-
-
-
     }
 
     /**
