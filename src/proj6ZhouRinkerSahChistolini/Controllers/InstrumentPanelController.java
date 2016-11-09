@@ -32,14 +32,14 @@ public class InstrumentPanelController {
     @FXML
     public void initialize() {
         this.instruments = new ArrayList<Instrument>();
-        addInstrument("Harpsichord", 6, 0, "green");
-        addInstrument("Marimba", 12, 1, "blue");
-        addInstrument("Organ", 19, 2, "gold");
-        addInstrument("Accordion", 21, 3, "magenta");
-        addInstrument("Guitar", 28, 4, "teal");
-        addInstrument("Violin", 40, 5, "black");
-        addInstrument("French Horn", 60, 6, "brown");
-        addInstrument("Piano", 0, 7,"grey");
+        addInstrument("Harpsichord", 6, 0);
+        addInstrument("Marimba", 12, 1);
+        addInstrument("Organ", 19, 2);
+        addInstrument("Accordion", 21, 3);
+        addInstrument("Guitar", 28, 4);
+        addInstrument("Violin", 40, 5);
+        addInstrument("French Horn", 60, 6);
+        addInstrument("Piano", 0, 7);
         this.instrumentToggle.getToggles().get(0).setSelected(true);
     }
 
@@ -48,14 +48,13 @@ public class InstrumentPanelController {
      * @param name The title of the instrument
      * @param instrument The 0-127 value of the instrument
      * @param channel The channel in which the instrument is played
-     * @param color The color associated with the instrument
      */
-    public void addInstrument(String name, int instrument, int channel, String color){
-        this.instruments.add(new Instrument(name, instrument, channel, color));
+    public void addInstrument(String name, int instrument, int channel){
+        this.instruments.add(new Instrument(name, instrument, channel));
 
         RadioButton instrButton = new RadioButton(name);
-        instrButton.getStyleClass().add("instrument");
-        instrButton.setStyle(String.format("-fx-text-fill: %s", color));
+        instrButton.getStyleClass().add("instrument-button");
+        instrButton.getStyleClass().add(name.toLowerCase().replace(" ", "-"));
         instrButton.setToggleGroup(this.instrumentToggle);
         this.instrumentBox.getChildren().add(instrButton);
     }

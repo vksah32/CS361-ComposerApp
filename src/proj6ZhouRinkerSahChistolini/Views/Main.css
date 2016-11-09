@@ -22,7 +22,7 @@
 }
 
 /* set style for radio buttons */
-.instrument {
+.instrument-button {
     -fx-padding: 5 10 5 10;
     -fx-font-size: 14px;
 }
@@ -68,32 +68,40 @@
 /* instrument styles to set the color of the notes */
 .harpsichord {
   -fx-fill: green;
+  -fx-text-fill: green;
 }
 
 .marimba {
   -fx-fill: blue;
+  -fx-text-fill: blue;
 }
 
 .organ {
   -fx-fill: gold;
+  -fx-text-fill: gold;
 }
 
 .accordion {
   -fx-fill: magenta;
+  -fx-text-fill: magenta;
 }
 
 .guitar {
-  -fx-fill: blue;
+  -fx-fill: orange;
+  -fx-text-fill: orange;
 }
 
 .violin {
   -fx-fill: black;
+  -fx-text-fill: black;
 }
 
 .french-horn {
   -fx-fill: pink;
+  -fx-text-fill: pink;
 }
 
 .piano {
   -fx-fill: grey;
+  -fx-text-fill: grey;
 }

@@ -14,29 +14,17 @@ public class Instrument {
     private int instrument;
     /** Channel of the instrument */
     private int channel;
-    /** Color of the instrument */
-    private String color;
 
     /**
      * Initialize a new instrument
      * @param name name of the instrument
      * @param instrument instrument value (0-127)
      * @param channel midi channel associated with instrument (0-15)
-     * @param color color associated with instrument
      */
-    public Instrument(String name, int instrument, int channel, String color){
+    public Instrument(String name, int instrument, int channel){
         this.name = name;
         this.instrument = instrument;
         this.channel = channel;
-        this.color = color;
-    }
-
-    /**
-     * Get color associated with the instrument
-     * @return color string
-     */
-    public String getColor() {
-        return color;
     }
 
     /**
