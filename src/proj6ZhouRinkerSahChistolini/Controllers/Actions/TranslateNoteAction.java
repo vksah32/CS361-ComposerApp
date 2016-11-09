@@ -74,7 +74,10 @@ public class TranslateNoteAction implements Actionable {
                 Double currentYval = rec.getY();
 
                 rec.setUnboundX(currentXval - this.deltaX);
-                rec.setUnboundY(currentYval - this.deltaY);
+                double actualNewY = currentYval - this.deltaY;
+                double adjustedY = Math.floor((actualNewY-1) / 10) * 10 + 11;
+                rec.setUnboundY(adjustedY);
+                System.out.println("Y after undo translation " + rec.getY());
             }
         });
 
