@@ -49,7 +49,7 @@ public class ClickInPanelHandler {
      */
     public void handle(MouseEvent event, Instrument instrument) {
         isMetaDown = event.isShortcutDown();
-        addNote(event.getX(), event.getY(), instrument);
+        addNote(event.getX(), event.getY(), this.DEFAULT_RECTANGLE_WIDTH,instrument);
     }
 
 
@@ -61,15 +61,16 @@ public class ClickInPanelHandler {
      * @param y mouse y location
      * @param instrument the instrument object
      */
-    public void addNote(double x, double y, Instrument instrument) {
+    public void addNote(double x, double y, double width, Instrument instrument) {
         Collection<SelectableRectangle> selectionStatusBeforeAdd = this.compController.getSelectedRectangles();
 
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
-                this.DEFAULT_RECTANGLE_WIDTH,
+                width,
                 10, instrument.getColor(), instrument.getValue());
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
+
 
         // sets the handlers of these events to be the
         // specified methods in its DragInNoteHandler object
@@ -77,7 +78,8 @@ public class ClickInPanelHandler {
         rectangle.setOnMouseDragged(handler::handleDragged);
         rectangle.setOnMouseReleased(handler::handleMouseReleased);
 
-        if (!isMetaDown) {
+        System.out.println(this.compController.getPasting());
+        if (!isMetaDown && !this.compController.getPasting()) {
             this.compController.clearSelected();
         }
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
@@ -86,6 +88,7 @@ public class ClickInPanelHandler {
         this.compController.addNoteRectangle(rectangle, true);
         this.compController.addNoteToComposition(note);
 
+        System.out.println("X " + x + "y " + y +"width " + width);
 
         //add the undoable action
         AddNoteAction actionPreformed = new AddNoteAction(

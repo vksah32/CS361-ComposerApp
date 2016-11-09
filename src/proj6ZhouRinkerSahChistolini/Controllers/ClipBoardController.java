@@ -3,6 +3,9 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.DataFlavor;
+import java.io.IOException;
+import java.awt.datatransfer.UnsupportedFlavorException;
 
 /**
  *
@@ -24,13 +27,13 @@ public class ClipBoardController {
 
     }
 
+    public String getClipboardContent() throws IOException, UnsupportedFlavorException  {
 
-
-
-    public void clear(){
-
-
+            String result = (String) this.board.getData(DataFlavor.stringFlavor);
+            return result;
     }
+
+
 
     /**
      * adds new strings of data to the clip board

@@ -118,14 +118,15 @@ public class Note {
      * x,y,width, name, color, channel, integer representing MIDI instrucment
      * @return
      */
-    public String ToString() {
-
-        String noteString = this.startTick.toString()+" "+
-                            this.pitch.getValue().toString()+" "+
-                            this.duration.getValue().toString()+" " +
-                            this.instrument.getName() + " " + this.instrument.getColor() + " " +
+    public String toString() {
+        
+        String noteString = this.startTick.intValue()    +" "+
+                            this.pitchProperty().intValue()             +" "+
+                            this.duration.getValue()     +" " +
+                            this.instrument.getName()    + " " +
+                            this.instrument.getColor()   + " " +
                             this.instrument.getChannel() + " " +
-                            Integer.toString(this.instrument.getValue())+"\n";
+                            this.instrument.getValue()   +"\n";
 
         return noteString;
     }

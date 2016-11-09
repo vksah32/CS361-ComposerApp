@@ -21,12 +21,16 @@ import javafx.scene.shape.Rectangle;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
+import proj6ZhouRinkerSahChistolini.Models.Instrument;
 import proj6ZhouRinkerSahChistolini.Models.Note;
 import proj6ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj6ZhouRinkerSahChistolini.Models.Composition;
 import proj6ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj6ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj6ZhouRinkerSahChistolini.Views.TempoLine;
+
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.Collection;
 
 import java.util.*;
@@ -72,6 +76,8 @@ public class CompositionPanelController {
 
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
+
+    private Boolean isPasting = false;
 
     /**
      * Constructs the Panel and draws the appropriate lines.
@@ -228,6 +234,16 @@ public class CompositionPanelController {
     }
 
     /**
+     * the pasting
+     *
+     * @return returns the pasting value
+     */
+    public Boolean getPasting(){
+
+       return isPasting;
+    }
+
+    /**
      * Instantiates the line and transition fields and begins the animation based on
      * the length of the composition.
      */
@@ -317,9 +333,10 @@ public class CompositionPanelController {
     }
 
     /**
-     * Ungroups the selected group
+     *  Ungroups the selected group
      */
-    public void ungroupSelected(){
+    public void ungroupSelected() {
+
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
         for (SelectableRectangle rec : this.getSelectedRectangles()){
             if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
@@ -329,17 +346,63 @@ public class CompositionPanelController {
         selectedGroup.forEach(GroupRectangle::unbindChildren);
         this.addAction(new UngroupNoteAction(selectedGroup,this));
         this.deleteSelected(new HashSet<>(selectedGroup));
-    }
-
-
-    public void pasteSelected(){
 
     }
 
+
+    // don't select because
+    public void pasteSelected() throws IOException, UnsupportedFlavorException {
+
+        isPasting = true;
+        this.clearSelected();
+
+        //each note is delimited by a new line
+        String stringNotes[] = this.clipboard.getClipboardContent().split("\n");
+
+        //each note parameter is delimited by white space
+        for (String stringNote : stringNotes) {
+            String noteParameters[] = stringNote.split("\\s+");
+            addPastedNotes(noteParameters);
+        }
+
+        isPasting = false;
+
+    }
+
+    public void addPastedNotes(String noteParameters[]){
+
+        Instrument instrument = new Instrument(noteParameters[3],Integer.parseInt(noteParameters[6]),
+                                                Integer.parseInt(noteParameters[5]),noteParameters[4] );
+
+        double xVal = Double.parseDouble(noteParameters[0]);
+        double yVal = Double.parseDouble(noteParameters[1]);
+        double width = Double.parseDouble(noteParameters[2]);
+
+        clickInPanelHandler.addNote(xVal, yVal, width, instrument);
+
+    }
+
+    /**
+     * add string content to the clipboard
+     */
     public void copySelected(){
 
+        String mainString = new String();
+
+        HashSet<Note> selectedCompNote = this.composition.getSelectedCompositionNotes();
+        for (Note note : selectedCompNote) {
+           mainString += note.toString();
+        }
+
+        this.clipboard.addStringContent(mainString);
     }
+
     public void cutSelected(){
+
+        //delete notes being selected
+       // this.deleteSelected();
+
+
 
     }
 
@@ -347,8 +410,10 @@ public class CompositionPanelController {
      * adds a new acton event to the undo stack
      *
      * @param action the action being preformed
+     *
      */
     public void addAction(Actionable action){
+
         this.actionController.addAction(action);
     }
 
@@ -411,4 +476,3 @@ public class CompositionPanelController {
         return this.compositionPanel;
     }
 }
-

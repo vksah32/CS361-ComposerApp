@@ -24,6 +24,8 @@ import proj6ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj6ZhouRinkerSahChistolini.Models.Instrument;
 import proj6ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -149,7 +151,7 @@ public class Controller {
     /**
      * paste the copied rectangles
      */
-    public void pasteSelected(){ this.compositionPanelController.pasteSelected();}
+    public void pasteSelected() throws IOException, UnsupportedFlavorException { this.compositionPanelController.pasteSelected();}
 
     @FXML
     /**
