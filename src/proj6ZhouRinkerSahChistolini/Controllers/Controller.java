@@ -129,7 +129,7 @@ public class Controller {
     /**
      * group the selected notes
      */
-    public void groupSelected() { this.compositionPanelController.groupSelected(); }
+    public void groupSelected() { this.compositionPanelController.groupSelected(this.compositionPanelController.getSelectedRectangles()); }
 
     @FXML
     /**
@@ -158,7 +158,7 @@ public class Controller {
     /**
      * ungroup the selected notes
      */
-    public void ungroupSelected() { this.compositionPanelController.ungroupSelected(); }
+    public void ungroupSelected() { this.compositionPanelController.ungroupSelected(this.compositionPanelController.getSelectedRectangles()); }
 
     @FXML
     /**
