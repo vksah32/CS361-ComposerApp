@@ -12,6 +12,7 @@
 package proj6ZhouRinkerSahChistolini.Models;
 
 import java.util.HashSet;
+import java.util.Collection;
 
 /**
  * The central logic for creating and playing back a composition.
@@ -24,8 +25,6 @@ public class Composition {
 
     /** The midiplayer on which this composition will be played */
     private MidiPlayer player;
-
-
 
     /** The notes to build the composition */
     private HashSet<Note> notes;
@@ -107,5 +106,19 @@ public class Composition {
      */
     public HashSet<Note> getNotes() {
         return notes;
+    }
+
+
+
+    public Collection<Note> getSelectedCompositionNotes() {
+        HashSet<Note> selectedNotes = new HashSet<>();
+
+        for (Note note : notes) {
+            if (note.selectedProperty().getValue()) {
+                selectedNotes.add(note);
+            }
+        }
+
+        return selectedNotes;
     }
 }

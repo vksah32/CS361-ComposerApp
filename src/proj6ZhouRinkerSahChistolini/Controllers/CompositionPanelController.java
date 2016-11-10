@@ -27,6 +27,8 @@ import proj6ZhouRinkerSahChistolini.Models.Composition;
 import proj6ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj6ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj6ZhouRinkerSahChistolini.Views.TempoLine;
+
+import java.util.HashSet;
 import java.util.Collection;
 
 import java.util.*;
@@ -70,6 +72,8 @@ public class CompositionPanelController {
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
+    private HashMap<NoteRectangle, Note> noteMap;
+
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -84,8 +88,10 @@ public class CompositionPanelController {
         );
         this.compositionPanel.toFront();
         this.actionController = new ActionController();
+
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
+        noteMap = new HashMap<>();
     }
 
     /**
@@ -161,14 +167,10 @@ public class CompositionPanelController {
      * returns a collection consisting of the selected note objects
      * @return selected a Collection of Notes
      */
-    public Collection<Note> getSelectedNotes(){
-        Collection<Note> selected = new HashSet<>();
-        for( Note n : this.composition.getNotes()){
-                if (n.selectedProperty().getValue()){
-                    selected.add(n);
-                }
-            }
-        return selected;
+    public Collection<Note> getSelectedNotes() {return this.composition.getSelectedCompositionNotes();}
+
+    public void addNotestoMap(Note note, NoteRectangle nr){
+        this.noteMap.put(nr,note);
     }
 
     /**
@@ -272,6 +274,7 @@ public class CompositionPanelController {
         //then remove from collection of rectangles
         for (SelectableRectangle rect : selected){
             if(rect instanceof NoteRectangle){
+                noteMap.remove(rect);
                 //compare each noterectangle's property to find corresposnding note
                 this.composition.getNotes().removeIf(n -> n.startTickProperty().getValue().equals(rect.xProperty().getValue()) &&
                         n.durationProperty().getValue().equals(rect.widthProperty().getValue())&&
@@ -293,11 +296,13 @@ public class CompositionPanelController {
     }
 
     /**
-     * groups the selected rectangles
+     * Creates a Group Rectangle if  there are selected rectangles
+     * returns null otherwise
+     * @return GroupRectangle
      */
-    public void groupSelected(){
+    public GroupRectangle groupSelected(Collection<SelectableRectangle> selectRect){
         if(!this.getSelectedRectangles().isEmpty()) {
-            GroupRectangle gesture = new GroupRectangle(this.getSelectedRectangles());
+            GroupRectangle gesture = new GroupRectangle(selectRect);
 
             DragInNoteHandler handler = new DragInNoteHandler(gesture, this);
             // sets the handlers of these events to be the
@@ -308,15 +313,25 @@ public class CompositionPanelController {
             gesture.setOnMouseClicked(new ClickInNoteHandler(this));
             addRectangle(gesture, true);
             this.addAction(new GroupNoteAction(gesture, this));
+            return gesture;
         }
+        return null;
+    }
+
+    /** Adds the GroupRectangle to the panel while indicating an action */
+    private void addGroupAction(GroupRectangle gesture){
+        addRectangle(gesture, true);
+        this.addAction(new GroupNoteAction(gesture, this));
+
     }
 
     /**
-     * Ungroups the selected group
+     *  Ungroups the selected group
      */
-    public void ungroupSelected(){
+    public void ungroupSelected(Collection<SelectableRectangle> selectRect) {
+
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
-        for (SelectableRectangle rec : this.getSelectedRectangles()){
+        for (SelectableRectangle rec : selectRect){
             if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
                 selectedGroup.add((GroupRectangle) rec);
             }
@@ -324,14 +339,39 @@ public class CompositionPanelController {
         selectedGroup.forEach(GroupRectangle::unbindChildren);
         this.addAction(new UngroupNoteAction(selectedGroup,this));
         this.deleteSelected(new HashSet<>(selectedGroup));
+
     }
+
+    public String generateString(SelectableRectangle sr) {
+            String noteRep = new String();
+
+            if (sr instanceof GroupRectangle) {
+              noteRep += "{\n";
+                HashSet<SelectableRectangle> children = ((GroupRectangle) sr).getChildren();
+                for(SelectableRectangle child : children) {
+
+                    noteRep += this.generateString(child);
+
+                }
+                noteRep += "}\n";
+
+            } else if (sr instanceof NoteRectangle) {
+                    Note note = this.noteMap.get(sr);
+                noteRep += note.toString();
+            }
+
+            return noteRep;
+        }
+
 
     /**
      * adds a new acton event to the undo stack
      *
      * @param action the action being preformed
+     *
      */
     public void addAction(Actionable action){
+
         this.actionController.addAction(action);
     }
 
@@ -392,5 +432,10 @@ public class CompositionPanelController {
      */
     public Pane getCompositionPane(){
         return this.compositionPanel;
+    }
+
+    /** Get the click in panel handler*/
+    public ClickInPanelHandler getClickInPanelHandler(){
+        return this.clickInPanelHandler;
     }
 }

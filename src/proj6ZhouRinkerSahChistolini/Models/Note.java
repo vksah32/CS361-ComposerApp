@@ -113,4 +113,21 @@ public class Note {
     public BooleanProperty selectedProperty() {
         return selected;
     }
+
+    /**
+     * x,y,width, name, color, channel, integer representing MIDI instrucment
+     * @return
+     */
+    public String toString() {
+
+        String noteString = this.startTick.intValue()    +" "+
+                            this.pitchProperty().intValue()             +" "+
+                            this.duration.getValue()     +" " +
+                            this.instrument.getName()    + " " +
+                            this.instrument.getColor()   + " " +
+                            this.instrument.getChannel() + " " +
+                            this.instrument.getValue()   +"\n";
+
+        return noteString;
+    }
 }
