@@ -151,9 +151,9 @@ public class DragInNoteHandler {
         double adjustY = 0;
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
             double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
-            adjustY = newPitch - rectangle.getY();
             if(!rectangle.xProperty().isBound())//change adjust based on parent rectangle if grouping
-                rectangle.setUnboundY(newPitch);
+                adjustY = newPitch - rectangle.getY();
+            rectangle.setUnboundY(newPitch);
             changedRectangles.add(rectangle);
         }
         this.totalDeltaY += adjustY;
