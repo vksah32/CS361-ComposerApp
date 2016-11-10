@@ -20,6 +20,7 @@ import proj7ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj7ZhouRinkerSahChistolini.Models.Instrument;
 import proj7ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
+
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Collection;
@@ -76,9 +77,13 @@ public class Controller {
     @FXML
     public void initialize() {
         this.compositionPanelController.init(this);
-        this.bindingController = new BindingController(this, this.compositionPanelController);
-        this.clipboardController = new ClipBoardController(this.compositionPanelController,
-                                                            this.compositionPanelController.getActionController());
+        this.clipboardController = new ClipBoardController(
+                this.compositionPanelController,
+                this.compositionPanelController.getActionController());
+        this.bindingController = new BindingController(
+                this,
+                this.compositionPanelController,
+                this.clipboardController);
         bindMenuItems();
     }
 
@@ -235,6 +240,10 @@ public class Controller {
         //copyButton
         this.copyButton.disableProperty().bind(
                 this.bindingController.getAreNotesSelectedBinding()
+        );
+        //pasteButton
+        this.pasteButton.disableProperty().bind(
+                this.bindingController.getClipBoardEmptyBinding()
         );
     }
 }

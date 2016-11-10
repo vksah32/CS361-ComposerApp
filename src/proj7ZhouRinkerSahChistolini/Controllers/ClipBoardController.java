@@ -1,4 +1,9 @@
+
 package proj7ZhouRinkerSahChistolini.Controllers;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import proj7ZhouRinkerSahChistolini.Models.Instrument;
 import proj7ZhouRinkerSahChistolini.Models.Note;
 import proj7ZhouRinkerSahChistolini.Views.GroupRectangle;
@@ -59,7 +64,8 @@ public class ClipBoardController {
     }
 
     /**
-     *
+     * pastes the clipboard's contents onto the Pane
+     * throws an exepction if the content's flavor is unsupported
      * @throws IOException
      * @throws UnsupportedFlavorException
      */
@@ -182,6 +188,25 @@ public class ClipBoardController {
     public void addStringContent(String cutCopyData){
         Transferable transferable = new StringSelection(cutCopyData);
         board.setContents(transferable, null);
+
+    }
+
+    /**
+     * returns a BooleanBinding representing whether or not the clipboard
+     * is empty
+     * @returns emptyClipboardBinding BooleanBinding, true if the clipboard is empty
+     */
+    public BooleanProperty isClipboardEmpty() {
+        //Bind obp to children and list to obp
+        StringProperty stringProp = new SimpleStringProperty();
+        try {
+            stringProp.setValue((String) this.board.getData(DataFlavor.stringFlavor));
+        } catch (Exception e){
+            stringProp.setValue("");
+        }
+        BooleanProperty emptyClipboardProperty = new SimpleBooleanProperty();
+        emptyClipboardProperty.bind(stringProp.isEmpty());
+        return emptyClipboardProperty;
 
     }
 }
