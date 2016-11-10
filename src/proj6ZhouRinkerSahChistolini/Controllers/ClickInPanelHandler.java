@@ -70,7 +70,7 @@ public class ClickInPanelHandler {
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
-                width,
+                this.DEFAULT_RECTANGLE_WIDTH,
                 10, instrument.getName(), instrument.getValue());
 
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);

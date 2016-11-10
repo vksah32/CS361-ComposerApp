@@ -53,7 +53,6 @@ public class ClipBoardController {
             return result;
     }
 
-
     /**
      *
      * @throws IOException
