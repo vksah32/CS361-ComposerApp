@@ -14,11 +14,15 @@ package proj6ZhouRinkerSahChistolini.Controllers;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
+import proj6ZhouRinkerSahChistolini.Controllers.Actions.PasteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj6ZhouRinkerSahChistolini.Models.Instrument;
 import proj6ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -36,6 +40,9 @@ public class Controller {
 
     /** a controller to assist in bindings between the menus and controllers*/
     private BindingController bindingController;
+
+    private ClipBoardController clipboardController;
+
 
     /**
      * All of our MenuItem are put into fields
@@ -59,12 +66,20 @@ public class Controller {
     private MenuItem undoButton;
     @FXML
     private MenuItem redoButton;
+    @FXML
+    private MenuItem cutButton;
+    @FXML
+    private MenuItem copyButton;
+    @FXML
+    private MenuItem pasteButton;
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
     public void initialize() {
         this.compositionPanelController.init(this);
         this.bindingController = new BindingController(this, this.compositionPanelController);
+        this.clipboardController = new ClipBoardController(this.compositionPanelController,
+                                                            this.compositionPanelController.getActionController());
         bindMenuItems();
     }
 
@@ -126,13 +141,41 @@ public class Controller {
     /**
      * group the selected notes
      */
-    public void groupSelected() { this.compositionPanelController.groupSelected(); }
+    public void groupSelected() { this.compositionPanelController.groupSelected(this.compositionPanelController.getSelectedRectangles()); }
+
+    @FXML
+    /**
+     * copies the selected rectangles
+     */
+    public void copySelected() {
+        this.clipboardController.copySelected();
+    }
+
+    @FXML
+    /**
+     * cut the selected rectangles
+     */
+    public void cutSelected() {
+        this.clipboardController.copySelected();
+        this.deleteSelectedNotes();
+    }
+
+    @FXML
+    /**
+     * paste the copied rectangles
+     */
+    public void pasteSelected() throws IOException, UnsupportedFlavorException {
+        this.clipboardController.pasteSelected();
+        PasteAction pastedNotes = new PasteAction(this.compositionPanelController.getSelectedRectangles(),
+                this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
+        this.compositionPanelController.addAction(pastedNotes);
+    }
 
     @FXML
     /**
      * ungroup the selected notes
      */
-    public void ungroupSelected() { this.compositionPanelController.ungroupSelected(); }
+    public void ungroupSelected() { this.compositionPanelController.ungroupSelected(this.compositionPanelController.getSelectedRectangles()); }
 
     @FXML
     /**
@@ -185,6 +228,14 @@ public class Controller {
         //undoButton
         this.undoButton.disableProperty().bind(
                 this.bindingController.getUndoEmptyBinding()
+        );
+        //cutButton
+        this.cutButton.disableProperty().bind(
+                this.bindingController.getAreNotesSelectedBinding()
+        );
+        //copyButton
+        this.copyButton.disableProperty().bind(
+                this.bindingController.getAreNotesSelectedBinding()
         );
     }
 }

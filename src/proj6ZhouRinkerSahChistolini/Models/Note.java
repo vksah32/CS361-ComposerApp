@@ -38,7 +38,6 @@ public class Note {
         this.pitch = new SimpleDoubleProperty();
         this.selected = new SimpleBooleanProperty();
         this.instrument = instrument;
-
     }
 
     /**
@@ -112,5 +111,21 @@ public class Note {
      */
     public BooleanProperty selectedProperty() {
         return selected;
+    }
+
+    /**
+     * x,y,width, name, channel, integer representing MIDI instrucment
+     * @return
+     */
+    public String toString() {
+
+        String noteString = this.startTick.intValue()    +" "+
+                            this.pitchProperty().intValue() +" "+
+                            this.duration.getValue()     +" " +
+                            this.instrument.getName()    + " " +
+                            this.instrument.getChannel() + " " +
+                            this.instrument.getValue()   +"\n";
+
+        return noteString;
     }
 }

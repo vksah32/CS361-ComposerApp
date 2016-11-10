@@ -48,10 +48,12 @@ public class ClickInPanelHandler {
      * @param event
      */
     public void handle(MouseEvent event, Instrument instrument) {
-        isMetaDown = event.isShortcutDown();
-        addNote(event.getX(), event.getY(), instrument);
+        this.isMetaDown = event.isShortcutDown();
+        if (!isMetaDown) {
+            this.compController.clearSelected();
+        }
+        addNote(event.getX(), event.getY(), this.DEFAULT_RECTANGLE_WIDTH,instrument);
     }
-
 
     /**
      * Creates a note at the given x and y coordinates
@@ -61,35 +63,54 @@ public class ClickInPanelHandler {
      * @param y mouse y location
      * @param instrument the instrument object
      */
-    public void addNote(double x, double y, Instrument instrument) {
-        Collection<SelectableRectangle> selectionStatusBeforeAdd = (
-            this.compController.getSelectedRectangles()
-        );
-
+    public NoteRectangle addNoteRectangle(double x,
+                                          double y,
+                                          double width,
+                                          Instrument instrument){
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
-                this.DEFAULT_RECTANGLE_WIDTH,
+                width,
                 10, instrument.getName(), instrument.getValue());
-        DragInNoteHandler handler = new DragInNoteHandler(rectangle,
-                                                          this.compController);
+
+        DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
 
         // sets the handlers of these events to be the
         // specified methods in its DragInNoteHandler object
         rectangle.setOnMousePressed(handler::handleMousePressed);
         rectangle.setOnMouseDragged(handler::handleDragged);
         rectangle.setOnMouseReleased(handler::handleMouseReleased);
-
-        if (!isMetaDown) {
-            this.compController.clearSelected();
-        }
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
+
+        return rectangle;
+    }
+
+    public Note addBoundNote(NoteRectangle rectangle, Instrument instrument){
         Note note = new Note(instrument);
         bindNotetoRectangle(note, rectangle);
+
+        return note;
+    }
+    /**
+     * Creates a note at the given x and y coordinates
+     * and adds the note bar (Rectangle) to the CompositionPanel.
+     *
+     * @param x mouse x location
+     * @param y mouse y location
+     * @param instrument the instrument object
+     */
+    public void addNote(double x, double y, double width, Instrument instrument) {
+        Collection<SelectableRectangle> selectionStatusBeforeAdd = (
+                this.compController.getSelectedRectangles()
+        );
+
+        NoteRectangle rectangle = this.addNoteRectangle(x,y,width,instrument);
+        Note note = addBoundNote(rectangle, instrument);
+
         this.compController.addNoteRectangle(rectangle, true);
         this.compController.addNoteToComposition(note);
 
-
+        this.compController.addNotestoMap(note,rectangle);
         //add the undoable action
         AddNoteAction actionPreformed = new AddNoteAction(
                 rectangle,

@@ -47,6 +47,19 @@
                           text="Ungroup"
                           onAction="#ungroupSelected"
                           accelerator="Shortcut+U"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="copyButton"
+                          text="Copy"
+                          onAction="#copySelected"
+                          accelerator="Shortcut+C"/>
+                <MenuItem fx:id="cutButton"
+                          text="Cut"
+                          onAction="#cutSelected"
+                          accelerator="Shortcut+X"/>
+                <MenuItem fx:id="pasteButton"
+                          text="Paste"
+                          onAction="#pasteSelected"
+                          accelerator="Shortcut+V"/>
             </Menu>
             <Menu text="Action">
                 <MenuItem fx:id="startButton"
