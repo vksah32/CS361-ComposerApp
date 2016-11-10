@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
+import proj6ZhouRinkerSahChistolini.Controllers.Actions.PasteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj6ZhouRinkerSahChistolini.Models.Instrument;
 import proj6ZhouRinkerSahChistolini.Views.SelectableRectangle;
@@ -157,7 +158,12 @@ public class Controller {
     /**
      * paste the copied rectangles
      */
-    public void pasteSelected() throws IOException, UnsupportedFlavorException { this.clipboardController.pasteSelected();}
+    public void pasteSelected() throws IOException, UnsupportedFlavorException {
+        this.clipboardController.pasteSelected();
+        PasteAction pastedNotes = new PasteAction(this.compositionPanelController.getSelectedRectangles(),
+                this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
+        this.compositionPanelController.addAction(pastedNotes);
+    }
 
     @FXML
     /**
