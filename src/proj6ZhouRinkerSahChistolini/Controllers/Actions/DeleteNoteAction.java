@@ -29,7 +29,9 @@ public class DeleteNoteAction implements Actionable{
      * @param comp reference to the composition panel controller
      *
      */
-    public DeleteNoteAction(Collection<SelectableRectangle> graphicalNotes, Collection<Note> modelNotes, CompositionPanelController comp ){
+    public DeleteNoteAction(Collection<SelectableRectangle> graphicalNotes,
+                            Collection<Note> modelNotes,
+                            CompositionPanelController comp ){
 
         this.graphicalNote = graphicalNotes;
         this.modelNotes = modelNotes;

@@ -63,8 +63,10 @@ public class DragInPanelHandler {
      */
     public void handleDragged(MouseEvent event) {
         this.selectionRectangle.setVisible(true);
-        if(!this.metaDown && (this.selectionRectangle.getWidth() > 5 || this.selectionRectangle.getHeight() > 5)){
-
+        if(!this.metaDown &&
+                (this.selectionRectangle.getWidth() > 5 ||
+                        this.selectionRectangle.getHeight() > 5))
+        {
             this.compController.clearSelected();
         }
         double leftX = Math.min(event.getX(),this.startX);

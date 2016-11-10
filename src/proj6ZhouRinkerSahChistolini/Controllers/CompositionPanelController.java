@@ -340,7 +340,9 @@ public class CompositionPanelController {
             if (isPlaying.getValue()) {
                 this.stopComposition();
             } else {
-                this.clickInPanelHandler.handle(event, this.mainController.getSelectedInstrument());
+                this.clickInPanelHandler.handle(
+                        event, this.mainController.getSelectedInstrument()
+                );
             }
         }
     }

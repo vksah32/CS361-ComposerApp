@@ -23,7 +23,8 @@ public class UngroupNoteAction implements Actionable {
      * @param group all groups needed to be ungrouped
      * @param comp reference to the composition panel
      */
-    public UngroupNoteAction(Collection<GroupRectangle> group,CompositionPanelController comp){
+    public UngroupNoteAction(Collection<GroupRectangle> group,
+                             CompositionPanelController comp){
         this.groupedRectangles = group;
         this.panelChildren = comp.getCompositionPane().getChildren();
 

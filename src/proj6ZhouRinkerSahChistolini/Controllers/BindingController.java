@@ -119,7 +119,7 @@ public class BindingController {
      */
     public Collection<SelectableRectangle> getUnboundSelected(){
         ArrayList<SelectableRectangle> unboundList = new ArrayList<>();
-        for (SelectableRectangle rec :this.compositionController.getSelectedRectangles() ){
+        for (SelectableRectangle rec :this.compositionController.getSelectedRectangles()){
             if (!rec.xProperty().isBound()){
                 unboundList.add(rec);
             }
