@@ -18,7 +18,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 
 import java.util.ArrayList;

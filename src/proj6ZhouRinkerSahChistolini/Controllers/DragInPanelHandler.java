@@ -63,7 +63,8 @@ public class DragInPanelHandler {
      */
     public void handleDragged(MouseEvent event) {
         this.selectionRectangle.setVisible(true);
-        if(!this.metaDown){
+        if(!this.metaDown && (this.selectionRectangle.getWidth() > 5 || this.selectionRectangle.getHeight() > 5)){
+
             this.compController.clearSelected();
         }
         double leftX = Math.min(event.getX(),this.startX);
@@ -75,8 +76,9 @@ public class DragInPanelHandler {
         this.selectionRectangle.setX(leftX);
         this.selectionRectangle.setY(lowestY);
 
-        for(SelectableRectangle rectangle: compController.getRectangles()){
-            if(rectangle.intersects(leftX,lowestY,width,height)){
+
+        for (SelectableRectangle rectangle : compController.getRectangles()) {
+            if (rectangle.intersects(leftX, lowestY, width, height)) {
                 rectangle.setSelected(true);
             }
         }
