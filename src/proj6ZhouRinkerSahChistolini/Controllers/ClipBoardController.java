@@ -21,13 +21,18 @@ import java.util.Collection;
  *
  */
 public class ClipBoardController {
-
+    /** The Clipboard which all the data is sent to */
     private Clipboard board;
+    /** A reference to the main compositionController */
     private CompositionPanelController compController;
+    /** A reference to the actionController */
     private ActionController actionController;
 
     /**
-     *
+     * Generates a new ClipBoardController initializing the references
+     * needed to perform clipboard actions
+     * @param compController the associated CompositionPanelController
+     * @param actionController the associated ActionController
      */
     public ClipBoardController(CompositionPanelController compController,
                                ActionController actionController){
@@ -36,20 +41,37 @@ public class ClipBoardController {
         this.board =  Toolkit.getDefaultToolkit().getSystemClipboard();
     }
 
+    /**
+     * returns a String which has been copied to the clipboard.
+     * Throws an error if the copied element is unsupported
+     * @return result the result String
+     * @throws IOException
+     * @throws UnsupportedFlavorException
+     */
     public String getClipboardContent() throws IOException, UnsupportedFlavorException  {
             String result = (String) this.board.getData(DataFlavor.stringFlavor);
             return result;
     }
 
 
-    // don't select because
+    /**
+     *
+     * @throws IOException
+     * @throws UnsupportedFlavorException
+     */
     public void pasteSelected() throws IOException, UnsupportedFlavorException {
         this.compController.clearSelected();
         String stringNotes = this.getClipboardContent();
         parseString(stringNotes, new ArrayList<>());
     }
 
-    public void parseString(String stringNotes, Collection<SelectableRectangle> alreadySelected){
+    /**
+     * parsesThrough a string of Notes and adds them to the compositionPanel
+     * @param stringNotes the String representation of Notes
+     * @param alreadySelected a collection of alreadyselected notes
+     */
+    public void parseString(String stringNotes,
+                            Collection<SelectableRectangle> alreadySelected){
         int x = stringNotes.indexOf('{');
         if (x != -1 ) {
             int y = stringNotes.lastIndexOf('}');
@@ -78,8 +100,12 @@ public class ClipBoardController {
         }
     }
 
-    private void addNotesFromString(String k) {
-        for (String stringNote : k.split("\n")) {
+    /**
+     * adds a note to the CompositionPane from a Note String representation
+     * @param note the String representation of the Note object
+     */
+    private void addNotesFromString(String note) {
+        for (String stringNote : note.split("\n")) {
             if (stringNote.length() > 0) {
                 String noteParameters[] = stringNote.split("\\s+");
                 addPastedNotes(noteParameters);
@@ -87,30 +113,46 @@ public class ClipBoardController {
         }
     }
 
+    /**
+     * adds a
+     * @param noteParameters a list of note parameters needed to reconstruct
+     *                       the note. The parameters are as follows:
+     *                       [xPosition, yPosition, Width, Instrument Name,
+     *                        Instrument color, Instrument channel, instrument value]
+     */
     public void addPastedNotes(String noteParameters[]){
-        Instrument instrument = new Instrument(noteParameters[3],Integer.parseInt(noteParameters[6]),
-                Integer.parseInt(noteParameters[5]),noteParameters[4] );
+        Instrument instrument = new Instrument(noteParameters[3],
+                                               Integer.parseInt(noteParameters[6]),
+                                               Integer.parseInt(noteParameters[5]),
+                                               noteParameters[4] );
 
         double xVal = Double.parseDouble(noteParameters[0]);
         double yVal = Double.parseDouble(noteParameters[1]);
         double width = Double.parseDouble(noteParameters[2]);
 
-        NoteRectangle rectangle = this.compController.getClickInPanelHandler().addNoteRectangle(xVal, yVal, width, instrument);
-        Note note = this.compController.getClickInPanelHandler().addBoundNote(rectangle, instrument);
+        NoteRectangle rectangle = this.compController.getClickInPanelHandler()
+                                                     .addNoteRectangle(xVal,
+                                                                       yVal,
+                                                                       width,
+                                                                       instrument);
+        Note note = this.compController.getClickInPanelHandler().addBoundNote(rectangle,
+                                                                              instrument);
         this.compController.addNotestoMap(note,rectangle);
         this.compController.addRectangle(rectangle,true);
         this.compController.addNoteToComposition(note);
     }
 
     /**
-     * add string content to the clipboard
+     * Generates a String representation of the selected notes and
+     * adds them to the clipboard
      */
     public void copySelected(){
-
         String mainString = new String();
 
         //Collection<Note> selectedCompNote = this.getSelectedNotes();
-        Collection<SelectableRectangle> noteRecs =  this.compController.getSelectedRectangles();
+        Collection<SelectableRectangle> noteRecs =  (
+                this.compController.getSelectedRectangles()
+        );
         for (SelectableRectangle sr : noteRecs){
             if(!sr.xProperty().isBound()) {
                 mainString += this.compController.generateString(sr);
