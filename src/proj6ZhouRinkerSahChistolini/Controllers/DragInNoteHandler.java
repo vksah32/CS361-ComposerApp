@@ -28,7 +28,9 @@ public class DragInNoteHandler {
     private double previousX;
     /** The mouse y coordinate from the previous mouse event*/
     private double previousY;
-    /** Keeps track of whether the current drag action is extending rectangles or dragging rectangles */
+    /** Keeps track of whether the current drag action is extending
+     *  rectangles or dragging rectangles
+     */
     private boolean extendEventHappening;
     /** The rectangle that this handler is assigned to */
     private SelectableRectangle sourceRectangle;
@@ -40,7 +42,7 @@ public class DragInNoteHandler {
     private double totalDeltaX;
     /** the final deltaY to move */
     private double totalDeltaY;
-    /** rectangles before current state action */
+    /** rectangles after current state action */
     private Collection<SelectableRectangle> beforeState;
     /** rectangles after current state action */
     private Collection<SelectableRectangle> afterState;
@@ -64,15 +66,17 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse press
      */
     public void handleMousePressed(MouseEvent event) {
+        this.beforeState = this.compController.getSelectedRectangles();
         this.compController.stopComposition();
-        if (event.getX() >= this.sourceRectangle.getX() + this.sourceRectangle.getWidth() - 5) {
+        if (event.getX() >= this.sourceRectangle.getX() +
+                            this.sourceRectangle.getWidth() - 5
+        ) {
             this.extendEventHappening = true;
         } else {
             this.extendEventHappening = false;
         }
         this.previousX = event.getX();
         this.previousY = event.getY();
-        this.beforeState = this.compController.getSelectedRectangles();
         event.consume();
     }
 
@@ -104,8 +108,11 @@ public class DragInNoteHandler {
     private void handleNoteTranslate(MouseEvent event) {
         double deltaX = event.getX() - this.previousX;
         double deltaY = event.getY() - this.previousY;
-        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
-            rectangle.setUnboundPosition(rectangle.getX() + deltaX, rectangle.getY() + deltaY);
+        for (
+            SelectableRectangle rectangle : this.compController.getSelectedRectangles()
+        ) {
+            rectangle.setUnboundPosition(rectangle.getX() + deltaX,
+                                         rectangle.getY() + deltaY);
         }
         this.totalDeltaX += deltaX;
         this.totalDeltaY += deltaY;
@@ -118,16 +125,20 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteExtend(MouseEvent event) {
-        double deltaX = event.getX() - this.sourceRectangle.getWidth() - this.sourceRectangle.getX();
-        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
+        double deltaX = event.getX() -
+                        this.sourceRectangle.getWidth() -
+                        this.sourceRectangle.getX();
+        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()){
             double width = rectangle.getWidth() + deltaX;
             // makes sure the width is at least 5
             width = Math.max(5, width);
             // makes sure the note does not extend past the end of the player
-            // width = Math.min(width, this.panelToEdit.getWidth()-rectangle.getX());
             rectangle.setUnboundWidth(width);
         }
-        this.totalDeltaX += deltaX;
+        //Stop keeping track if dragged left of note
+        if (event.getX() > this.sourceRectangle.getX()+5) {
+            this.totalDeltaX += deltaX;
+        }
 
     }
 
@@ -137,23 +148,45 @@ public class DragInNoteHandler {
      */
     public void handleMouseReleased(MouseEvent event) {
         Collection<SelectableRectangle> changedRectangles = new ArrayList<>();
-        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()) {
+        double adjustY = 0;
+        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()){
             double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
+            //change adjust based on parent rectangle if grouping
+            if(!rectangle.xProperty().isBound())
+                adjustY = newPitch - rectangle.getY();
             rectangle.setUnboundY(newPitch);
             changedRectangles.add(rectangle);
-
         }
+        this.totalDeltaY += adjustY;
+
         if (!event.isStillSincePress()) {
             this.afterState = this.compController.getSelectedRectangles();
             if (didExtend) {
-                if (!(this.compController.getActionController().getUndoList().get(this.compController.getActionController().getUndoList().size()-1) instanceof SelectAction))
-                    this.compController.addAction(new SelectAction(this.beforeState, this.afterState, this.compController));
-                Actionable extendedAction = new ExtendNoteAction(changedRectangles, totalDeltaX);
+                if (!(this.compController
+                          .getActionController()
+                          .peekUndo()
+                          instanceof SelectAction)) {
+                    this.compController.addAction(new SelectAction(this.beforeState,
+                                                                   this.afterState,
+                                                                   this.compController)
+                    );
+                }
+                Actionable extendedAction = new ExtendNoteAction(changedRectangles,
+                                                                 totalDeltaX
+                );
                 this.compController.addAction(extendedAction);
             } else {
-                if (!(this.compController.getActionController().getUndoList().get(this.compController.getActionController().getUndoList().size()-1) instanceof SelectAction))
-                    this.compController.addAction(new SelectAction(this.beforeState, this.afterState,this.compController));
-                Actionable translatedAction = new TranslateNoteAction(changedRectangles, totalDeltaX, totalDeltaY, this.compController);
+                //If an prior unselected note is dragged, add selectionAction as well
+                if(!this.beforeState.equals(this.afterState)){
+                    this.compController.addAction(
+                            new SelectAction(this.beforeState,
+                                             this.afterState,
+                                             this.compController)
+                    );
+                }
+                Actionable translatedAction = new TranslateNoteAction(
+                        changedRectangles, totalDeltaX, totalDeltaY, this.compController
+                );
                 this.compController.addAction(translatedAction);
             }
 
@@ -164,8 +197,6 @@ public class DragInNoteHandler {
         }
         event.consume();
     }
-
-
 }
 
 

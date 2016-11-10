@@ -24,9 +24,15 @@ public class GroupRectangle extends SelectableRectangle{
      * @param selection Hashset of selected rectangles to group
      */
     public GroupRectangle(Collection<SelectableRectangle> selection) {
-        Rectangle left = selection.stream().min(Comparator.comparing(Rectangle::getX)).get();
-        Rectangle right = selection.stream().max(Comparator.comparing(
-                                                    rec -> rec.getX()+rec.getWidth())).get();
+        Rectangle left = selection.stream()
+                                  .min(
+                                      Comparator.comparing(Rectangle::getX)
+                                  ).get();
+        Rectangle right = selection.stream()
+                                   .max(
+                                       Comparator.comparing(
+                                           rec -> rec.getX()+rec.getWidth())
+                                   ).get();
         Rectangle top = selection.stream().min(Comparator.comparing(Rectangle::getY)).get();
         Rectangle bot = selection.stream().max(Comparator.comparing(Rectangle::getY)).get();
         this.initialWidth = right.getX() + right.getWidth() - left.getX();

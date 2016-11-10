@@ -55,13 +55,23 @@ public class ClickInPanelHandler {
         addNote(event.getX(), event.getY(), this.DEFAULT_RECTANGLE_WIDTH,instrument);
     }
 
-
-    public NoteRectangle addNoteRectangle(double x, double y, double width, Instrument instrument){
+    /**
+     * Creates a note at the given x and y coordinates
+     * and adds the note bar (Rectangle) to the CompositionPanel.
+     *
+     * @param x mouse x location
+     * @param y mouse y location
+     * @param instrument the instrument object
+     */
+    public NoteRectangle addNoteRectangle(double x,
+                                          double y,
+                                          double width,
+                                          Instrument instrument){
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
-                width,
-                10, instrument.getColor(), instrument.getValue());
+                this.DEFAULT_RECTANGLE_WIDTH,
+                10, instrument.getName(), instrument.getValue());
 
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
 
@@ -90,7 +100,9 @@ public class ClickInPanelHandler {
      * @param instrument the instrument object
      */
     public void addNote(double x, double y, double width, Instrument instrument) {
-        Collection<SelectableRectangle> selectionStatusBeforeAdd = this.compController.getSelectedRectangles();
+        Collection<SelectableRectangle> selectionStatusBeforeAdd = (
+                this.compController.getSelectedRectangles()
+        );
 
         NoteRectangle rectangle = this.addNoteRectangle(x,y,width,instrument);
         Note note = addBoundNote(rectangle, instrument);

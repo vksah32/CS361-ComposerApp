@@ -259,7 +259,7 @@ public class CompositionPanelController {
      * removes the selected rectangles
      */
     public void deleteSelectedNotes() {
-        deleteSelected(this.getSelectedRectangles());
+        this.deleteSelected(this.getSelectedRectangles());
     }
 
     /**
@@ -271,20 +271,10 @@ public class CompositionPanelController {
         for (Rectangle r: selected){
             this.compositionPanel.getChildren().remove(r);
         }
-        //then remove from collection of rectangles
-        for (SelectableRectangle rect : selected){
-            if(rect instanceof NoteRectangle){
-                noteMap.remove(rect);
-                //compare each noterectangle's property to find corresposnding note
-                this.composition.getNotes().removeIf(n -> n.startTickProperty().getValue().equals(rect.xProperty().getValue()) &&
-                        n.durationProperty().getValue().equals(rect.widthProperty().getValue())&&
-                        n.pitchProperty().getValue().equals(rect.yProperty().getValue()) &&
-                        n.getInstrument().getValue()==((NoteRectangle)rect).getInstrument() &&
-                        n.selectedProperty().getValue().equals(((NoteRectangle)rect).selectedProperty().getValue()));
-            }
-        }
+        //remove selected notes from composition
+        this.composition.getNotes().removeIf(n ->
+                        n.selectedProperty().getValue().equals(true));
     }
-
 
     /**
      * selects all the notes in the composition
@@ -389,7 +379,9 @@ public class CompositionPanelController {
             if (isPlaying.getValue()) {
                 this.stopComposition();
             } else {
-                this.clickInPanelHandler.handle(event, this.mainController.getSelectedInstrument());
+                this.clickInPanelHandler.handle(
+                        event, this.mainController.getSelectedInstrument()
+                );
             }
         }
     }

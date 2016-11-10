@@ -28,15 +28,13 @@ public class TranslateNoteAction implements Actionable {
      * @param comp  the composition panel
      *
      */
-    public TranslateNoteAction(Collection<SelectableRectangle> moved, Double deltaX, Double deltaY, CompositionPanelController comp){
-
+    public TranslateNoteAction(Collection<SelectableRectangle> moved,
+                               Double deltaX, Double deltaY,
+                               CompositionPanelController comp){
         this.deltaX =deltaX;
         this.moved = moved;
         this.deltaY =deltaY;
         this.recs = comp.getRectangles();
-
-
-
     }
 
 

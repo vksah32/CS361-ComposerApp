@@ -38,7 +38,8 @@ public class DragInPanelHandler {
      *
      * @param compController The main composition controller
      */
-    public DragInPanelHandler(Rectangle selectionRectangle, CompositionPanelController compController){
+    public DragInPanelHandler(Rectangle selectionRectangle,
+                              CompositionPanelController compController){
         this.compController = compController;
         this.selectionRectangle = selectionRectangle;
     }
@@ -62,7 +63,10 @@ public class DragInPanelHandler {
      */
     public void handleDragged(MouseEvent event) {
         this.selectionRectangle.setVisible(true);
-        if(!this.metaDown){
+        if(!this.metaDown &&
+                (this.selectionRectangle.getWidth() > 5 ||
+                        this.selectionRectangle.getHeight() > 5))
+        {
             this.compController.clearSelected();
         }
         double leftX = Math.min(event.getX(),this.startX);
@@ -74,8 +78,9 @@ public class DragInPanelHandler {
         this.selectionRectangle.setX(leftX);
         this.selectionRectangle.setY(lowestY);
 
-        for(SelectableRectangle rectangle: compController.getRectangles()){
-            if(rectangle.intersects(leftX,lowestY,width,height)){
+
+        for (SelectableRectangle rectangle : compController.getRectangles()) {
+            if (rectangle.intersects(leftX, lowestY, width, height)) {
                 rectangle.setSelected(true);
             }
         }
@@ -89,7 +94,9 @@ public class DragInPanelHandler {
         if (this.selectionRectangle.isVisible()){
             this.after = this.compController.getSelectedRectangles();
             if (!this.before.equals(this.after)) {
-                this.compController.addAction(new SelectAction(this.before, this.after, this.compController));
+                this.compController.addAction(new SelectAction(this.before,
+                                                               this.after,
+                                                               this.compController));
             }
         }
         this.selectionRectangle.setVisible(false);

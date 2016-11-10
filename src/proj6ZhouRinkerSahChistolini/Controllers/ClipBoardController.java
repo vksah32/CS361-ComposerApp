@@ -53,7 +53,6 @@ public class ClipBoardController {
             return result;
     }
 
-
     /**
      *
      * @throws IOException
@@ -118,13 +117,12 @@ public class ClipBoardController {
      * @param noteParameters a list of note parameters needed to reconstruct
      *                       the note. The parameters are as follows:
      *                       [xPosition, yPosition, Width, Instrument Name,
-     *                        Instrument color, Instrument channel, instrument value]
+     *                       Instrument channel, instrument value]
      */
     public void addPastedNotes(String noteParameters[]){
         Instrument instrument = new Instrument(noteParameters[3],
-                                               Integer.parseInt(noteParameters[6]),
                                                Integer.parseInt(noteParameters[5]),
-                                               noteParameters[4] );
+                                               Integer.parseInt(noteParameters[4]));
 
         double xVal = Double.parseDouble(noteParameters[0]);
         double yVal = Double.parseDouble(noteParameters[1]);

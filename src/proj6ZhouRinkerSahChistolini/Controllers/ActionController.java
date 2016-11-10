@@ -10,11 +10,18 @@
  */
 package proj6ZhouRinkerSahChistolini.Controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 /**
@@ -42,23 +49,22 @@ public class ActionController {
      */
     public void undo() {
         if (!this.undoList.isEmpty()) {
-            Actionable prevState = this.undoList.get(undoList.size() - 1);
+            Actionable prevState = peekUndo();
             prevState.unDoIt();
             //remove after doing it to attain newest state for bindings
-            this.undoList.remove(undoList.size() - 1);
+            popUndo();
             this.redoList.add(prevState);
         }
     }
-
 
     /**
      * Redoes the changes that have been undone
      */
     public void redo(){
         if (!this.redoList.isEmpty()) {
-            Actionable undidState = this.redoList.get(redoList.size() - 1);
+            Actionable undidState = peekRedo();
             undidState.reDoIt();
-            this.redoList.remove(redoList.size() - 1);
+            popRedo();
             this.undoList.add(undidState);
         }
     }
@@ -73,19 +79,90 @@ public class ActionController {
     }
 
     /**
-     * Get and observable undolist
-     * @return the undo list
+     * returns a ListProperty of the actions in the undoList
+     * @return ListProperty undoActions
      */
-    public ObservableList<Actionable> getUndoList(){
-        return this.undoList;
+    public ListProperty<Actionable> getUndoActionsProperty() {
+        //Bind obp to children and list to obp
+        ObjectProperty<ObservableList<Actionable>> obp = new SimpleObjectProperty();
+        obp.setValue(this.undoList);
+        ListProperty<Actionable> undoActions = new SimpleListProperty();
+        undoActions.bind(obp);
+        return undoActions;
     }
 
     /**
-     * Get and observable redo list
-     * @return the redo list
+     * returns a ListProperty of the actions in the redoList
+     * @return ListProperty redoActions
      */
-    public ObservableList<Actionable> getRedoList() {
-        return this.redoList;
+    public ListProperty<Actionable> getRedoActionsProperty() {
+        //Bind obp to children and list to obp
+        ObjectProperty<ObservableList<Actionable>> obp = new SimpleObjectProperty();
+        obp.setValue(this.redoList);
+        ListProperty<Actionable> redoActions = new SimpleListProperty();
+        redoActions.bind(obp);
+        return redoActions;
+    }
+
+    /**
+     * returns a BooleanBinding representing whether or not the undoList is empty
+     * @return BooleanBinding
+     */
+    public BooleanBinding isUndoEmpty() {
+        BooleanBinding emptyUndoBinding = Bindings.createBooleanBinding(() ->
+                this.undoList.size() < 1,
+                this.undoList
+        );
+        return emptyUndoBinding;
+    }
+
+    /**
+     * returns a BooleanBinding representing whether or not the redoList is empty
+     * @return BooleanBinding
+     */
+    public BooleanBinding isRedoEmpty() {
+        BooleanBinding emptyRedoBinding = Bindings.createBooleanBinding(() ->
+                this.redoList.size() < 1,
+                this.redoList
+        );
+        return emptyRedoBinding;
+    }
+
+    /**
+     * returns the top element of the undoList
+     * throws an emptyStackException
+     * @return undoList[0]
+     */
+    public Actionable peekUndo() throws EmptyStackException {
+        if(undoList.size() > 0) { return undoList.get(undoList.size() - 1); }
+        throw new EmptyStackException();
+    }
+
+    /**
+     * returns the top element of the redoList
+     * @return redoList[0]
+     */
+    public Actionable peekRedo() throws EmptyStackException {
+        if(redoList.size() > 0) { return redoList.get(redoList.size() - 1); }
+        throw new EmptyStackException();
+    }
+
+    /**
+     * removes and returns the top element of the undoList
+     * @return undoList[0]
+     */
+    public Actionable popUndo() throws EmptyStackException {
+        if(undoList.size() > 0) { return undoList.remove(undoList.size() - 1); }
+        throw new EmptyStackException();
+    }
+
+    /**
+     * removes and returns the top element of the redoList
+     * @return redoList[0]
+     */
+    public Actionable popRedo() throws EmptyStackException {
+        if(redoList.size() > 0) { return redoList.remove(redoList.size() - 1); }
+        throw new EmptyStackException();
     }
 }
 

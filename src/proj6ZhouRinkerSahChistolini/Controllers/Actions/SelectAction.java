@@ -27,7 +27,9 @@ public class SelectAction implements Actionable{
      * @param comp refernece to composition controller
      *
      */
-    public SelectAction(Collection<SelectableRectangle> before, Collection<SelectableRectangle> after, CompositionPanelController comp ){
+    public SelectAction(Collection<SelectableRectangle> before,
+                        Collection<SelectableRectangle> after,
+                        CompositionPanelController comp ){
         this.before = before;
         this.after = after;
         this.recs = comp.getRectangles();

@@ -11,13 +11,8 @@
 
 package proj6ZhouRinkerSahChistolini.Controllers;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
@@ -71,6 +66,12 @@ public class Controller {
     private MenuItem undoButton;
     @FXML
     private MenuItem redoButton;
+    @FXML
+    private MenuItem cutButton;
+    @FXML
+    private MenuItem copyButton;
+    @FXML
+    private MenuItem pasteButton;
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
@@ -108,8 +109,11 @@ public class Controller {
      * deletes the selected notes
      */
     public void deleteSelectedNotes() {
-        DeleteNoteAction deletedNotes = new DeleteNoteAction(this.compositionPanelController.getSelectedRectangles(),
-                            this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
+        DeleteNoteAction deletedNotes = new DeleteNoteAction(
+            this.compositionPanelController.getSelectedRectangles(),
+            this.compositionPanelController.getSelectedNotes(),
+            this.compositionPanelController
+        );
         this.compositionPanelController.deleteSelectedNotes();
         this.compositionPanelController.addAction(deletedNotes);
     }
@@ -120,7 +124,9 @@ public class Controller {
      */
     public void selectAllNotes() {
         //add
-        Collection<SelectableRectangle> before = this.compositionPanelController.getSelectedRectangles();
+        Collection<SelectableRectangle> before = (
+            this.compositionPanelController.getSelectedRectangles()
+        );
         this.compositionPanelController.selectAllNotes();
         this.compositionPanelController.addAction(
                 new SelectAction(
@@ -222,6 +228,14 @@ public class Controller {
         //undoButton
         this.undoButton.disableProperty().bind(
                 this.bindingController.getUndoEmptyBinding()
+        );
+        //cutButton
+        this.cutButton.disableProperty().bind(
+                this.bindingController.getAreNotesSelectedBinding()
+        );
+        //copyButton
+        this.copyButton.disableProperty().bind(
+                this.bindingController.getAreNotesSelectedBinding()
         );
     }
 }
