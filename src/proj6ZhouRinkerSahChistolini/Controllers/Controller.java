@@ -14,7 +14,6 @@ package proj6ZhouRinkerSahChistolini.Controllers;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.Clipboard;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.PasteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
@@ -77,9 +76,13 @@ public class Controller {
     @FXML
     public void initialize() {
         this.compositionPanelController.init(this);
-        this.bindingController = new BindingController(this, this.compositionPanelController);
-        this.clipboardController = new ClipBoardController(this.compositionPanelController,
-                                                            this.compositionPanelController.getActionController());
+        this.clipboardController = new ClipBoardController(
+                this.compositionPanelController,
+                this.compositionPanelController.getActionController());
+        this.bindingController = new BindingController(
+                this,
+                this.compositionPanelController,
+                this.clipboardController);
         bindMenuItems();
     }
 
@@ -236,6 +239,10 @@ public class Controller {
         //copyButton
         this.copyButton.disableProperty().bind(
                 this.bindingController.getAreNotesSelectedBinding()
+        );
+        //pasteButton
+        this.pasteButton.disableProperty().bind(
+                this.bindingController.getClipBoardEmptyBinding()
         );
     }
 }

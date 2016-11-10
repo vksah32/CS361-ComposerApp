@@ -22,13 +22,17 @@ public class BindingController {
 
     /** The application's composition panel controller*/
     private CompositionPanelController compositionController;
+    /** The application's ClipBoardController */
+    private ClipBoardController clipController;
 
     public BindingController(
         Controller mainController,
-        CompositionPanelController compositionPanelController
+        CompositionPanelController compositionPanelController,
+        ClipBoardController clipController
     ){
         this.mainController = mainController;
         this.compositionController = compositionPanelController;
+        this.clipController = clipController;
     }
 
     /**
@@ -125,5 +129,17 @@ public class BindingController {
             }
         }
         return unboundList;
+    }
+
+    /**
+     * returns a Binding representing whether or not the clipboard is empty
+     * @return emptyClipboardBinding
+     */
+    public BooleanBinding getClipBoardEmptyBinding() {
+        BooleanBinding emptyClipboardBinding = Bindings.createBooleanBinding(() ->
+                        this.clipController.isClipboardEmpty().getValue() == true,
+                this.clipController.isClipboardEmpty()
+        );
+        return emptyClipboardBinding;
     }
 }
