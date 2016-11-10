@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj6ZhouRinkerSahChistolini.Models.Instrument;
@@ -43,6 +44,8 @@ public class Controller {
 
     /** a controller to assist in bindings between the menus and controllers*/
     private BindingController bindingController;
+
+    private ClipBoardController clipboardController;
 
 
     /**
@@ -73,6 +76,8 @@ public class Controller {
     public void initialize() {
         this.compositionPanelController.init(this);
         this.bindingController = new BindingController(this, this.compositionPanelController);
+        this.clipboardController = new ClipBoardController(this.compositionPanelController,
+                                                            this.compositionPanelController.getActionController());
         bindMenuItems();
     }
 
@@ -136,7 +141,7 @@ public class Controller {
      * copies the selected rectangles
      */
     public void copySelected() {
-        this.compositionPanelController.copySelected();
+        this.clipboardController.copySelected();
     }
 
     @FXML
@@ -144,7 +149,7 @@ public class Controller {
      * cut the selected rectangles
      */
     public void cutSelected() {
-        this.compositionPanelController.copySelected();
+        this.clipboardController.copySelected();
         this.deleteSelectedNotes();
     }
 
@@ -152,7 +157,7 @@ public class Controller {
     /**
      * paste the copied rectangles
      */
-    public void pasteSelected() throws IOException, UnsupportedFlavorException { this.compositionPanelController.pasteSelected();}
+    public void pasteSelected() throws IOException, UnsupportedFlavorException { this.clipboardController.pasteSelected();}
 
     @FXML
     /**

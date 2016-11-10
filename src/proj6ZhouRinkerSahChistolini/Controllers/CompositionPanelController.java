@@ -21,16 +21,14 @@ import javafx.scene.shape.Rectangle;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
 import proj6ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
-import proj6ZhouRinkerSahChistolini.Models.Instrument;
 import proj6ZhouRinkerSahChistolini.Models.Note;
 import proj6ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj6ZhouRinkerSahChistolini.Models.Composition;
 import proj6ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj6ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj6ZhouRinkerSahChistolini.Views.TempoLine;
+
 import java.util.HashSet;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.util.Collection;
 
 import java.util.*;
@@ -71,13 +69,8 @@ public class CompositionPanelController {
     /** Holds redo and undo states */
     private ActionController actionController;
 
-    /** holds data on the clipboard to be pasted and cut/copied */
-    private ClipBoardController clipboard;
-
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
-
-    private Boolean isPasting = false;
 
     private HashMap<NoteRectangle, Note> noteMap;
 
@@ -95,7 +88,6 @@ public class CompositionPanelController {
         );
         this.compositionPanel.toFront();
         this.actionController = new ActionController();
-        this.clipboard = new ClipBoardController();
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
@@ -233,16 +225,6 @@ public class CompositionPanelController {
     }
 
     /**
-     * the pasting
-     *
-     * @return returns the pasting value
-     */
-    public Boolean getPasting(){
-
-       return isPasting;
-    }
-
-    /**
      * Instantiates the line and transition fields and begins the animation based on
      * the length of the composition.
      */
@@ -360,66 +342,16 @@ public class CompositionPanelController {
 
     }
 
-
-    // don't select because
-    public void pasteSelected() throws IOException, UnsupportedFlavorException {
-
-        isPasting = true;
-        this.clearSelected();
-
-        //each note is delimited by a new line
-        String stringNotes[] = this.clipboard.getClipboardContent().split("\n");
-
-        //each note parameter is delimited by white space
-        for (String stringNote : stringNotes) {
-            String noteParameters[] = stringNote.split("\\s+");
-            addPastedNotes(noteParameters);
-        }
-
-        isPasting = false;
-
-    }
-
-    public void addPastedNotes(String noteParameters[]){
-        Instrument instrument = new Instrument(noteParameters[3],Integer.parseInt(noteParameters[6]),
-                                                Integer.parseInt(noteParameters[5]),noteParameters[4] );
-
-        double xVal = Double.parseDouble(noteParameters[0]);
-        double yVal = Double.parseDouble(noteParameters[1]);
-        double width = Double.parseDouble(noteParameters[2]);
-
-        NoteRectangle rectangle = clickInPanelHandler.addNoteRectangle(xVal, yVal, width, instrument);
-        Note note = clickInPanelHandler.addBoundNote(rectangle, instrument);
-    }
-
-    /**
-     * add string content to the clipboard
-     */
-    public void copySelected(){
-
-        String mainString = new String();
-
-        //Collection<Note> selectedCompNote = this.getSelectedNotes();
-        Collection<SelectableRectangle> noteRecs =  this.getSelectedRectangles();
-        for (SelectableRectangle sr : noteRecs){
-            if(!sr.xProperty().isBound()) {
-                mainString += generateString(sr);
-            }
-        }
-        System.out.println(mainString);
-
-        this.clipboard.addStringContent(mainString);
-    }
-
     public String generateString(SelectableRectangle sr) {
             String noteRep = new String();
 
             if (sr instanceof GroupRectangle) {
               noteRep += "{\n";
                 HashSet<SelectableRectangle> children = ((GroupRectangle) sr).getChildren();
-                System.out.println("Children: " + children);
                 for(SelectableRectangle child : children) {
+
                     noteRep += this.generateString(child);
+
                 }
                 noteRep += "}\n";
 
@@ -500,5 +432,10 @@ public class CompositionPanelController {
      */
     public Pane getCompositionPane(){
         return this.compositionPanel;
+    }
+
+    /** Get the click in panel handler*/
+    public ClickInPanelHandler getClickInPanelHandler(){
+        return this.clickInPanelHandler;
     }
 }

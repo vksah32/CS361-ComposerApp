@@ -26,8 +26,6 @@ public class Composition {
     /** The midiplayer on which this composition will be played */
     private MidiPlayer player;
 
-
-
     /** The notes to build the composition */
     private HashSet<Note> notes;
 
