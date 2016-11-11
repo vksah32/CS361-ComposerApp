@@ -1,0 +1,40 @@
+<!-- /**
+ * File: compositionPanel.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 5
+ * Date: October 23, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<?import proj7ZhouRinkerSahChistolini.Views.*?>
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@Main.css"
+            fx:controller="proj7ZhouRinkerSahChistolini.Controllers.CompositionPanelController">
+    <StackPane>
+        <Pane fx:id="staffPane">
+            <TempoLine fx:id="tempoLine"
+                       styleClass="tempo-line"
+                       startX="0.0"
+                       startY="0.0"
+                       endX="0.0"
+                       endY="1280.0"
+                       visible="false"/>
+            <Rectangle fx:id="selectionRectangle"
+                       visible="false"
+                       styleClass="selection-rectangle"/>
+        </Pane>
+        <Pane fx:id="compositionPanel"
+              onMouseClicked="#handleMouseClick"
+              onMousePressed="#handleMousePressed"
+              onMouseDragged="#handleDragged"
+              onMouseReleased="#handleDragReleased"/>
+    </StackPane>
+</ScrollPane>
