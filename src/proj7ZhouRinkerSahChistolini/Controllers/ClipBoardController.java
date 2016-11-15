@@ -49,7 +49,6 @@ public class ClipBoardController {
         try {
             return String.valueOf(this.board.getData(DataFlavor.stringFlavor));
         } catch (Exception e){
-            System.out.println("caught");
             return "";
         }
     }
@@ -81,12 +80,12 @@ public class ClipBoardController {
      */
     public int parseString(String[] lines, int add, int brackets){
         for(int i=0; i<lines.length; i++){
-            if (lines[i].equals("{")) {
+            if (lines[i].equals("<GroupRectangle>")) {
                 this.parseStack.add(new ArrayList<>());
                 int skip = parseString(Arrays.copyOfRange(lines, i+1, lines.length), i, brackets+1);
                 i += skip;
                 if (brackets < 1 ){this.compController.clearSelected();}
-            } else if (lines[i].equals("}")){
+            } else if (lines[i].equals("</GroupRectangle>")){
                 GroupRectangle temp = this.compController.createGroupRectangle(this.parseStack.get(brackets - 1));
                 if(brackets > 1){
                     this.parseStack.get(brackets-2).add(temp);
@@ -164,7 +163,7 @@ public class ClipBoardController {
         );
         for (SelectableRectangle sr : noteRecs){
             if(!sr.xProperty().isBound()) {
-                mainString += this.compController.generateString(sr);
+                mainString += sr.toString();
             }
         }
         this.addStringContent(mainString);

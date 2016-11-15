@@ -69,13 +69,12 @@ public class NoteRectangle extends SelectableRectangle {
      * @return
      */
     public String toString() {
-
-        String noteString = this.xProperty().intValue()    +" "+
+        String noteString = this.xProperty().intValue() +" "+
                 this.yProperty().intValue() +" "+
-                this.widthProperty().getValue()     +" " +
-                this.instrument.getName()    + " " +
+                this.widthProperty().getValue() +" " +
+                this.instrument.getName() + " " +
                 this.instrument.getChannel() + " " +
-                this.instrument.getValue()   +"\n";
+                this.instrument.getValue() +"\n";
         return noteString;
     }
 }

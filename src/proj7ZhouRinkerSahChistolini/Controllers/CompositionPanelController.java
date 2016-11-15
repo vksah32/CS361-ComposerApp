@@ -328,28 +328,6 @@ public class CompositionPanelController {
 
     }
 
-    public String generateString(SelectableRectangle sr) {
-            String noteRep = new String();
-
-            if (sr instanceof GroupRectangle) {
-              noteRep += "{\n";
-                HashSet<SelectableRectangle> children = ((GroupRectangle) sr).getChildren();
-                for(SelectableRectangle child : children) {
-
-                    noteRep += this.generateString(child);
-
-                }
-                noteRep += "}\n";
-
-            } else if (sr instanceof NoteRectangle) {
-                    Note note = this.noteMap.get(sr);
-                noteRep += note.toString();
-            }
-
-            return noteRep;
-        }
-
-
     /**
      * adds a new acton event to the undo stack
      *
