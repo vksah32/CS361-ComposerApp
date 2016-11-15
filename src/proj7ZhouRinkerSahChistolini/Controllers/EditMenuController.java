@@ -17,8 +17,6 @@ import proj7ZhouRinkerSahChistolini.Controllers.Actions.PasteAction;
 import proj7ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj7ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.util.Collection;
 
 /**

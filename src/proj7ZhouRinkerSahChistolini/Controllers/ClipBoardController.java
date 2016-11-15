@@ -1,7 +1,5 @@
 
 package proj7ZhouRinkerSahChistolini.Controllers;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-import com.sun.tools.doclets.internal.toolkit.util.Extern;
 import proj7ZhouRinkerSahChistolini.Models.Instrument;
 import proj7ZhouRinkerSahChistolini.Models.Note;
 import proj7ZhouRinkerSahChistolini.Views.GroupRectangle;
@@ -13,8 +11,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.DataFlavor;
-import java.io.IOException;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
