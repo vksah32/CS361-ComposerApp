@@ -1,5 +1,7 @@
 
 package proj7ZhouRinkerSahChistolini.Controllers;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+import com.sun.tools.doclets.internal.toolkit.util.Extern;
 import proj7ZhouRinkerSahChistolini.Models.Instrument;
 import proj7ZhouRinkerSahChistolini.Models.Note;
 import proj7ZhouRinkerSahChistolini.Views.GroupRectangle;
@@ -46,31 +48,30 @@ public class ClipBoardController {
      * returns a String which has been copied to the clipboard.
      * Throws an error if the copied element is unsupported
      * @return result the result String
-     * @throws IOException
-     * @throws UnsupportedFlavorException
      */
-    public String getClipboardContent() throws IOException, UnsupportedFlavorException  {
+    public String getClipboardContent() {
         try {
-            String result = (String) this.board.getData(DataFlavor.stringFlavor);
-            return result;
-        } catch (UnsupportedFlavorException flav) {
+            return String.valueOf(this.board.getData(DataFlavor.stringFlavor));
+        } catch (Exception e){
+            System.out.println("caught");
             return "";
         }
     }
 
+
     /**
      * pastes the clipboard's contents onto the Pane
-     * throws an exepction if the content's flavor is unsupported
-     * @throws IOException
-     * @throws UnsupportedFlavorException
      */
-    public void pasteSelected() throws IOException, UnsupportedFlavorException {
+    public void pasteSelected() {
         this.compController.clearSelected();
         String stringNotes = this.getClipboardContent();
         String[] lines = stringNotes.split("\n");
         Collection<SelectableRectangle> temp = this.compController.getRectangles();
         this.parseStack = new ArrayList<>();
-        parseString(lines, 0, 0);
+
+        // Set up a try-catch block in order to safely fail when the clipboard has
+        // an unmatched type
+        try {parseString(lines, 0, 0);} catch (Exception e) {return;}
         for(SelectableRectangle rec : this.compController.getRectangles()){
             if(!temp.contains(rec)){
                 rec.setSelected(true);
@@ -183,6 +184,5 @@ public class ClipBoardController {
     public void addStringContent(String cutCopyData){
         Transferable transferable = new StringSelection(cutCopyData);
         board.setContents(transferable, null);
-
     }
 }

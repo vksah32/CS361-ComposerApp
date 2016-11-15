@@ -131,7 +131,7 @@ public class EditMenuController {
     /**
      * paste the copied rectangles
      */
-    public void pasteSelected() throws IOException, UnsupportedFlavorException {
+    public void pasteSelected() {
         this.clipboardController.pasteSelected();
         PasteAction pastedNotes = new PasteAction(this.compositionPanelController.getSelectedRectangles(),
                 this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
