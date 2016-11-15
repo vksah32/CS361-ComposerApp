@@ -192,10 +192,6 @@ public class EditMenuController {
         this.copyButton.disableProperty().bind(
                 this.bindingController.getAreNotesSelectedBinding()
         );
-        //pasteButton
-        this.pasteButton.disableProperty().bind(
-                this.bindingController.getClipBoardEmptyBinding()
-        );
         //selectAllButton
         this.selectAllButton.disableProperty().bind(
                 this.bindingController.getChildrenProperty().sizeProperty().isEqualTo(0)
