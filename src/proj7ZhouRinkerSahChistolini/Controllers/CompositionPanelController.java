@@ -426,4 +426,8 @@ public class CompositionPanelController {
     public ClickInPanelHandler getClickInPanelHandler(){
         return this.clickInPanelHandler;
     }
+
+    public HashMap<NoteRectangle, Note> getNoteMap() {
+        return noteMap;
+    }
 }
