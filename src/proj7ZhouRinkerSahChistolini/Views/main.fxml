@@ -20,16 +20,8 @@
             <fx:include source="fileMenu.fxml"/>
             <fx:include fx:id="editMenu"
                         source="editMenu.fxml"/>
-            <Menu text="Action">
-                <MenuItem fx:id="startButton"
-                          text="Play"
-                          onAction="#playComposition"
-                          accelerator="Shortcut+P"/>
-                <MenuItem fx:id="stopButton"
-                          text="Stop"
-                          onAction="#stopComposition"
-                          accelerator="Shortcut+S"/>
-            </Menu>
+            <fx:include fx:id="actionMenu"
+                        source="actionMenu.fxml"/>
         </MenuBar>
     </top>
     <left>

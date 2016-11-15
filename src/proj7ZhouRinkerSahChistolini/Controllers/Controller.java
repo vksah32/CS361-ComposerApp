@@ -12,7 +12,6 @@
 package proj7ZhouRinkerSahChistolini.Controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
 import proj7ZhouRinkerSahChistolini.Models.Instrument;
 
 /**
@@ -32,21 +31,15 @@ public class Controller {
     @FXML
     private EditMenuController editMenuController;
 
+    /** an actionMenuController field which allows us to talk with the actionMenu */
+    @FXML
+    private ActionMenuController actionMenuController;
+
     /** a controller to assist in bindings between the menus and controllers*/
     private BindingController bindingController;
 
     private ClipBoardController clipboardController;
 
-    /**
-     * All of our MenuItem are put into fields
-     * Each of the following FXML elements are MenuItems defined in
-     * our fxml. They are injected here into our controller so that
-     * we can bind their disable properties
-     */
-    @FXML
-    private MenuItem stopButton;
-    @FXML
-    public MenuItem startButton;
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
@@ -62,32 +55,13 @@ public class Controller {
         this.editMenuController.init(this.compositionPanelController,
                                      this.bindingController,
                                      this.clipboardController);
-        bindMenuItems();
+        this.actionMenuController.init(this.compositionPanelController,
+                                       this.bindingController);
     }
 
     /** Returns the currently selected instrument */
     public Instrument getSelectedInstrument() {
         return this.instrumentPaneController.getSelectedInstrument();
-    }
-
-    @FXML
-    public void playComposition() { this.compositionPanelController.playComposition(); }
-
-    @FXML
-    public void stopComposition() { this.compositionPanelController.stopComposition(); }
-
-    /**
-     * Sets up the bindings for the menuButtons in order to disable them
-     */
-    public void bindMenuItems() {
-        //stopButton
-        this.stopButton.disableProperty().bind(
-                this.compositionPanelController.getTempoLine().isPlayingProperty().not()
-        );
-        //startButton
-        this.startButton.disableProperty().bind(
-                this.bindingController.getChildrenProperty().sizeProperty().isEqualTo(0)
-        );
     }
 }
 
