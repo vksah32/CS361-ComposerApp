@@ -1,9 +1,5 @@
 
 package proj7ZhouRinkerSahChistolini.Controllers;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import proj7ZhouRinkerSahChistolini.Models.Instrument;
 import proj7ZhouRinkerSahChistolini.Models.Note;
 import proj7ZhouRinkerSahChistolini.Views.GroupRectangle;
@@ -15,8 +11,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.DataFlavor;
-import java.io.IOException;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,8 +26,6 @@ public class ClipBoardController {
     private Clipboard board;
     /** A reference to the main compositionController */
     private CompositionPanelController compController;
-    /** A reference to the actionController */
-    private ActionController actionController;
 
     private ArrayList<ArrayList<SelectableRectangle>> parseStack;
 
@@ -41,12 +33,9 @@ public class ClipBoardController {
      * Generates a new ClipBoardController initializing the references
      * needed to perform clipboard actions
      * @param compController the associated CompositionPanelController
-     * @param actionController the associated ActionController
      */
-    public ClipBoardController(CompositionPanelController compController,
-                               ActionController actionController){
+    public ClipBoardController(CompositionPanelController compController){
         this.compController = compController;
-        this.actionController = actionController;
         this.board =  Toolkit.getDefaultToolkit().getSystemClipboard();
         this.parseStack = new ArrayList<>();
     }
@@ -55,27 +44,30 @@ public class ClipBoardController {
      * returns a String which has been copied to the clipboard.
      * Throws an error if the copied element is unsupported
      * @return result the result String
-     * @throws IOException
-     * @throws UnsupportedFlavorException
      */
-    public String getClipboardContent() throws IOException, UnsupportedFlavorException  {
-            String result = (String) this.board.getData(DataFlavor.stringFlavor);
-            return result;
+    public String getClipboardContent() {
+        try {
+            return String.valueOf(this.board.getData(DataFlavor.stringFlavor));
+        } catch (Exception e){
+            System.out.println("caught");
+            return "";
+        }
     }
+
 
     /**
      * pastes the clipboard's contents onto the Pane
-     * throws an exepction if the content's flavor is unsupported
-     * @throws IOException
-     * @throws UnsupportedFlavorException
      */
-    public void pasteSelected() throws IOException, UnsupportedFlavorException {
+    public void pasteSelected() {
         this.compController.clearSelected();
         String stringNotes = this.getClipboardContent();
         String[] lines = stringNotes.split("\n");
         Collection<SelectableRectangle> temp = this.compController.getRectangles();
         this.parseStack = new ArrayList<>();
-        parseString(lines, 0, 0);
+
+        // Set up a try-catch block in order to safely fail when the clipboard has
+        // an unmatched type
+        try {parseString(lines, 0, 0);} catch (Exception e) {return;}
         for(SelectableRectangle rec : this.compController.getRectangles()){
             if(!temp.contains(rec)){
                 rec.setSelected(true);
@@ -188,25 +180,5 @@ public class ClipBoardController {
     public void addStringContent(String cutCopyData){
         Transferable transferable = new StringSelection(cutCopyData);
         board.setContents(transferable, null);
-
-    }
-
-    /**
-     * returns a BooleanBinding representing whether or not the clipboard
-     * is empty
-     * @returns emptyClipboardBinding BooleanBinding, true if the clipboard is empty
-     */
-    public BooleanProperty isClipboardEmpty() {
-        //Bind obp to children and list to obp
-        StringProperty stringProp = new SimpleStringProperty();
-        try {
-            stringProp.setValue((String) this.board.getData(DataFlavor.stringFlavor));
-        } catch (Exception e){
-            stringProp.setValue("");
-        }
-        BooleanProperty emptyClipboardProperty = new SimpleBooleanProperty();
-        emptyClipboardProperty.bind(stringProp.isEmpty());
-        return emptyClipboardProperty;
-
     }
 }

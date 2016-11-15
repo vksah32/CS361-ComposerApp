@@ -130,16 +130,4 @@ public class BindingController {
         }
         return unboundList;
     }
-
-    /**
-     * returns a Binding representing whether or not the clipboard is empty
-     * @return emptyClipboardBinding
-     */
-    public BooleanBinding getClipBoardEmptyBinding() {
-        BooleanBinding emptyClipboardBinding = Bindings.createBooleanBinding(() ->
-                        this.clipController.isClipboardEmpty().getValue() == true,
-                this.clipController.isClipboardEmpty()
-        );
-        return emptyClipboardBinding;
-    }
 }

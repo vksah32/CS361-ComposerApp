@@ -17,8 +17,6 @@ import proj7ZhouRinkerSahChistolini.Controllers.Actions.PasteAction;
 import proj7ZhouRinkerSahChistolini.Controllers.Actions.SelectAction;
 import proj7ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -131,7 +129,7 @@ public class EditMenuController {
     /**
      * paste the copied rectangles
      */
-    public void pasteSelected() throws IOException, UnsupportedFlavorException {
+    public void pasteSelected() {
         this.clipboardController.pasteSelected();
         PasteAction pastedNotes = new PasteAction(this.compositionPanelController.getSelectedRectangles(),
                 this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
@@ -191,10 +189,6 @@ public class EditMenuController {
         //copyButton
         this.copyButton.disableProperty().bind(
                 this.bindingController.getAreNotesSelectedBinding()
-        );
-        //pasteButton
-        this.pasteButton.disableProperty().bind(
-                this.bindingController.getClipBoardEmptyBinding()
         );
         //selectAllButton
         this.selectAllButton.disableProperty().bind(
