@@ -34,7 +34,11 @@ public class GroupRectangle extends SelectableRectangle{
                                            rec -> rec.getX()+rec.getWidth())
                                    ).get();
         Rectangle top = selection.stream().min(Comparator.comparing(Rectangle::getY)).get();
-        Rectangle bot = selection.stream().max(Comparator.comparing(Rectangle::getY)).get();
+        Rectangle bot = selection.stream()
+                                   .max(
+                                           Comparator.comparing(
+                                                   rec -> rec.getY() + rec.getHeight())
+                                   ).get();
         this.initialWidth = right.getX() + right.getWidth() - left.getX();
         this.setX(left.getX());
         this.setY(top.getY());
