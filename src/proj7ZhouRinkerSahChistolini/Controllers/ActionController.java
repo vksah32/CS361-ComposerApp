@@ -164,6 +164,14 @@ public class ActionController {
         if(redoList.size() > 0) { return redoList.remove(redoList.size() - 1); }
         throw new EmptyStackException();
     }
+
+    /**
+     * clears the undo and redo lists
+     */
+    public void clearLists() {
+        this.undoList.clear();
+        this.redoList.clear();
+    }
 }
 
 

@@ -72,6 +72,7 @@ public class CompositionPanelController {
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
+    /** maps the NoteRectangles to the specific associated note */
     private HashMap<NoteRectangle, Note> noteMap;
 
     /**
@@ -407,5 +408,14 @@ public class CompositionPanelController {
 
     public HashMap<NoteRectangle, Note> getNoteMap() {
         return noteMap;
+    }
+
+    /**
+     * resets the entire composition to a fresh slate
+     */
+    public void reset() {
+        selectAllNotes();
+        deleteSelectedNotes();
+        this.actionController.clearLists();
     }
 }
