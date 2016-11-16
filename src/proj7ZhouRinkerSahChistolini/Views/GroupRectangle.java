@@ -1,5 +1,6 @@
 package proj7ZhouRinkerSahChistolini.Views;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Collection;
@@ -119,17 +120,37 @@ public class GroupRectangle extends SelectableRectangle{
         this.selected.set(selected);
     }
 
+    @Override
+    public void populate(Pane pane){
+        this.setSelected(true);
+        pane.getChildren().add(this);
+        this.getChildren().forEach(rec -> rec.populate(pane));
+    }
+
+    @Override
     /**
      * Returns FXML formatted string of GroupRectangle and
      * its children
-     * @return
+     * @return String representation of the object
      */
-    public String toString(){
+    public String toString() { return toString(0); }
+
+    /**
+     * Returns FXML formatted string of GroupRectangle and
+     * its children
+     * @param numTabs an int representing the indentation level
+     *                to make the string more readable
+     * @return String representation of the object
+     */
+    public String toString(int numTabs) {
         String kids = "";
         for(SelectableRectangle child : this.children) {
-            kids += child.toString();
+            kids += child.toString(numTabs+1);
         }
-        return "<GroupRectangle>\n" + kids + "</GroupRectangle>\n";
+        String tabbing = (numTabs > 0) ? String.format("%" + numTabs*4 + "s", " ") : "";
+        return tabbing + "<GroupRectangle>\n" +
+                kids +
+                tabbing + "</GroupRectangle>\n";
     }
 
     /**

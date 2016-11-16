@@ -27,6 +27,10 @@ public class Controller {
     @FXML
     private InstrumentPanelController instrumentPaneController;
 
+    /** an fileMenuController field which allows us to talk to the editMenu */
+    @FXML
+    private FileMenuController fileMenuController;
+
     /** an editMenuController field which allows us to talk to the editMenu */
     @FXML
     private EditMenuController editMenuController;
@@ -53,6 +57,7 @@ public class Controller {
                 this,
                 this.compositionPanelController,
                 this.clipboardController);
+        this.fileMenuController.init(this.compositionPanelController, this.clipboardController);
         this.editMenuController.init(this.compositionPanelController,
                                      this.bindingController,
                                      this.clipboardController);

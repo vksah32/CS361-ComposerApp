@@ -14,5 +14,11 @@
 <Menu text="File"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="proj7ZhouRinkerSahChistolini.Controllers.FileMenuController">
+    <MenuItem text="About" onAction="#about"/>
+    <SeparatorMenuItem/>
+    <MenuItem text="New" onAction="#createNewDocument" accelerator="Shortcut+N"/>
+    <MenuItem text="Open" onAction="#open" accelerator="Shortcut+O"/>
+    <MenuItem text="Save as" onAction="#saveAs"/>
+    <MenuItem text="Save" onAction="#save" accelerator="Shortcut+Shift+S"/>
     <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
 </Menu>

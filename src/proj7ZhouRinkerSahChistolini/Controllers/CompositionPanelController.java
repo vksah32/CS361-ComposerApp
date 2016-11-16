@@ -14,6 +14,7 @@ package proj7ZhouRinkerSahChistolini.Controllers;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.input.Clipboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
@@ -72,6 +73,7 @@ public class CompositionPanelController {
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
+    /** maps the NoteRectangles to the specific associated note */
     private HashMap<NoteRectangle, Note> noteMap;
 
     /**
@@ -125,6 +127,12 @@ public class CompositionPanelController {
             rectangle.setSelected(true);
         }
         this.compositionPanel.getChildren().add(rectangle);
+    }
+
+    public void populateCompositionPanel(Collection<SelectableRectangle> rectangles){
+        for (SelectableRectangle rec : rectangles){
+            rec.populate(this.compositionPanel);
+        }
     }
 
     /**
@@ -293,11 +301,15 @@ public class CompositionPanelController {
     public void groupSelected(Collection<SelectableRectangle> selectRect){
         if(!selectRect.isEmpty()) {
             GroupRectangle gesture = createGroupRectangle(selectRect);
+            this.addRectangle(gesture, true);
             this.addAction(new GroupNoteAction(gesture, this));
         }
     }
 
-    /** Adds the GroupRectangle to the panel while indicating an action */
+    /** creates a grouprectangle with children
+     * @param selectRect the rectangles to be children
+     * @return the created GroupRectangle
+     */
     public GroupRectangle createGroupRectangle(Collection<SelectableRectangle> selectRect){
         GroupRectangle gesture = new GroupRectangle(selectRect);
         DragInNoteHandler handler = new DragInNoteHandler(gesture, this);
@@ -307,7 +319,6 @@ public class CompositionPanelController {
         gesture.setOnMouseDragged(handler::handleDragged);
         gesture.setOnMouseReleased(handler::handleMouseReleased);
         gesture.setOnMouseClicked(new ClickInNoteHandler(this));
-        addRectangle(gesture, true);
         return gesture;
     }
 
@@ -407,5 +418,14 @@ public class CompositionPanelController {
 
     public HashMap<NoteRectangle, Note> getNoteMap() {
         return noteMap;
+    }
+
+    /**
+     * resets the entire composition to a fresh slate
+     */
+    public void reset() {
+        selectAllNotes();
+        deleteSelectedNotes();
+        this.actionController.clearLists();
     }
 }
