@@ -13,14 +13,17 @@ package proj7ZhouRinkerSahChistolini.Controllers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class handles all of the MenuItems associated
@@ -40,7 +43,9 @@ public class FileMenuController {
     public void initialize(){
         this.currentOpenFile =null;
         chooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("fxml files(*.fxml)", "*.fxml");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "fxml files(*.fxml)", "*.fxml"
+        );
         chooser.getExtensionFilters().add(extFilter);
     }
 
@@ -66,20 +71,30 @@ public class FileMenuController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("About");
-        alert.setContentText("This is a musical composition development software \n Authors: \n Vivek Sah, " +
+        alert.setContentText("This is a musical composition development " +
+                "software \n Authors: \n Vivek Sah, " +
                 "Victoria Chistolini, Alex Rinker and Ed Zhou");
         alert.show();
     }
 
-    /** Create new Composition */
+    /**
+     * Create new Composition based on whether or not the composition has changed
+     */
     @FXML
     public void createNewDocument() throws IOException {
-// TODO: 11/16/2016 check if there is current changes to prompt save 
         // check if modified
-        File temp = File.createTempFile("temp-file-name", ".tmp");
-        String current = ClipBoardController.createXML(this.compositionPanelController.getRectangles());
-        this.writeFile(current,temp);
-
+        if(hasUnsavedChanges()) {
+            int result = generateConfirmationDialog();
+            switch(result) {
+                case 1:
+                    save();
+                case 0:
+                    break;
+                case 2:
+                    return;
+            }
+        }
+        //clear the document
         this.compositionPanelController.reset();
         this.currentOpenFile = null;
     }
@@ -87,19 +102,24 @@ public class FileMenuController {
     /** Open a new composition file */
     @FXML
     public void open() throws IOException {
-        this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
-        String lines = "";
-        BufferedReader br = new BufferedReader(new FileReader(this.currentOpenFile));
-        String line;
-        while ((line =  br.readLine()) != null){
-            lines += line;
+        if(hasUnsavedChanges()) {
+            int result = generateConfirmationDialog();
+            switch(result) {
+                case 1:
+                    save();
+                case 0:
+                    break;
+                case 2:
+                    return;
+            }
         }
-        br.close();
+        this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
+        String lines = readFile(this.currentOpenFile);
         this.compositionPanelController.reset();
         try{
             this.clipboardController.stringToComposition(lines);
         }catch(SAXException e){
-            this.errorAlert("Malformed XML File");
+            this.errorAlert("Error Parsing File","Malformed XML File");
         }catch(ParserConfigurationException e){
             return;
         }
@@ -111,8 +131,10 @@ public class FileMenuController {
     @FXML
     public void saveAs() {
         this.currentOpenFile = this.chooser.showSaveDialog(new Stage());
-        this.writeFile(ClipBoardController.createXML(this.compositionPanelController.getRectangles()),
-                                                     this.currentOpenFile);
+        this.writeFile(ClipBoardController.createXML(
+                this.compositionPanelController.getRectangles()),
+                this.currentOpenFile
+        );
     }
 
     /**
@@ -141,16 +163,98 @@ public class FileMenuController {
             this.saveAs();
         }
         else {
-            this.writeFile(ClipBoardController.createXML(this.compositionPanelController.getRectangles()),
-                                                         this.currentOpenFile);
+            this.writeFile(ClipBoardController.createXML(
+                    this.compositionPanelController.getRectangles()),
+                    this.currentOpenFile
+            );
         }
     }
 
-    public void errorAlert(String e){
+    /**
+     * creates and displays a dialog warning box which allows the user to
+     * verify one of the options shown. Returns a value to identify the
+     * user's choice
+     * @return result an int corresponding to the desired outcome
+     */
+    public int generateConfirmationDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Warning: You Have Unsaved Changes");
+        alert.setHeaderText("You currently have unsaved changes in your composition.\n" +
+                "Would you like to save those changes before closing?");
+
+        ButtonType yesButton = new ButtonType("Yes");
+        ButtonType noButton = new ButtonType("No");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(yesButton, noButton, cancelButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == yesButton){
+            return 1;
+        } else if (result.get() == noButton) {
+            return 0;
+        } else {
+            return 2;
+        }
+    }
+
+    /**
+     * returns a String representing the characters
+     * read from the input File
+     * @param file the input File to be read
+     * @returns lines a String representation of the file
+     */
+    public String readFile(File file) throws IOException {
+        String lines = "";
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line =  br.readLine()) != null){
+            lines += line + "\n";
+        }
+        br.close();
+        return lines;
+    }
+
+    /**
+     * Pop up an error box
+     * @param type the type of error that occurred
+     * @param e the message to be displayed in the box
+     */
+    public void errorAlert(String type, String e) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
+        alert.setTitle(type);
+        alert.setHeaderText(type);
         alert.setContentText(e);
         alert.show();
+    }
+    /**
+     * compares the current composition to the saved file (if available)
+     * and returns true if they are different and false if there are no differences
+     * @returns result boolean which represent whether or not there are unsaved changes
+     */
+    public boolean hasUnsavedChanges() throws IOException {
+        boolean result = false;
+        //if there are rectangles in the composition, prompt the warning
+        if (this.currentOpenFile == null &&
+                this.compositionPanelController.getRectangles().size() > 0) {
+            result = true;
+        }
+        //if the current save file differs from the composition, prompt the warning
+        else if (this.currentOpenFile != null){
+            List<String> saved = Arrays.asList(
+                    readFile(this.currentOpenFile).split("\n")
+            );
+            List<String> current = Arrays.asList(ClipBoardController.createXML(
+                    this.compositionPanelController.getRectangles()
+            ).split("\n"));
+            for (String s : saved) {
+                if (!current.contains(s)) {result = true;}
+            }
+            for (String s : current) {
+                if (!saved.contains(s)) {result = true;}
+            }
+        }
+        return result;
+
     }
 }
