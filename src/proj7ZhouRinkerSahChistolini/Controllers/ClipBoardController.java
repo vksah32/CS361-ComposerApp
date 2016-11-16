@@ -19,6 +19,7 @@ import proj7ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj7ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj7ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.awt.Toolkit;
@@ -26,6 +27,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.DataFlavor;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
@@ -97,17 +99,21 @@ public class ClipBoardController {
         }
     }
 
-    /** Initiates a parse on a given string to create rectangles*/
-    public void stringToComposition(String xmlString){
-        try {
-            SAXParserFactory parserFactory = SAXParserFactory.newInstance();
-            SAXParser parser = parserFactory.newSAXParser();
-            SAXNoteHandler handler = new SAXNoteHandler();
-            parser.parse(new InputSource(new StringReader(xmlString)), handler);
-        } catch (Exception e) {
-            //Don't add a rectangle if it can't be parsed
-            System.out.println("ERROR When Pasting: " + e);
-        }
+    /** Initiates a parse on a given string to create rectangles
+     * Throws an exception if string is invalid form
+     */
+    public void stringToComposition(String xmlString)
+            throws SAXException, ParserConfigurationException, IOException {
+
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setValidating(true);
+        SAXParser parser = parserFactory.newSAXParser();
+
+        SAXNoteHandler handler = new SAXNoteHandler();
+        parser.parse(new InputSource(new StringReader(xmlString)), handler);
+        //populate composition panel
+        this.compController.populateCompositionPanel(handler.pStack.peek());
+        handler.notes.forEach(n -> this.compController.addNoteToComposition(n));
     }
 
     /**
@@ -151,10 +157,13 @@ public class ClipBoardController {
      */
     private class SAXNoteHandler extends DefaultHandler {
         /** Stack to hold pointers to rectangles to assist in creation of groups*/
+
         private Stack<Collection<SelectableRectangle>> pStack;
+        private Collection<Note> notes;
 
         public SAXNoteHandler(){
             this.pStack = new Stack<>();
+            this.notes = new ArrayList<>();
             //populate the stack with an initial list
             this.pStack.push(new ArrayList<>());
         }
@@ -176,11 +185,8 @@ public class ClipBoardController {
                                     attributes.getValue("instValue"))
                             )
                     );
-                    Note n = compController.getClickInPanelHandler().addBoundNote(rec,
-                            rec.getInstrument());
-                    compController.addNotestoMap(n, rec);
-                    compController.addRectangle(rec, true);
-                    compController.addNoteToComposition(n);
+                    this.notes.add(compController.getClickInPanelHandler().addBoundNote(rec,
+                            rec.getInstrument()));
                     pStack.peek().add(rec);
                     break;
                 case "GroupRectangle":

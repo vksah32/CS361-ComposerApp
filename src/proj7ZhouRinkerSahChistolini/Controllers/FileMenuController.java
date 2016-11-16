@@ -15,7 +15,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +96,13 @@ public class FileMenuController {
         }
         br.close();
         this.compositionPanelController.reset();
-        this.clipboardController.stringToComposition(lines);
+        try{
+            this.clipboardController.stringToComposition(lines);
+        }catch(SAXException e){
+            this.errorAlert("Malformed XML File");
+        }catch(ParserConfigurationException e){
+            return;
+        }
     }
 
     /**
@@ -138,4 +146,11 @@ public class FileMenuController {
         }
     }
 
+    public void errorAlert(String e){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error");
+        alert.setContentText(e);
+        alert.show();
+    }
 }

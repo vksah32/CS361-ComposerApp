@@ -1,5 +1,6 @@
 package proj7ZhouRinkerSahChistolini.Views;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Collection;
@@ -117,6 +118,13 @@ public class GroupRectangle extends SelectableRectangle{
             }
         }
         this.selected.set(selected);
+    }
+
+    @Override
+    public void populate(Pane pane){
+        this.setSelected(true);
+        pane.getChildren().add(this);
+        this.getChildren().forEach(rec -> rec.populate(pane));
     }
 
     @Override

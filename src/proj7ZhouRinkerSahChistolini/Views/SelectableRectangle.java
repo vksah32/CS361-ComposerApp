@@ -13,6 +13,7 @@ package proj7ZhouRinkerSahChistolini.Views;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -109,5 +110,11 @@ public abstract class SelectableRectangle extends Rectangle {
      */
     public String toString(int numTabs) {
         return this.toString();
+    }
+
+    /** Populate a given pane with this object*/
+    public void populate(Pane pane){
+        this.setSelected(true);
+        pane.getChildren().add(this);
     }
 }
