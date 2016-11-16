@@ -27,10 +27,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.DataFlavor;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -49,8 +46,6 @@ public class ClipBoardController {
     private CompositionPanelController compController;
     private InstrumentPanelController instController;
 
-    private ArrayList<ArrayList<SelectableRectangle>> parseStack;
-
     /**
      * Generates a new ClipBoardController initializing the references
      * needed to perform clipboard actions
@@ -63,7 +58,6 @@ public class ClipBoardController {
         this.compController = compController;
         this.instController = instController;
         this.board = Toolkit.getDefaultToolkit().getSystemClipboard();
-        this.parseStack = new ArrayList<>();
     }
 
     /**
@@ -86,14 +80,13 @@ public class ClipBoardController {
     public void pasteSelected() {
         this.compController.clearSelected();
         String stringNotes = this.getClipboardContent();
-        List<String> lines = Arrays.asList(stringNotes.split("\n"));
+
         Collection<SelectableRectangle> temp = this.compController.getRectangles();
-        this.parseStack = new ArrayList<>();
 
         // Set up a try-catch block in order to safely fail when the clipboard has
         // an unmatched type
         try {
-            stringToComposition(lines);
+            stringToComposition(stringNotes);
         } catch (Exception e) {
             return;
         }
@@ -105,77 +98,25 @@ public class ClipBoardController {
     }
 
     /** Initiates a parse on a given string to create rectangles*/
-    public void stringToComposition(List<String> strings){
-        parseString(strings, 0);
-    }
-
-    /**
-     * parsesThrough a string list and adds groups and notes to the compositionPanel
-     *
-     * @param lines the String representation of Notes
-     */
-    public int parseString(List<String> lines, int brackets) {
-        for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).contains("<GroupRectangle>")) {
-                this.parseStack.add(new ArrayList<>());
-                int skip = parseString(lines.subList(i+1, lines.size()), brackets + 1);
-                i += skip;
-                if (brackets < 1) {
-                    this.compController.clearSelected();
-                }
-            } else if (lines.get(i).contains("</GroupRectangle>")) {
-                GroupRectangle temp = this.compController.createGroupRectangle(this.parseStack.get(brackets - 1));
-                if (brackets > 1) {
-                    this.parseStack.get(brackets - 2).add(temp);
-                }
-                this.parseStack.get(brackets - 1).clear();
-                return i + 1;
-            } else {
-                if (lines.get(i).length() > 0) {
-                    if (brackets > 0) {
-                        this.parseStack.get(brackets - 1).add(addNotesFromString(lines.get(i)));
-                        this.compController.clearSelected();
-                    } else {
-                        addNotesFromString(lines.get(i));
-                    }
-                }
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * adds a note to the CompositionPane from a Note String representation
-     *
-     * @param note the String representation of the Note object
-     */
-    private NoteRectangle addNotesFromString(String note) {
-        NoteRectangle rec = null;
+    public void stringToComposition(String xmlString){
         try {
             SAXParserFactory parserFactory = SAXParserFactory.newInstance();
             SAXParser parser = parserFactory.newSAXParser();
             SAXNoteHandler handler = new SAXNoteHandler();
-            parser.parse(new InputSource(new StringReader(note)), handler);
-            rec = handler.getRectangle();
+            parser.parse(new InputSource(new StringReader(xmlString)), handler);
         } catch (Exception e) {
             //Don't add a rectangle if it can't be parsed
             System.out.println("ERROR When Pasting: " + e);
         }
-        Note n = this.compController.getClickInPanelHandler().addBoundNote(rec,
-                rec.getInstrument());
-        this.compController.addNotestoMap(n, rec);
-        this.compController.addRectangle(rec, true);
-        this.compController.addNoteToComposition(n);
-        return rec;
     }
 
     /**
-     * Generates a String representation of the selected notes and
+     * Generates a String of the currently selected notes to
      * adds them to the clipboard
      */
     public void copySelected() {
         String mainString = createXML(this.compController.getSelectedRectangles());
-        this.addStringContent(mainString);
+        this.addToClipBoard(mainString);
     }
 
     /**
@@ -191,7 +132,7 @@ public class ClipBoardController {
                 mainString += sr.toString();
             }
         }
-        return mainString;
+        return "<Composition>\n" + mainString + "</Composition>";
     }
 
     /**
@@ -199,7 +140,7 @@ public class ClipBoardController {
      *
      * @param cutCopyData string data to be added to the clipboard
      */
-    public void addStringContent(String cutCopyData) {
+    public void addToClipBoard(String cutCopyData) {
         Transferable transferable = new StringSelection(cutCopyData);
         board.setContents(transferable, null);
     }
@@ -209,7 +150,14 @@ public class ClipBoardController {
      * our saved note strings
      */
     private class SAXNoteHandler extends DefaultHandler {
-        private NoteRectangle rect;
+        /** Stack to hold pointers to rectangles to assist in creation of groups*/
+        private Stack<Collection<SelectableRectangle>> pStack;
+
+        public SAXNoteHandler(){
+            this.pStack = new Stack<>();
+            //populate the stack with an initial list
+            this.pStack.push(new ArrayList<>());
+        }
 
         @Override
         //This is triggered when the start of a tag is found
@@ -219,7 +167,7 @@ public class ClipBoardController {
 
             switch (qName) {
                 case "NoteRectangle":
-                    this.rect = compController.getClickInPanelHandler()
+                    NoteRectangle rec = compController.getClickInPanelHandler()
                                               .addNoteRectangle(
                             Double.parseDouble(attributes.getValue("xpos")),
                             Double.parseDouble(attributes.getValue("ypos")),
@@ -228,15 +176,30 @@ public class ClipBoardController {
                                     attributes.getValue("instValue"))
                             )
                     );
+                    Note n = compController.getClickInPanelHandler().addBoundNote(rec,
+                            rec.getInstrument());
+                    compController.addNotestoMap(n, rec);
+                    compController.addRectangle(rec, true);
+                    compController.addNoteToComposition(n);
+                    pStack.peek().add(rec);
+                    break;
+                case "GroupRectangle":
+                    pStack.push(new ArrayList<>());
             }
         }
 
-        /**
-         * returns the contents of the rectangle field
-         * @return NoteRectangle rect
-         */
-        public NoteRectangle getRectangle() {
-            return this.rect;
+        @Override
+        /** Triggered when an end tag is found */
+        public void endElement(String uri, String localName,
+                               String qName)
+                throws SAXException {
+            switch(qName) {
+                case "NoteRectangle":
+                    break;
+                case "GroupRectangle":
+                    GroupRectangle temp = compController.createGroupRectangle(this.pStack.pop());
+                    this.pStack.peek().add(temp);
+            }
         }
     }
 }

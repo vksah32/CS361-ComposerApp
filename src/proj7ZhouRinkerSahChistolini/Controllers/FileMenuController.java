@@ -86,11 +86,11 @@ public class FileMenuController {
     @FXML
     public void open() throws IOException {
         this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
-        List<String> lines = new ArrayList<>();
+        String lines = "";
         BufferedReader br = new BufferedReader(new FileReader(this.currentOpenFile));
         String line;
         while ((line =  br.readLine()) != null){
-            lines.add(line);
+            lines += line;
         }
         br.close();
         this.compositionPanelController.reset();
