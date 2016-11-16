@@ -60,7 +60,18 @@ public class FileMenuController {
      * destruction of the window.
      */
     @FXML
-    public void cleanUpOnExit() {
+    public void cleanUpOnExit() throws IOException{
+        if(hasUnsavedChanges()) {
+            int result = generateConfirmationDialog();
+            switch(result) {
+                case 1:
+                    save();
+                case 0:
+                    break;
+                case 2:
+                    return;
+            }
+        }
         Platform.exit();
         System.exit(0);
     }
@@ -114,6 +125,9 @@ public class FileMenuController {
             }
         }
         this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
+        if(this.currentOpenFile == null) {//If the user cancels
+            return;
+        }
         String lines = readFile(this.currentOpenFile);
         this.compositionPanelController.reset();
         try{
@@ -131,6 +145,9 @@ public class FileMenuController {
     @FXML
     public void saveAs() {
         this.currentOpenFile = this.chooser.showSaveDialog(new Stage());
+        if(this.currentOpenFile == null) {//If the user cancels
+            return;
+        }
         this.writeFile(ClipBoardController.createXML(
                 this.compositionPanelController.getRectangles()),
                 this.currentOpenFile

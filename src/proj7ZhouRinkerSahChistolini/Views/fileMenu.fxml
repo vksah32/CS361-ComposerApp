@@ -18,7 +18,7 @@
     <SeparatorMenuItem/>
     <MenuItem text="New" onAction="#createNewDocument" accelerator="Shortcut+N"/>
     <MenuItem text="Open" onAction="#open" accelerator="Shortcut+O"/>
-    <MenuItem text="Save as" onAction="#saveAs" accelerator="Shortcut+S"/>
-    <MenuItem text="Save" onAction="#save"/>
+    <MenuItem text="Save as" onAction="#saveAs"/>
+    <MenuItem text="Save" onAction="#save" accelerator="Shortcut+Shift+S"/>
     <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
 </Menu>
