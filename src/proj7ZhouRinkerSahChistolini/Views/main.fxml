@@ -17,7 +17,8 @@
             fx:controller="proj7ZhouRinkerSahChistolini.Controllers.Controller">
     <top>
         <MenuBar>
-            <fx:include source="fileMenu.fxml"/>
+            <fx:include fx:id="fileMenu"
+                        source="fileMenu.fxml"/>
             <fx:include fx:id="editMenu"
                         source="editMenu.fxml"/>
             <fx:include fx:id="actionMenu"

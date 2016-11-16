@@ -101,5 +101,4 @@ public abstract class SelectableRectangle extends Rectangle {
      */
     public abstract void setSelected(boolean bool);
 
-    public abstract String toString();
 }

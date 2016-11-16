@@ -30,6 +30,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -85,14 +86,14 @@ public class ClipBoardController {
     public void pasteSelected() {
         this.compController.clearSelected();
         String stringNotes = this.getClipboardContent();
-        String[] lines = stringNotes.split("\n");
+        List<String> lines = Arrays.asList(stringNotes.split("\n"));
         Collection<SelectableRectangle> temp = this.compController.getRectangles();
         this.parseStack = new ArrayList<>();
 
         // Set up a try-catch block in order to safely fail when the clipboard has
         // an unmatched type
         try {
-            parseString(lines, 0);
+            stringToComposition(lines);
         } catch (Exception e) {
             return;
         }
@@ -103,21 +104,26 @@ public class ClipBoardController {
         }
     }
 
+    /** Initiates a parse on a given string to create rectangles*/
+    public void stringToComposition(List<String> strings){
+        parseString(strings, 0);
+    }
+
     /**
      * parsesThrough a string list and adds groups and notes to the compositionPanel
      *
      * @param lines the String representation of Notes
      */
-    public int parseString(String[] lines, int brackets) {
-        for (int i = 0; i < lines.length; i++) {
-            if (lines[i].equals("<GroupRectangle>")) {
+    public int parseString(List<String> lines, int brackets) {
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).contains("<GroupRectangle>")) {
                 this.parseStack.add(new ArrayList<>());
-                int skip = parseString(Arrays.copyOfRange(lines, i + 1, lines.length), brackets + 1);
+                int skip = parseString(lines.subList(i+1, lines.size()), brackets + 1);
                 i += skip;
                 if (brackets < 1) {
                     this.compController.clearSelected();
                 }
-            } else if (lines[i].equals("</GroupRectangle>")) {
+            } else if (lines.get(i).contains("</GroupRectangle>")) {
                 GroupRectangle temp = this.compController.createGroupRectangle(this.parseStack.get(brackets - 1));
                 if (brackets > 1) {
                     this.parseStack.get(brackets - 2).add(temp);
@@ -125,12 +131,12 @@ public class ClipBoardController {
                 this.parseStack.get(brackets - 1).clear();
                 return i + 1;
             } else {
-                if (lines[i].length() > 0) {
+                if (lines.get(i).length() > 0) {
                     if (brackets > 0) {
-                        this.parseStack.get(brackets - 1).add(addNotesFromString(lines[i]));
+                        this.parseStack.get(brackets - 1).add(addNotesFromString(lines.get(i)));
                         this.compController.clearSelected();
                     } else {
-                        addNotesFromString(lines[i]);
+                        addNotesFromString(lines.get(i));
                     }
                 }
             }
@@ -168,18 +174,24 @@ public class ClipBoardController {
      * adds them to the clipboard
      */
     public void copySelected() {
+        String mainString = createXML(this.compController.getSelectedRectangles());
+        this.addStringContent(mainString);
+    }
+
+    /**
+     * Creates an xml string of the given Selectable Rectangles
+     * @param recs
+     * @return
+     */
+    public static String createXML(Collection<SelectableRectangle> recs) {
         String mainString = new String();
 
-        //Collection<Note> selectedCompNote = this.getSelectedNotes();
-        Collection<SelectableRectangle> noteRecs = (
-                this.compController.getSelectedRectangles()
-        );
-        for (SelectableRectangle sr : noteRecs) {
+        for (SelectableRectangle sr : recs) {
             if (!sr.xProperty().isBound()) {
                 mainString += sr.toString();
             }
         }
-        this.addStringContent(mainString);
+        return mainString;
     }
 
     /**
