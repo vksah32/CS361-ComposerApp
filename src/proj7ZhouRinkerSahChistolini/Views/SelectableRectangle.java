@@ -100,4 +100,6 @@ public abstract class SelectableRectangle extends Rectangle {
      * to be selected or not
      */
     public abstract void setSelected(boolean bool);
+
+    public abstract String toString();
 }

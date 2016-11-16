@@ -119,13 +119,18 @@ public class GroupRectangle extends SelectableRectangle{
         this.selected.set(selected);
     }
 
-   // public String toString(){
-
-
-
-    //}
-
-
+    /**
+     * Returns FXML formatted string of GroupRectangle and
+     * its children
+     * @return
+     */
+    public String toString(){
+        String kids = "";
+        for(SelectableRectangle child : this.children) {
+            kids += child.toString();
+        }
+        return "<GroupRectangle>\n" + kids + "</GroupRectangle>\n";
+    }
 
     /**
      * returns this node's children

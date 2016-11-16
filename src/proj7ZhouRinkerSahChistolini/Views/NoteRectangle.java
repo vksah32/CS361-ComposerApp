@@ -12,6 +12,7 @@
 package proj7ZhouRinkerSahChistolini.Views;
 
 import javafx.beans.property.BooleanProperty;
+import proj7ZhouRinkerSahChistolini.Models.Instrument;
 
 /**
  * Represents a musical note in the gui interface
@@ -19,7 +20,7 @@ import javafx.beans.property.BooleanProperty;
 public class NoteRectangle extends SelectableRectangle {
 
     /**int value for the instrument**/
-    private int instrument;
+    private Instrument instrument;
 
     /**
      * The constructor of the NoteRectangle
@@ -27,24 +28,21 @@ public class NoteRectangle extends SelectableRectangle {
      * @param y
      * @param width
      * @param height
-     * @param instrument
+     * @param instr
      */
     public NoteRectangle(double x, double y,
                          double width, double height,
-                         String name, int instrument ) {
+                         Instrument instr ) {
         super(x, y, width, height);
         this.getStyleClass().add("note");
-        this.getStyleClass().add(name.toLowerCase().replace(" ", "-"));
-        this.instrument = instrument;
+        this.getStyleClass().add(instr.getName().toLowerCase().replace(" ", "-"));
+        this.instrument = instr;
     }
 
     /**
-     * gets the instrument
-     * @return the instrument
+     * returns the instrument value of this rectangle
      */
-    public int getInstrument(){
-        return this.instrument;
-    }
+    public Instrument getInstrument() {return this.instrument;}
 
     /**
      * sets the selection of the rectangle
@@ -68,5 +66,20 @@ public class NoteRectangle extends SelectableRectangle {
      */
     public BooleanProperty selectedProperty() {
         return this.selected;
+    }
+
+    @Override
+    /**
+     * x,y,width, name, channel, integer representing MIDI instrucment
+     * @return
+     */
+    public String toString() {
+        String noteString = "<NoteRectangle " +
+                "xpos=\"" + this.xProperty().intValue()    +"\" "+
+                "ypos=\"" + this.yProperty().intValue() +"\" "+
+                "width=\"" + this.widthProperty().getValue()     + "\" " +
+                "instValue=\"" + this.instrument.getValue()   +"\" " +
+                "/>\n";
+        return noteString;
     }
 }

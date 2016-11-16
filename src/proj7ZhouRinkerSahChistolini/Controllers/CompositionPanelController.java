@@ -5,8 +5,8 @@
  * @author Alex Rinker
  * @author Vivek Sah
  * Class: CS361
- * Project: 5
- * Date: Nov 1, 2016
+ * Project: 8
+ * Date: Nov 15, 2016
  */
 
 package proj7ZhouRinkerSahChistolini.Controllers;
@@ -328,28 +328,6 @@ public class CompositionPanelController {
 
     }
 
-    public String generateString(SelectableRectangle sr) {
-            String noteRep = new String();
-
-            if (sr instanceof GroupRectangle) {
-              noteRep += "{\n";
-                HashSet<SelectableRectangle> children = ((GroupRectangle) sr).getChildren();
-                for(SelectableRectangle child : children) {
-
-                    noteRep += this.generateString(child);
-
-                }
-                noteRep += "}\n";
-
-            } else if (sr instanceof NoteRectangle) {
-                    Note note = this.noteMap.get(sr);
-                noteRep += note.toString();
-            }
-
-            return noteRep;
-        }
-
-
     /**
      * adds a new acton event to the undo stack
      *
@@ -425,5 +403,9 @@ public class CompositionPanelController {
     /** Get the click in panel handler*/
     public ClickInPanelHandler getClickInPanelHandler(){
         return this.clickInPanelHandler;
+    }
+
+    public HashMap<NoteRectangle, Note> getNoteMap() {
+        return noteMap;
     }
 }

@@ -46,7 +46,9 @@ public class Controller {
     public void initialize() {
         this.compositionPanelController.init(this);
         this.clipboardController = new ClipBoardController(
-                this.compositionPanelController);
+                this.compositionPanelController,
+                this.instrumentPaneController
+        );
         this.bindingController = new BindingController(
                 this,
                 this.compositionPanelController,

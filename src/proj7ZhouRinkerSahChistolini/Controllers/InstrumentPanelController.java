@@ -75,4 +75,17 @@ public class InstrumentPanelController {
         }
         return selected;
     }
+
+    /**
+     * Returns the instrument with the associated value if
+     * it has been initialized
+     */
+    public Instrument getInstrument(int value) {
+        for (Instrument i : this.instruments) {
+            if (i.getValue() == value) {
+                return i;
+            }
+        }
+        return null;
+    }
 }
