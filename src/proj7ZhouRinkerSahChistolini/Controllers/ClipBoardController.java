@@ -132,7 +132,7 @@ public class ClipBoardController {
                 mainString += sr.toString(1);
             }
         }
-        return "<Composition>\n" + mainString + "</Composition>";
+        return "<Composition>\n" + mainString + "</Composition>\n";
     }
 
     /**
