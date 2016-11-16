@@ -120,7 +120,7 @@ public class FileMenuController {
             fileWriter.close();
         }
         catch (IOException ex) {
-            System.out.println("not file");
+            System.out.println("ERROR: " + ex);
         }
     }
 

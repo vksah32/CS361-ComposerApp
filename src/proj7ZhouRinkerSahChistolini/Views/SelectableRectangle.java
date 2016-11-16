@@ -101,4 +101,13 @@ public abstract class SelectableRectangle extends Rectangle {
      */
     public abstract void setSelected(boolean bool);
 
+    /**
+     * Returns a string representation of the object
+     * which is indented numTabs times
+     * @param numTabs the indentation level
+     * @return String representation of the object
+     */
+    public String toString(int numTabs) {
+        return this.toString();
+    }
 }

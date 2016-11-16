@@ -125,11 +125,11 @@ public class ClipBoardController {
      * @return
      */
     public static String createXML(Collection<SelectableRectangle> recs) {
-        String mainString = new String();
+        String mainString = "";
 
         for (SelectableRectangle sr : recs) {
             if (!sr.xProperty().isBound()) {
-                mainString += sr.toString();
+                mainString += sr.toString(1);
             }
         }
         return "<Composition>\n" + mainString + "</Composition>";

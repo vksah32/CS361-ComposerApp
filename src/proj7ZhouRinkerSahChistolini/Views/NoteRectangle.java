@@ -74,12 +74,21 @@ public class NoteRectangle extends SelectableRectangle {
      * @return
      */
     public String toString() {
-        String noteString = "<NoteRectangle " +
+        return toString(0);
+    }
+
+    /**
+     * x,y,width, name, channel, integer representing MIDI instrucment
+     * @return
+     */
+    public String toString(int numTabs) {
+        String tabbing = (numTabs > 0) ? String.format("%" + numTabs*4 + "s", " ") : "";
+        return tabbing +
+                "<NoteRectangle " +
                 "xpos=\"" + this.xProperty().intValue()    +"\" "+
                 "ypos=\"" + this.yProperty().intValue() +"\" "+
                 "width=\"" + this.widthProperty().getValue()     + "\" " +
                 "instValue=\"" + this.instrument.getValue()   +"\" " +
                 "/>\n";
-        return noteString;
     }
 }
