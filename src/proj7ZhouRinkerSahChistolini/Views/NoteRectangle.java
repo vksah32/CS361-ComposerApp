@@ -40,6 +40,11 @@ public class NoteRectangle extends SelectableRectangle {
     }
 
     /**
+     * returns the instrument value of this rectangle
+     */
+    public Instrument getInstrument() {return this.instrument;}
+
+    /**
      * sets the selection of the rectangle
      * @param selected
      */
@@ -69,12 +74,12 @@ public class NoteRectangle extends SelectableRectangle {
      * @return
      */
     public String toString() {
-        String noteString = this.xProperty().intValue() +" "+
-                this.yProperty().intValue() +" "+
-                this.widthProperty().getValue() +" " +
-                this.instrument.getName() + " " +
-                this.instrument.getChannel() + " " +
-                this.instrument.getValue() +"\n";
+        String noteString = "<NoteRectangle " +
+                "xpos=\"" + this.xProperty().intValue()    +"\" "+
+                "ypos=\"" + this.yProperty().intValue() +"\" "+
+                "width=\"" + this.widthProperty().getValue()     + "\" " +
+                "instValue=\"" + this.instrument.getValue()   +"\" " +
+                "/>\n";
         return noteString;
     }
 }
