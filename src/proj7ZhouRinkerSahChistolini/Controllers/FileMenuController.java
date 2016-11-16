@@ -19,6 +19,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,7 +41,9 @@ public class FileMenuController {
     public void initialize(){
         this.currentOpenFile =null;
         chooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("fxml files(*.fxml)", "*.fxml");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "fxml files(*.fxml)", "*.fxml"
+        );
         chooser.getExtensionFilters().add(extFilter);
     }
 
@@ -65,12 +69,15 @@ public class FileMenuController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("About");
-        alert.setContentText("This is a musical composition development software \n Authors: \n Vivek Sah, " +
+        alert.setContentText("This is a musical composition development " +
+                "software \n Authors: \n Vivek Sah, " +
                 "Victoria Chistolini, Alex Rinker and Ed Zhou");
         alert.show();
     }
 
-    /** Create new Composition */
+    /**
+     * Create new Composition based on whether or not the composition has changed
+     */
     @FXML
     public void createNewDocument() throws IOException {
         // check if modified
@@ -90,6 +97,71 @@ public class FileMenuController {
         this.currentOpenFile = null;
     }
 
+    /** Open a new composition file */
+    @FXML
+    public void open() throws IOException {
+        if(hasUnsavedChanges()) {
+            int result = generateConfirmationDialog();
+            switch(result) {
+                case 1:
+                    save();
+                case 0:
+                    break;
+                case 2:
+                    return;
+            }
+        }
+        this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
+        String lines = readFile(this.currentOpenFile);
+        this.compositionPanelController.reset();
+        this.clipboardController.stringToComposition(lines);
+    }
+
+    /**
+     * Save current composition as a new file
+     */
+    @FXML
+    public void saveAs() {
+        this.currentOpenFile = this.chooser.showSaveDialog(new Stage());
+        this.writeFile(ClipBoardController.createXML(
+                this.compositionPanelController.getRectangles()),
+                this.currentOpenFile
+        );
+    }
+
+    /**
+     * Write content to a file
+     * @param contentToWrite
+     * @param file
+     */
+    @FXML
+    private void writeFile(String contentToWrite, File file){
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(contentToWrite);
+            fileWriter.close();
+        }
+        catch (IOException ex) {
+            System.out.println("ERROR: " + ex);
+        }
+    }
+
+    /**
+     * Save current state of composition to a file
+     */
+    @FXML
+    public void save() {
+        if (this.currentOpenFile == null) {
+            this.saveAs();
+        }
+        else {
+            this.writeFile(ClipBoardController.createXML(
+                    this.compositionPanelController.getRectangles()),
+                    this.currentOpenFile
+            );
+        }
+    }
+
     /**
      * creates and displays a dialog warning box which allows the user to
      * verify one of the options shown. Returns a value to identify the
@@ -100,7 +172,7 @@ public class FileMenuController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Warning: You Have Unsaved Changes");
         alert.setHeaderText("You currently have unsaved changes in your composition.\n" +
-                            "Would you like to save those changes before closing?");
+                "Would you like to save those changes before closing?");
 
         ButtonType yesButton = new ButtonType("Yes");
         ButtonType noButton = new ButtonType("No");
@@ -116,15 +188,6 @@ public class FileMenuController {
         } else {
             return 2;
         }
-    }
-
-    /** Open a new composition file */
-    @FXML
-    public void open() throws IOException {
-        this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
-        String lines = readFile(this.currentOpenFile);
-        this.compositionPanelController.reset();
-        this.clipboardController.stringToComposition(lines);
     }
 
     /**
@@ -158,56 +221,19 @@ public class FileMenuController {
         }
         //if the current save file differs from the composition, prompt the warning
         else if (this.currentOpenFile != null){
-            String saved = readFile(this.currentOpenFile);
-            String current = ClipBoardController.createXML(
-                    this.compositionPanelController.getRectangles()
+            List<String> saved = Arrays.asList(
+                    readFile(this.currentOpenFile).split("\n")
             );
-            if (!current.equals(saved)) {
-                result = true;
+            List<String> current = Arrays.asList(ClipBoardController.createXML(
+                    this.compositionPanelController.getRectangles()
+            ).split("\n"));
+            for (String s : saved) {
+                if (!current.contains(s)) {result = true;}
+            }
+            for (String s : current) {
+                if (!saved.contains(s)) {result = true;}
             }
         }
         return result;
     }
-
-    /**
-     * Save current composition as a new file
-     */
-    @FXML
-    public void saveAs() {
-        this.currentOpenFile = this.chooser.showSaveDialog(new Stage());
-        this.writeFile(ClipBoardController.createXML(this.compositionPanelController.getRectangles()),
-                                                     this.currentOpenFile);
-    }
-
-    /**
-     * Write content to a file
-     * @param contentToWrite
-     * @param file
-     */
-    @FXML
-    private void writeFile(String contentToWrite, File file){
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(contentToWrite);
-            fileWriter.close();
-        }
-        catch (IOException ex) {
-            System.out.println("ERROR: " + ex);
-        }
-    }
-
-    /**
-     * Save current state of composition to a file
-     */
-    @FXML
-    public void save() {
-        if (this.currentOpenFile == null) {
-            this.saveAs();
-        }
-        else {
-            this.writeFile(ClipBoardController.createXML(this.compositionPanelController.getRectangles()),
-                                                         this.currentOpenFile);
-        }
-    }
-
 }
