@@ -49,7 +49,7 @@ public class Controller {
     @FXML
     public void initialize() {
         //Initialize Composition Controller
-        this.compositionPanelController.init(this);
+        this.compositionPanelController.init(this.instrumentPaneController);
         //initialize Clipboard Controller
         this.clipboardController = new ClipBoardController(
                 this.compositionPanelController,
@@ -75,11 +75,6 @@ public class Controller {
         //Initialize Action Controller
         this.actionMenuController.init(this.compositionPanelController,
                                        this.bindingController);
-    }
-
-    /** Returns the currently selected instrument */
-    public Instrument getSelectedInstrument() {
-        return this.instrumentPaneController.getSelectedInstrument();
     }
 }
 
