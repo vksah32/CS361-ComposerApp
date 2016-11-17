@@ -185,8 +185,9 @@ public class ClipBoardController {
                                     attributes.getValue("instValue"))
                             )
                     );
-                    this.notes.add(compController.getClickInPanelHandler().addBoundNote(rec,
-                            rec.getInstrument()));
+                    this.notes.add(compController.getClickInPanelHandler().addBoundNote(
+                            rec, instController.getInstrument(rec.getInstrument()))
+                    );
                     pStack.peek().add(rec);
                     break;
                 case "GroupRectangle":

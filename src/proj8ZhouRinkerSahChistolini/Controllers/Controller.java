@@ -48,26 +48,33 @@ public class Controller {
     /** Initializes the controllers so they can communicate properly */
     @FXML
     public void initialize() {
-        this.compositionPanelController.init(this);
+        //Initialize Composition Controller
+        this.compositionPanelController.init(this.instrumentPaneController);
+        //initialize Clipboard Controller
         this.clipboardController = new ClipBoardController(
                 this.compositionPanelController,
                 this.instrumentPaneController
         );
+        //initialize Binding Controller init
         this.bindingController = new BindingController(
                 this,
                 this.compositionPanelController,
-                this.clipboardController);
-        this.fileMenuController.init(this.compositionPanelController, this.clipboardController);
-        this.editMenuController.init(this.compositionPanelController,
-                                     this.bindingController,
-                                     this.clipboardController);
+                this.clipboardController
+        );
+        //File Menu Controller init
+        this.fileMenuController.init(
+                this.compositionPanelController,
+                this.clipboardController
+        );
+        //Initialize Edit Controller
+        this.editMenuController.init(
+                this.compositionPanelController,
+                this.bindingController,
+                this.clipboardController
+        );
+        //Initialize Action Controller
         this.actionMenuController.init(this.compositionPanelController,
                                        this.bindingController);
-    }
-
-    /** Returns the currently selected instrument */
-    public Instrument getSelectedInstrument() {
-        return this.instrumentPaneController.getSelectedInstrument();
     }
 }
 

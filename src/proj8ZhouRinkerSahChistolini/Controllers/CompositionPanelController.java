@@ -54,8 +54,8 @@ public class CompositionPanelController {
     @FXML
     private Rectangle selectionRectangle;
 
-    /** a pointer to the main controller */
-    Controller mainController;
+    /** a pointer to the instrument Controller*/
+    private InstrumentPanelController instController;
 
     /** The clickInPaneHandler object */
     private ClickInPanelHandler clickInPanelHandler;
@@ -98,8 +98,8 @@ public class CompositionPanelController {
     /**
      * Initializes the controller with the parent controller
      */
-    public void init(Controller controller) {
-        this.mainController = controller;
+    public void init(InstrumentPanelController instController) {
+        this.instController = instController;
     }
 
     /**
@@ -364,7 +364,7 @@ public class CompositionPanelController {
                 this.stopComposition();
             } else {
                 this.clickInPanelHandler.handle(
-                        event, this.mainController.getSelectedInstrument()
+                        event, this.instController.getSelectedInstrument()
                 );
             }
         }
