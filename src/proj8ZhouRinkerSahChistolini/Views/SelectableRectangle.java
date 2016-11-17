@@ -108,8 +108,8 @@ public abstract class SelectableRectangle extends Rectangle {
      * @param numTabs the indentation level
      * @return String representation of the object
      */
-    public String toString(int numTabs) {
-        return this.toString();
+    public String toXML(int numTabs) {
+        return this.toXML(0);
     }
 
     /** Populate a given pane with this object*/

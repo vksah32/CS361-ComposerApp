@@ -73,15 +73,13 @@ public class NoteRectangle extends SelectableRectangle {
      * x,y,width, name, channel, integer representing MIDI instrucment
      * @return
      */
-    public String toString() {
-        return toString(0);
-    }
+    public String toString() {return toXML(0);}
 
     /**
      * x,y,width, name, channel, integer representing MIDI instrucment
      * @return
      */
-    public String toString(int numTabs) {
+    public String toXML(int numTabs) {
         String tabbing = (numTabs > 0) ? String.format("%" + numTabs*4 + "s", " ") : "";
         return tabbing +
                 "<NoteRectangle " +

@@ -37,8 +37,8 @@ public class FileMenuController {
     private FileChooser chooser;
     /** The application's compositionController */
     private CompositionPanelController compositionPanelController;
-    /** The application's clipboardController */
-    private ClipBoardController clipboardController;
+    /** The application's XMLHandler */
+    private XMLHandler XMLHandler;
 
     public void initialize(){
         this.currentOpenFile =null;
@@ -50,9 +50,9 @@ public class FileMenuController {
     }
 
     public void init(CompositionPanelController compositionPanelController,
-                     ClipBoardController clipboardController){
+                     XMLHandler xmlHandler){
         this.compositionPanelController = compositionPanelController;
-        this.clipboardController = clipboardController;
+        this.XMLHandler = xmlHandler;
     }
 
     /**
@@ -134,7 +134,7 @@ public class FileMenuController {
         String lines = readFile(this.currentOpenFile);
         this.compositionPanelController.reset();
         try{
-            this.clipboardController.stringToComposition(lines);
+            this.XMLHandler.loadNotesFromXML(lines);
         }catch(SAXException e){
             this.errorAlert("Error Parsing File","Malformed XML File");
         }catch(ParserConfigurationException e){
@@ -148,9 +148,12 @@ public class FileMenuController {
     @FXML
     public void saveAs() {
         this.compositionPanelController.stopComposition();
-        this.currentOpenFile = this.chooser.showSaveDialog(new Stage());
-        if(this.currentOpenFile == null) {//If the user cancels
+        //Setup a temporary variable to protect an accidental overwrite
+        File temp = this.chooser.showSaveDialog(new Stage());
+        if(temp == null) {//If the user cancels
             return;
+        } else {
+            this.currentOpenFile = temp;
         }
         this.writeFile(ClipBoardController.createXML(
                 this.compositionPanelController.getRectangles()),

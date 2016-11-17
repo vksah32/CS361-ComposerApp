@@ -29,6 +29,9 @@ public class ClickInPanelHandler {
     /** The "main" composition Controller */
     private CompositionPanelController compController;
 
+    /** the instrument panel controller */
+    private InstrumentPanelController instController;
+
     /** the default rectangle width */
     private final int DEFAULT_RECTANGLE_WIDTH = 100;
 
@@ -41,15 +44,17 @@ public class ClickInPanelHandler {
      * Creates a new ClickInNoteHandler
      * @param compController the main composition Controller
      */
-    public ClickInPanelHandler(CompositionPanelController compController) {
+    public ClickInPanelHandler(CompositionPanelController compController,
+                               InstrumentPanelController instController) {
         this.compController = compController;
+        this.instController = instController;
     }
 
     /**
      * handles when clicking in the panel
      * @param event
      */
-    public void handle(MouseEvent event, Instrument instrument) {
+    public void handle(MouseEvent event, int instId) {
         this.before = (
                 this.compController.getSelectedRectangles()
         );
@@ -57,7 +62,7 @@ public class ClickInPanelHandler {
         if (!isMetaDown) {
             this.compController.clearSelected();
         }
-        addNote(event.getX(), event.getY(), this.DEFAULT_RECTANGLE_WIDTH,instrument);
+        addNote(event.getX(), event.getY(), this.DEFAULT_RECTANGLE_WIDTH, instId);
     }
 
     /**
@@ -66,19 +71,18 @@ public class ClickInPanelHandler {
      *
      * @param x mouse x location
      * @param y mouse y location
-     * @param instrument the instrument object
+     * @param instId the instrument object's id
      */
     public NoteRectangle addNoteRectangle(double x,
                                           double y,
-                                          double width,
-                                          Instrument instrument){
+                                          int instId){
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 this.DEFAULT_RECTANGLE_WIDTH,
                 10,
-                instrument.getValue(),
-                instrument.getName()
+                this.instController.getInstrument(instId).getValue(),
+                this.instController.getInstrument(instId).getName()
         );
 
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
@@ -93,8 +97,8 @@ public class ClickInPanelHandler {
         return rectangle;
     }
 
-    public Note addBoundNote(NoteRectangle rectangle, Instrument instrument){
-        Note note = new Note(instrument);
+    public Note addBoundNote(NoteRectangle rectangle, int instId){
+        Note note = new Note(this.instController.getInstrument(instId));
         bindNotetoRectangle(note, rectangle);
 
         return note;
@@ -105,11 +109,11 @@ public class ClickInPanelHandler {
      *
      * @param x mouse x location
      * @param y mouse y location
-     * @param instrument the instrument object
+     * @param instId the instrument object's id
      */
-    public void addNote(double x, double y, double width, Instrument instrument) {
-        NoteRectangle rectangle = this.addNoteRectangle(x,y,width,instrument);
-        Note note = addBoundNote(rectangle, instrument);
+    public void addNote(double x, double y, double width, int instId) {
+        NoteRectangle rectangle = this.addNoteRectangle(x,y,instId);
+        Note note = addBoundNote(rectangle, instId);
 
         this.compController.addNoteRectangle(rectangle, true);
         this.compController.addNoteToComposition(note);
