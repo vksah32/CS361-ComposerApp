@@ -40,14 +40,20 @@ public class XMLHandler {
      */
     public void loadNotesFromXML(String xmlString)
             throws SAXException, ParserConfigurationException, IOException {
-
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         parserFactory.setValidating(true);
         SAXParser parser = parserFactory.newSAXParser();
 
         SAXNoteHandler handler = new SAXNoteHandler();
         parser.parse(new InputSource(new StringReader(xmlString)), handler);
+        addToComposition(handler);
+    }
 
+    /**
+     * adds notes to the composition based on the input
+     * Handler's data
+     */
+    private void addToComposition(SAXNoteHandler handler) {
         //populate composition panel
         this.compController.populateCompositionPanel(handler.pStack.peek());
         handler.notes.forEach(n -> this.compController.addNoteToComposition(n));
