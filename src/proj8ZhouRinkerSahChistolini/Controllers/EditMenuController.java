@@ -74,6 +74,7 @@ public class EditMenuController {
      * deletes the selected notes
      */
     public void deleteSelectedNotes() {
+        this.compositionPanelController.stopComposition();
         DeleteNoteAction deletedNotes = new DeleteNoteAction(
                 this.compositionPanelController.getSelectedRectangles(),
                 this.compositionPanelController.getSelectedNotes(),
@@ -88,6 +89,7 @@ public class EditMenuController {
      * selects all the notes
      */
     public void selectAllNotes() {
+        this.compositionPanelController.stopComposition();
         //add
         Collection<SelectableRectangle> before = (
                 this.compositionPanelController.getSelectedRectangles()
@@ -106,13 +108,19 @@ public class EditMenuController {
     /**
      * group the selected notes
      */
-    public void groupSelected() { this.compositionPanelController.groupSelected(this.compositionPanelController.getSelectedRectangles()); }
+    public void groupSelected() {
+        this.compositionPanelController.stopComposition();
+        this.compositionPanelController.groupSelected(
+                this.compositionPanelController.getSelectedRectangles()
+        );
+    }
 
     @FXML
     /**
      * copies the selected rectangles
      */
     public void copySelected() {
+        this.compositionPanelController.stopComposition();
         this.clipboardController.copySelected();
     }
 
@@ -121,6 +129,7 @@ public class EditMenuController {
      * cut the selected rectangles
      */
     public void cutSelected() {
+        this.compositionPanelController.stopComposition();
         this.clipboardController.copySelected();
         this.deleteSelectedNotes();
     }
@@ -130,9 +139,12 @@ public class EditMenuController {
      * paste the copied rectangles
      */
     public void pasteSelected() {
+        this.compositionPanelController.stopComposition();
         this.clipboardController.pasteSelected();
-        PasteAction pastedNotes = new PasteAction(this.compositionPanelController.getSelectedRectangles(),
-                this.compositionPanelController.getSelectedNotes(), this.compositionPanelController);
+        PasteAction pastedNotes = new PasteAction(
+                this.compositionPanelController.getSelectedRectangles(),
+                this.compositionPanelController.getSelectedNotes(),
+                this.compositionPanelController);
         this.compositionPanelController.addAction(pastedNotes);
     }
 
@@ -140,13 +152,19 @@ public class EditMenuController {
     /**
      * ungroup the selected notes
      */
-    public void ungroupSelected() { this.compositionPanelController.ungroupSelected(this.compositionPanelController.getSelectedRectangles()); }
+    public void ungroupSelected() {
+        this.compositionPanelController.stopComposition();
+        this.compositionPanelController.ungroupSelected(
+                this.compositionPanelController.getSelectedRectangles()
+        );
+    }
 
     @FXML
     /**
      * undoes the latest action
      */
     public void undo() {
+        this.compositionPanelController.stopComposition();
         this.compositionPanelController.getActionController().undo();
     }
 
@@ -155,6 +173,7 @@ public class EditMenuController {
      * redoes the latest undo action
      */
     public void redo() {
+        this.compositionPanelController.stopComposition();
         this.compositionPanelController.getActionController().redo();
     }
 

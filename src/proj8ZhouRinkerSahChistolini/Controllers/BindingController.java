@@ -71,7 +71,8 @@ public class BindingController {
             this.getUnboundSelected().size() < 2,
             this.compositionController.getActionController().getUndoActionsProperty()
         );
-        return multipleSelectedBinding; }
+        return multipleSelectedBinding;
+    }
 
     /**
      * returns the groupsSelected Binding customly created
@@ -93,6 +94,7 @@ public class BindingController {
     public BooleanBinding getRedoEmptyBinding() {
         return this.compositionController.getActionController().isRedoEmpty();
     }
+
     /**
      * Binding if the undo observable list is empty
      * @returns the undoEmptySize Binding

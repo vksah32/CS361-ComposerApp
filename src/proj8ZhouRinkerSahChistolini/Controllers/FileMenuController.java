@@ -61,6 +61,7 @@ public class FileMenuController {
      */
     @FXML
     public void cleanUpOnExit() throws IOException{
+        this.compositionPanelController.stopComposition();
         if(hasUnsavedChanges()) {
             int result = generateConfirmationDialog();
             switch(result) {
@@ -93,6 +94,7 @@ public class FileMenuController {
      */
     @FXML
     public void createNewDocument() throws IOException {
+        this.compositionPanelController.stopComposition();
         // check if modified
         if(hasUnsavedChanges()) {
             int result = generateConfirmationDialog();
@@ -113,6 +115,7 @@ public class FileMenuController {
     /** Open a new composition file */
     @FXML
     public void open() throws IOException {
+        this.compositionPanelController.stopComposition();
         if(hasUnsavedChanges()) {
             int result = generateConfirmationDialog();
             switch(result) {
@@ -144,6 +147,7 @@ public class FileMenuController {
      */
     @FXML
     public void saveAs() {
+        this.compositionPanelController.stopComposition();
         this.currentOpenFile = this.chooser.showSaveDialog(new Stage());
         if(this.currentOpenFile == null) {//If the user cancels
             return;
@@ -176,6 +180,7 @@ public class FileMenuController {
      */
     @FXML
     public void save() {
+        this.compositionPanelController.stopComposition();
         if (this.currentOpenFile == null) {
             this.saveAs();
         }
