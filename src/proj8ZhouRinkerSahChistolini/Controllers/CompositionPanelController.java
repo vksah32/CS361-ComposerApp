@@ -82,13 +82,11 @@ public class CompositionPanelController {
     public void initialize() {
         this.drawLines();
         this.composition = new Composition();
-        this.clickInPanelHandler = new ClickInPanelHandler(this);
         this.dragInPanelHandler = new DragInPanelHandler(
                 this.selectionRectangle,
                 this
         );
         this.compositionPanel.toFront();
-        this.actionController = new ActionController();
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
@@ -100,6 +98,8 @@ public class CompositionPanelController {
      */
     public void init(InstrumentPanelController instController) {
         this.instController = instController;
+        this.actionController = new ActionController();
+        this.clickInPanelHandler = new ClickInPanelHandler(this, this.instController);
     }
 
     /**

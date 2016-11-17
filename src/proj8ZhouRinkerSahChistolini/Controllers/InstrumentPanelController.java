@@ -60,10 +60,10 @@ public class InstrumentPanelController {
     }
 
     /**
-     * Returns the currently selected instrument
-     * @return instrument object
+     * Returns the currently selected instrument's id
+     * @return instrument id
      */
-    public Instrument getSelectedInstrument(){
+    public int getSelectedInstrument(){
         RadioButton chk = (RadioButton) this.instrumentToggle.getSelectedToggle();
         String name = chk.getText();
         Instrument selected = this.instruments.get(0);
@@ -73,7 +73,7 @@ public class InstrumentPanelController {
                 break;
             }
         }
-        return selected;
+        return selected.getValue();
     }
 
     /**

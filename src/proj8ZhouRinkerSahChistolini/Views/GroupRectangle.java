@@ -133,7 +133,7 @@ public class GroupRectangle extends SelectableRectangle{
      * its children
      * @return String representation of the object
      */
-    public String toString() { return toString(0); }
+    public String toString() { return toXML(0); }
 
     /**
      * Returns FXML formatted string of GroupRectangle and
@@ -142,10 +142,10 @@ public class GroupRectangle extends SelectableRectangle{
      *                to make the string more readable
      * @return String representation of the object
      */
-    public String toString(int numTabs) {
+    public String toXML(int numTabs) {
         String kids = "";
         for(SelectableRectangle child : this.children) {
-            kids += child.toString(numTabs+1);
+            kids += child.toXML(numTabs+1);
         }
         String tabbing = (numTabs > 0) ? String.format("%" + numTabs*4 + "s", " ") : "";
         return tabbing + "<GroupRectangle>\n" +

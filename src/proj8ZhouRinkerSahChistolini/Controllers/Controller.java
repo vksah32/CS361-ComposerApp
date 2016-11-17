@@ -12,7 +12,6 @@
 package proj8ZhouRinkerSahChistolini.Controllers;
 
 import javafx.fxml.FXML;
-import proj8ZhouRinkerSahChistolini.Models.Instrument;
 
 /**
  * Handles menu GUI interactions with other controllers
@@ -44,16 +43,21 @@ public class Controller {
 
     private ClipBoardController clipboardController;
 
+    /** create the XMLHandler*/
+    private XMLHandler XMLhandler;
+
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
     public void initialize() {
         //Initialize Composition Controller
         this.compositionPanelController.init(this.instrumentPaneController);
+        //Initialize the XMLHandler
+        this.XMLhandler = new XMLHandler(this.compositionPanelController);
         //initialize Clipboard Controller
         this.clipboardController = new ClipBoardController(
                 this.compositionPanelController,
-                this.instrumentPaneController
+                this.XMLhandler
         );
         //initialize Binding Controller init
         this.bindingController = new BindingController(
@@ -64,7 +68,7 @@ public class Controller {
         //File Menu Controller init
         this.fileMenuController.init(
                 this.compositionPanelController,
-                this.clipboardController
+                this.XMLhandler
         );
         //Initialize Edit Controller
         this.editMenuController.init(
