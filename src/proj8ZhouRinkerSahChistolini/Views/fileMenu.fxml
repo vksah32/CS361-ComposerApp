@@ -1,0 +1,24 @@
+<!-- /**
+ * File: fileMenu.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 8
+ * Date: November 14, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+
+<Menu text="File"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="proj8ZhouRinkerSahChistolini.Controllers.FileMenuController">
+    <MenuItem text="About" onAction="#about"/>
+    <SeparatorMenuItem/>
+    <MenuItem text="New" onAction="#createNewDocument" accelerator="Shortcut+N"/>
+    <MenuItem text="Open" onAction="#open" accelerator="Shortcut+O"/>
+    <MenuItem text="Save as" onAction="#saveAs"/>
+    <MenuItem text="Save" onAction="#save" accelerator="Shortcut+Shift+S"/>
+    <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
+</Menu>

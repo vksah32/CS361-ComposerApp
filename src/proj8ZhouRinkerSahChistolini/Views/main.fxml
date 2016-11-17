@@ -1,0 +1,37 @@
+<!-- /**
+ * File: main.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 5
+ * Date: October 23, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@Main.css"
+            fx:controller="proj8ZhouRinkerSahChistolini.Controllers.Controller">
+    <top>
+        <MenuBar>
+            <fx:include fx:id="fileMenu"
+                        source="fileMenu.fxml"/>
+            <fx:include fx:id="editMenu"
+                        source="editMenu.fxml"/>
+            <fx:include fx:id="actionMenu"
+                        source="actionMenu.fxml"/>
+        </MenuBar>
+    </top>
+    <left>
+        <fx:include fx:id="instrumentPane"
+                    source="instrumentPanel.fxml"/>
+    </left>
+    <center>
+        <fx:include fx:id="compositionPanel"
+                    source="compositionPanel.fxml"/>
+    </center>
+
+</BorderPane>
