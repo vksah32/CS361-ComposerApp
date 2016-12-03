@@ -14,7 +14,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             stylesheets="@Main.css"
-            fx:controller="proj8ZhouRinkerSahChistolini.Controllers.Controller">
+            fx:controller="proj8ZhouRinkerSahChistolini.Controllers.ControllerInitializer">
     <top>
         <MenuBar>
             <fx:include fx:id="fileMenu"
