@@ -44,7 +44,7 @@ public class FileMenuController {
         this.currentOpenFile =null;
         chooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "fxml files(*.fxml)", "*.fxml"
+                "xml files(*.xml)", "*.xml"
         );
         chooser.getExtensionFilters().add(extFilter);
     }
@@ -60,22 +60,13 @@ public class FileMenuController {
      * destruction of the window.
      */
     @FXML
-    public void cleanUpOnExit() throws IOException{
+    public void cleanUpOnExit() {
         this.compositionPanelController.stopComposition();
-        if(hasUnsavedChanges()) {
-            int result = generateConfirmationDialog();
-            switch(result) {
-                case 1:
-                    save();
-                case 0:
-                    break;
-                case 2:
-                    return;
-            }
-        }
+        checkUnsavedChanges();
         Platform.exit();
         System.exit(0);
     }
+
 
     /** Dialog window that gives information about the application */
     @FXML
@@ -93,20 +84,10 @@ public class FileMenuController {
      * Create new Composition based on whether or not the composition has changed
      */
     @FXML
-    public void createNewDocument() throws IOException {
+    public void createNewDocument() {
         this.compositionPanelController.stopComposition();
         // check if modified
-        if(hasUnsavedChanges()) {
-            int result = generateConfirmationDialog();
-            switch(result) {
-                case 1:
-                    save();
-                case 0:
-                    break;
-                case 2:
-                    return;
-            }
-        }
+        checkUnsavedChanges();
         //clear the document
         this.compositionPanelController.reset();
         this.currentOpenFile = null;
@@ -114,32 +95,29 @@ public class FileMenuController {
 
     /** Open a new composition file */
     @FXML
-    public void open() throws IOException {
+    public void open() {
         this.compositionPanelController.stopComposition();
-        if(hasUnsavedChanges()) {
-            int result = generateConfirmationDialog();
-            switch(result) {
-                case 1:
-                    save();
-                case 0:
-                    break;
-                case 2:
-                    return;
-            }
-        }
+        checkUnsavedChanges();
         this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
         if(this.currentOpenFile == null) {//If the user cancels
             return;
         }
-        String lines = readFile(this.currentOpenFile);
-        this.compositionPanelController.reset();
-        try{
-            this.XMLHandler.loadNotesFromXML(lines);
-        }catch(SAXException e){
-            this.errorAlert("Error Parsing File","Malformed XML File");
-        }catch(ParserConfigurationException e){
+        try {
+            String lines = readFile(this.currentOpenFile);
+            this.compositionPanelController.reset();
+            try {
+                this.XMLHandler.loadNotesFromXML(lines);
+            } catch (SAXException e) {
+                this.errorAlert("Error Parsing File", "Malformed XML File");
+            } catch (ParserConfigurationException e) {
+                return;
+            }
+        }
+        catch(IOException x){
+            errorAlert("File Could Not Be Read", x.getMessage());
             return;
         }
+
     }
 
     /**
@@ -155,7 +133,7 @@ public class FileMenuController {
         } else {
             this.currentOpenFile = temp;
         }
-        this.writeFile(ClipBoardController.createXML(
+        this.writeFile(this.XMLHandler.createXML(
                 this.compositionPanelController.getRectangles()),
                 this.currentOpenFile
         );
@@ -174,7 +152,7 @@ public class FileMenuController {
             fileWriter.close();
         }
         catch (IOException ex) {
-            System.out.println("ERROR: " + ex);
+            errorAlert("File Could not be Written", ex.getMessage());
         }
     }
 
@@ -188,7 +166,7 @@ public class FileMenuController {
             this.saveAs();
         }
         else {
-            this.writeFile(ClipBoardController.createXML(
+            this.writeFile(this.XMLHandler.createXML(
                     this.compositionPanelController.getRectangles()),
                     this.currentOpenFile
             );
@@ -223,20 +201,43 @@ public class FileMenuController {
         }
     }
 
+
+    /**
+     * if there are unsaved changes, ask user if they want to save
+     */
+    public void checkUnsavedChanges(){
+        if(hasUnsavedChanges()) {
+            int result = generateConfirmationDialog();
+            switch(result) {
+                //user selected save changes
+                case 1:
+                    save();
+                    //user did not select a button
+                case 0:
+                    break;
+                //user selected not to save changes
+                case 2:
+                    return;
+            }
+        }
+    }
     /**
      * returns a String representing the characters
      * read from the input File
      * @param file the input File to be read
      * @returns lines a String representation of the file
      */
-    public String readFile(File file) throws IOException {
+    public String readFile(File file) throws IOException{
         String lines = "";
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        while ((line =  br.readLine()) != null){
-            lines += line + "\n";
-        }
-        br.close();
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line =  br.readLine()) != null){
+                lines += line + "\n";
+            }
+            br.close();
+
+
         return lines;
     }
 
@@ -257,8 +258,10 @@ public class FileMenuController {
      * and returns true if they are different and false if there are no differences
      * @returns result boolean which represent whether or not there are unsaved changes
      */
-    public boolean hasUnsavedChanges() throws IOException {
+    public boolean hasUnsavedChanges() {
         boolean result = false;
+        List<String> saved = null;
+
         //if there are rectangles in the composition, prompt the warning
         if (this.currentOpenFile == null &&
                 this.compositionPanelController.getRectangles().size() > 0) {
@@ -266,10 +269,18 @@ public class FileMenuController {
         }
         //if the current save file differs from the composition, prompt the warning
         else if (this.currentOpenFile != null){
-            List<String> saved = Arrays.asList(
+        try {
+            saved = Arrays.asList(
                     readFile(this.currentOpenFile).split("\n")
             );
-            List<String> current = Arrays.asList(ClipBoardController.createXML(
+        }
+        catch (IOException x){
+            //passivly tell user there are unsaved changes
+            return true;
+
+
+        }
+            List<String> current = Arrays.asList(this.XMLHandler.createXML(
                     this.compositionPanelController.getRectangles()
             ).split("\n"));
             for (String s : saved) {
