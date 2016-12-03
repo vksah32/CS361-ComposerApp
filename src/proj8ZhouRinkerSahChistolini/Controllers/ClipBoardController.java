@@ -92,25 +92,10 @@ public class ClipBoardController {
      * adds them to the clipboard
      */
     public void copySelected() {
-        String mainString = createXML(this.compController.getSelectedRectangles());
+        String mainString = this.XMLHandler.createXML(this.compController.getSelectedRectangles());
         this.addToClipBoard(mainString);
     }
 
-    /**
-     * Creates an xml string of the given Selectable Rectangles
-     * @param recs
-     * @return
-     */
-    public static String createXML(Collection<SelectableRectangle> recs) {
-        String mainString = "";
-
-        for (SelectableRectangle sr : recs) {
-            if (!sr.xProperty().isBound()) {
-                mainString += sr.toXML(1);
-            }
-        }
-        return "<Composition>\n" + mainString + "</Composition>\n";
-    }
 
     /**
      * adds new strings of data to the clip board
