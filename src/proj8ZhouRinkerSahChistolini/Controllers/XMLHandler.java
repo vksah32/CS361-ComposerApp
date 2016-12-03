@@ -60,6 +60,21 @@ public class XMLHandler {
         handler.notes.forEach(n -> this.compController.addNoteToComposition(n));
     }
 
+
+    /**
+     * Creates an xml string of the given Selectable Rectangles
+     * @param recs
+     * @return
+     */
+    public static String createXML(Collection<Playable> recs) {
+        String mainString = "";
+
+        for (Playable sr : recs) {
+            mainString += sr.toXML(1);
+        }
+        return "<Composition>\n" + mainString + "</Composition>\n";
+    }
+
     /**
      * The SAX event handler which handles parsing through
      * our saved note strings

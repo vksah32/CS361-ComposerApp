@@ -93,23 +93,8 @@ public class ClipBoardController {
      * adds them to the clipboard
      */
     public void copySelected() {
-        String mainString = createXML(this.compController.getSelectedNotes());
+        String mainString = XMLHandler.createXML(this.compController.getNotesfromComposition());
         this.addToClipBoard(mainString);
-    }
-
-    /**
-     * Creates an xml string of the given Selectable Rectangles
-     * @param recs
-     * @return
-     */
-    public static String createXML(Collection<Playable> recs) {
-        String mainString = "";
-
-        for (Playable sr : recs) {
-            mainString += sr.toXML(1);
-
-        }
-        return "<Composition>\n" + mainString + "</Composition>\n";
     }
 
     /**
