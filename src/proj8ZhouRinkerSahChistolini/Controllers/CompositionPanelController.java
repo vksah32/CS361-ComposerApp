@@ -21,7 +21,9 @@ import javafx.scene.shape.Rectangle;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
+import proj8ZhouRinkerSahChistolini.Models.Gesture;
 import proj8ZhouRinkerSahChistolini.Models.Note;
+import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj8ZhouRinkerSahChistolini.Models.Composition;
 import proj8ZhouRinkerSahChistolini.Views.NoteRectangle;
@@ -166,7 +168,7 @@ public class CompositionPanelController {
      * @return the notes on Composition
      *
      */
-    public Collection<Note> getNotesfromComposition(){
+    public Collection<Playable> getNotesfromComposition(){
         return this.composition.getNotes();
     }
 
@@ -174,7 +176,7 @@ public class CompositionPanelController {
      * returns a collection consisting of the selected note objects
      * @return selected a Collection of Notes
      */
-    public Collection<Note> getSelectedNotes() {return this.composition.getSelectedCompositionNotes();}
+    public Collection<Playable> getSelectedNotes() {return this.composition.getSelectedCompositionNotes();}
 
     public void addNotestoMap(Note note, NoteRectangle nr){
         this.noteMap.put(nr,note);
@@ -207,8 +209,8 @@ public class CompositionPanelController {
      * adds the note to composition
      * @param note note to be added
      */
-    public void addNoteToComposition(Note note){
-        this.composition.appendNote(note);
+    public void addNoteToComposition(Playable note){
+        this.composition.appendPlayable(note);
     }
 
     /**
@@ -218,9 +220,9 @@ public class CompositionPanelController {
     public void playComposition() {
         this.stopComposition();
         this.composition.buildSong();
-
         this.beginAnimation();
         this.composition.play();
+
     }
 
     /**
@@ -300,7 +302,9 @@ public class CompositionPanelController {
     public void groupSelected(Collection<SelectableRectangle> selectRect){
         if(!selectRect.isEmpty()) {
             GroupRectangle gesture = createGroupRectangle(selectRect);
+            Gesture modelGesture = createGesture(gesture);
             this.addRectangle(gesture, true);
+            this.addNoteToComposition(modelGesture);
             this.addAction(new GroupNoteAction(gesture, this));
         }
     }
@@ -318,6 +322,18 @@ public class CompositionPanelController {
         gesture.setOnMouseDragged(handler::handleDragged);
         gesture.setOnMouseReleased(handler::handleMouseReleased);
         gesture.setOnMouseClicked(new ClickInNoteHandler(this));
+        return gesture;
+    }
+
+    /**
+     * Create a gesture based on a group rectangle along with its selected binding
+     * @param groupRectangle The group rectangle the gesture is based on
+     * @return The created gesture
+     */
+    public Gesture createGesture(GroupRectangle groupRectangle){
+        Collection<Playable> sounds = this.composition.getSelectedCompositionNotes();
+        Gesture gesture = new Gesture(sounds);
+        gesture.selectedProperty().bind(groupRectangle.selectedProperty());
         return gesture;
     }
 

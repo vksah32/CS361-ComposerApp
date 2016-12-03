@@ -10,6 +10,7 @@
  */
 
 package proj8ZhouRinkerSahChistolini.Controllers;
+import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.awt.Toolkit;
@@ -92,7 +93,7 @@ public class ClipBoardController {
      * adds them to the clipboard
      */
     public void copySelected() {
-        String mainString = createXML(this.compController.getSelectedRectangles());
+        String mainString = createXML(this.compController.getSelectedNotes());
         this.addToClipBoard(mainString);
     }
 
@@ -101,13 +102,12 @@ public class ClipBoardController {
      * @param recs
      * @return
      */
-    public static String createXML(Collection<SelectableRectangle> recs) {
+    public static String createXML(Collection<Playable> recs) {
         String mainString = "";
 
-        for (SelectableRectangle sr : recs) {
-            if (!sr.xProperty().isBound()) {
-                mainString += sr.toXML(1);
-            }
+        for (Playable sr : recs) {
+            mainString += sr.toXML(1);
+
         }
         return "<Composition>\n" + mainString + "</Composition>\n";
     }

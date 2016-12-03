@@ -5,6 +5,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import proj8ZhouRinkerSahChistolini.Models.Note;
+import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj8ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj8ZhouRinkerSahChistolini.Views.SelectableRectangle;
@@ -67,7 +68,7 @@ public class XMLHandler {
         /** Stack to hold pointers to rectangles to assist in creation of groups*/
 
         private Stack<Collection<SelectableRectangle>> pStack;
-        private Collection<Note> notes;
+        private Collection<Playable> notes;
 
         public SAXNoteHandler(){
             this.pStack = new Stack<>();
@@ -83,7 +84,7 @@ public class XMLHandler {
                 throws SAXException {
 
             switch (qName) {
-                case "NoteRectangle":
+                case "Note":
                     NoteRectangle rec = compController.getClickInPanelHandler()
                             .addNoteRectangle(
                                     Double.parseDouble(attributes.getValue("xpos")),
@@ -95,7 +96,7 @@ public class XMLHandler {
                     );
                     pStack.peek().add(rec);
                     break;
-                case "GroupRectangle":
+                case "Gesture":
                     pStack.push(new ArrayList<>());
             }
         }
@@ -106,10 +107,11 @@ public class XMLHandler {
                                String qName)
                 throws SAXException {
             switch(qName) {
-                case "NoteRectangle":
+                case "Note":
                     break;
-                case "GroupRectangle":
+                case "Gesture":
                     GroupRectangle temp = compController.createGroupRectangle(this.pStack.pop());
+                    this.notes.add(compController.createGesture(temp));
                     this.pStack.peek().add(temp);
             }
         }

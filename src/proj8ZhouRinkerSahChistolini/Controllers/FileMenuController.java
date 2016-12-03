@@ -156,7 +156,7 @@ public class FileMenuController {
             this.currentOpenFile = temp;
         }
         this.writeFile(ClipBoardController.createXML(
-                this.compositionPanelController.getRectangles()),
+                this.compositionPanelController.getNotesfromComposition()),
                 this.currentOpenFile
         );
     }
@@ -189,7 +189,7 @@ public class FileMenuController {
         }
         else {
             this.writeFile(ClipBoardController.createXML(
-                    this.compositionPanelController.getRectangles()),
+                    this.compositionPanelController.getNotesfromComposition()),
                     this.currentOpenFile
             );
         }
@@ -270,7 +270,7 @@ public class FileMenuController {
                     readFile(this.currentOpenFile).split("\n")
             );
             List<String> current = Arrays.asList(ClipBoardController.createXML(
-                    this.compositionPanelController.getRectangles()
+                    this.compositionPanelController.getNotesfromComposition()
             ).split("\n"));
             for (String s : saved) {
                 if (!current.contains(s)) {result = true;}
