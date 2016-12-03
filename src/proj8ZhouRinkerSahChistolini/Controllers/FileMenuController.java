@@ -183,7 +183,7 @@ public class FileMenuController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Warning: You Have Unsaved Changes");
         alert.setHeaderText("You currently have unsaved changes in your composition.\n" +
-                "Would you like to save those changes before closing?");
+                "Would you like to save those changes ?");
 
         ButtonType yesButton = new ButtonType("Yes");
         ButtonType noButton = new ButtonType("No");
