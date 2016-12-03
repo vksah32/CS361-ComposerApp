@@ -1,5 +1,5 @@
 /**
- * File: ControllerInitializer.java
+ * File: ControllersInitializer.java
  * @author Victoria Chistolini
  * @author Edward (osan) Zhou
  * @author Alex Rinker
@@ -16,7 +16,7 @@ import javafx.fxml.FXML;
 /**
  * Handles menu GUI interactions with other controllers
  */
-public class ControllerInitializer {
+public class ControllersInitializer {
 
     /** The compositionPanel object that is modified */
     @FXML
@@ -70,18 +70,18 @@ public class ControllerInitializer {
     private void initializeMenuControllers(XMLHandler XMLhandler,
                                            BindingController bindingController,
                                            ClipBoardController clipboardController) {
-        //File Menu ControllerInitializer init
+        //File Menu ControllersInitializer init
         this.fileMenuController.init(
                 this.compositionPanelController,
                 XMLhandler
         );
-        //Initialize Edit ControllerInitializer
+        //Initialize Edit ControllersInitializer
         this.editMenuController.init(
                 this.compositionPanelController,
                 bindingController,
                 clipboardController
         );
-        //Initialize Action ControllerInitializer
+        //Initialize Action ControllersInitializer
         this.actionMenuController.init(this.compositionPanelController,
                 bindingController);
     }
