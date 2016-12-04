@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.List;
 
@@ -28,6 +29,9 @@ import java.util.List;
  * Crontrols the actions preformed in the composition pane
  */
 public class ActionController {
+
+    /** Cached list to check if unsaved actions*/
+    private List<Actionable> saveList;
 
     /** List to hold undone action states */
     private ObservableList<Actionable> undoList;
@@ -42,6 +46,7 @@ public class ActionController {
         List<Actionable> rList= new ArrayList<>();
         this.undoList = FXCollections.observableList(uList);
         this.redoList = FXCollections.observableList(rList);
+        this.saveList = new ArrayList<>();
     }
 
     /**
@@ -171,6 +176,28 @@ public class ActionController {
     public void clearLists() {
         this.undoList.clear();
         this.redoList.clear();
+    }
+
+    /** update the saveList */
+    public void saveList(){
+        this.saveList = new ArrayList<>();
+        undoList.forEach(n-> this.saveList.add(n));
+    }
+
+    /**
+     * Checks if state is saved
+     * @return boolean state
+     */
+    public boolean isSaved(){
+        if (this.saveList.size() == this.undoList.size()){
+            for (int i=0; i<this.saveList.size();i++){
+                if (!this.saveList.get(i).equals(this.undoList.get(i))){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
 

@@ -89,6 +89,7 @@ public class FileMenuController {
         //clear the document
         this.compositionPanelController.reset();
         this.currentOpenFile = null;
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /** Open a new composition file */
@@ -117,7 +118,7 @@ public class FileMenuController {
             errorAlert("File Could Not Be Read", x.getMessage());
             return;
         }
-
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /**
@@ -137,6 +138,7 @@ public class FileMenuController {
                 this.compositionPanelController.getNotesfromComposition()),
                 this.currentOpenFile
         );
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /**
@@ -171,6 +173,7 @@ public class FileMenuController {
                     this.currentOpenFile
             );
         }
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /**
@@ -206,7 +209,7 @@ public class FileMenuController {
      * if there are unsaved changes, ask user if they want to save
      */
     public boolean handleUnsavedChanges(){
-        if(hasUnsavedChanges()) {
+        if(!compositionPanelController.getActionController().isSaved()) {
             int result = generateConfirmationDialog();
             switch(result) {
                 //user selected save changes
