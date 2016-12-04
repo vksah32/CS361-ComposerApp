@@ -21,8 +21,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -62,7 +60,7 @@ public class FileMenuController {
     @FXML
     public void cleanUpOnExit() {
         this.compositionPanelController.stopComposition();
-        checkUnsavedChanges();
+        if(!handleUnsavedChanges()) { return; }
         Platform.exit();
         System.exit(0);
     }
@@ -87,7 +85,7 @@ public class FileMenuController {
     public void createNewDocument() {
         this.compositionPanelController.stopComposition();
         // check if modified
-        checkUnsavedChanges();
+        if (!handleUnsavedChanges()) { return; }
         //clear the document
         this.compositionPanelController.reset();
         this.currentOpenFile = null;
@@ -97,13 +95,14 @@ public class FileMenuController {
     @FXML
     public void open() {
         this.compositionPanelController.stopComposition();
-        checkUnsavedChanges();
-        this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
-        if(this.currentOpenFile == null) {//If the user cancels
+        if(!handleUnsavedChanges()){ return; }
+        //Create a placeholder for the current file
+        File temp = this.chooser.showOpenDialog(new Stage());
+        if(temp == null) {//If the user cancels
             return;
         }
         try {
-            String lines = readFile(this.currentOpenFile);
+            String lines = readFile(temp);
             this.compositionPanelController.reset();
             try {
                 this.XMLHandler.loadNotesFromXML(lines);
@@ -112,6 +111,7 @@ public class FileMenuController {
             } catch (ParserConfigurationException e) {
                 return;
             }
+            this.currentOpenFile = temp;
         }
         catch(IOException x){
             errorAlert("File Could Not Be Read", x.getMessage());
@@ -205,7 +205,7 @@ public class FileMenuController {
     /**
      * if there are unsaved changes, ask user if they want to save
      */
-    public void checkUnsavedChanges(){
+    public boolean handleUnsavedChanges(){
         if(hasUnsavedChanges()) {
             int result = generateConfirmationDialog();
             switch(result) {
@@ -217,9 +217,10 @@ public class FileMenuController {
                     break;
                 //user selected not to save changes
                 case 2:
-                    return;
+                    return false;
             }
         }
+        return true;
     }
     /**
      * returns a String representing the characters
@@ -260,7 +261,8 @@ public class FileMenuController {
      */
     public boolean hasUnsavedChanges() {
         boolean result = false;
-        List<String> saved = null;
+        String saved;
+        String current;
 
         //if there are rectangles in the composition, prompt the warning
         if (this.currentOpenFile == null &&
@@ -268,27 +270,21 @@ public class FileMenuController {
             result = true;
         }
         //if the current save file differs from the composition, prompt the warning
-        else if (this.currentOpenFile != null){
-        try {
-            saved = Arrays.asList(
-                    readFile(this.currentOpenFile).split("\n")
-            );
-        }
-        catch (IOException x){
-            //passivly tell user there are unsaved changes
-            return true;
-        }
-            List<String> current = Arrays.asList(this.XMLHandler.createXML(
+        else if (this.currentOpenFile != null) {
+            try {
+                saved = readFile(this.currentOpenFile);
+            }
+            catch (IOException e){
+                //passively tell user there are unsaved changes
+                return true;
+            }
+            current = this.XMLHandler.createXML(
                     this.compositionPanelController.getNotesfromComposition()
-            ).split("\n"));
-            for (String s : saved) {
-                if (!current.contains(s)) {result = true;}
-            }
-            for (String s : current) {
-                if (!saved.contains(s)) {result = true;}
-            }
+            );
+
+            //Call the XMLHandler's helper method
+            result = !this.XMLHandler.areEqualCompositions(saved, current);
         }
         return result;
-
     }
 }
