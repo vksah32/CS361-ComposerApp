@@ -302,7 +302,7 @@ public class CompositionPanelController {
     public void groupSelected(Collection<SelectableRectangle> selectRect){
         if(!selectRect.isEmpty()) {
             GroupRectangle gesture = createGroupRectangle(selectRect);
-            Gesture modelGesture = createGesture(gesture);
+            Gesture modelGesture = createGesture(gesture, this.composition.getSelectedCompositionNotes());
             this.addRectangle(gesture, true);
             this.addNoteToComposition(modelGesture);
             this.addAction(new GroupNoteAction(gesture, this));
@@ -326,12 +326,12 @@ public class CompositionPanelController {
     }
 
     /**
-     * Create a gesture based on a group rectangle along with its selected binding
+     * Create a bound gesture with associated children
      * @param groupRectangle The group rectangle the gesture is based on
+     * @param sounds The children of the gesture
      * @return The created gesture
      */
-    public Gesture createGesture(GroupRectangle groupRectangle){
-        Collection<Playable> sounds = this.composition.getSelectedCompositionNotes();
+    public Gesture createGesture(GroupRectangle groupRectangle, Collection<Playable> sounds){
         Gesture gesture = new Gesture(sounds);
         gesture.selectedProperty().bind(groupRectangle.selectedProperty());
         return gesture;

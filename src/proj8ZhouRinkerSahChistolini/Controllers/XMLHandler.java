@@ -4,6 +4,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import proj8ZhouRinkerSahChistolini.Models.Gesture;
 import proj8ZhouRinkerSahChistolini.Models.Note;
 import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.GroupRectangle;
@@ -57,7 +58,7 @@ public class XMLHandler {
     private void addToComposition(SAXNoteHandler handler) {
         //populate composition panel
         this.compController.populateCompositionPanel(handler.pStack.peek());
-        handler.notes.forEach(n -> this.compController.addNoteToComposition(n));
+        handler.notesStack.peek().forEach(n -> this.compController.addNoteToComposition(n));
     }
 
 
@@ -83,13 +84,14 @@ public class XMLHandler {
         /** Stack to hold pointers to rectangles to assist in creation of groups*/
 
         private Stack<Collection<SelectableRectangle>> pStack;
-        private Collection<Playable> notes;
+        private Stack<Collection<Playable>> notesStack;
 
         public SAXNoteHandler(){
             this.pStack = new Stack<>();
-            this.notes = new ArrayList<>();
+            this.notesStack = new Stack<>();
             //populate the stack with an initial list
             this.pStack.push(new ArrayList<>());
+            this.notesStack.push(new ArrayList<>());
         }
 
         @Override
@@ -106,13 +108,14 @@ public class XMLHandler {
                                     Double.parseDouble(attributes.getValue("ypos")),
                                     Integer.parseInt(attributes.getValue("instValue"))
                             );
-                    this.notes.add(compController.getClickInPanelHandler().addBoundNote(
+                    this.notesStack.peek().add(compController.getClickInPanelHandler().addBoundNote(
                             rec, rec.getInstrument())
                     );
-                    pStack.peek().add(rec);
+                    this.pStack.peek().add(rec);
                     break;
                 case "Gesture":
                     pStack.push(new ArrayList<>());
+                    notesStack.push(new ArrayList<>());
             }
         }
 
@@ -126,7 +129,8 @@ public class XMLHandler {
                     break;
                 case "Gesture":
                     GroupRectangle temp = compController.createGroupRectangle(this.pStack.pop());
-                    this.notes.add(compController.createGesture(temp));
+                    Gesture modelTemp = compController.createGesture(temp, notesStack.pop());
+                    this.notesStack.peek().add(modelTemp);
                     this.pStack.peek().add(temp);
             }
         }
