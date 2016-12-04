@@ -62,7 +62,8 @@ public class ClickInPanelHandler {
         if (!isMetaDown) {
             this.compController.clearSelected();
         }
-        addNote(event.getX(), event.getY(), this.DEFAULT_RECTANGLE_WIDTH, instId);
+        addNote(event.getX()/this.compController.getZoomFactor().getValue(), event.getY()/this.compController.getZoomFactor().getValue()
+                , this.DEFAULT_RECTANGLE_WIDTH, instId);
     }
 
     /**
