@@ -28,6 +28,11 @@ public class DragInPanelHandler {
     private double startX;
     /** The y coordinate at which the drag event originated*/
     private double startY;
+
+    private double deScaledStartX;
+
+    private double deScaledStartY;
+
     /** Whether or not the control key is held down*/
     private boolean metaDown;
 
@@ -49,8 +54,10 @@ public class DragInPanelHandler {
      * @param event the event associated with the mouse push down
      */
     public void handleMousePressed(MouseEvent event){
-        this.startX = event.getX();
-        this.startY = event.getY();
+        this.startX = event.getX()*this.compController.getZoomFactor().getValue();
+        this.startY = event.getY()*this.compController.getZoomFactor().getValue();
+        this.deScaledStartX = event.getX()/this.compController.getZoomFactor().getValue();
+        this.deScaledStartY = event.getY()/this.compController.getZoomFactor().getValue();
         this.selectionRectangle.setX(this.startX);
         this.selectionRectangle.setY(this.startY);
         this.metaDown = event.isShortcutDown();
@@ -69,10 +76,10 @@ public class DragInPanelHandler {
         {
             this.compController.clearSelected();
         }
-        double leftX = Math.min(event.getX(),this.startX);
-        double width = Math.abs(event.getX()-this.startX);
-        double lowestY = Math.min(event.getY(),this.startY);
-        double height = Math.abs(event.getY()-this.startY);
+        double leftX = Math.min(event.getX()*this.compController.getZoomFactor().getValue(),this.startX);
+        double width = Math.abs(event.getX()*this.compController.getZoomFactor().getValue()-this.startX);
+        double lowestY = Math.min(event.getY()*this.compController.getZoomFactor().getValue(),this.startY);
+        double height = Math.abs(event.getY()*this.compController.getZoomFactor().getValue()-this.startY);
         this.selectionRectangle.setWidth(width);
         this.selectionRectangle.setHeight(height);
         this.selectionRectangle.setX(leftX);
@@ -80,7 +87,14 @@ public class DragInPanelHandler {
 
 
         for (SelectableRectangle rectangle : compController.getRectangles()) {
-            if (rectangle.intersects(leftX, lowestY, width, height)) {
+
+            //de-Scale rectangle cordinates
+            double deScaledLeftX = leftX/this.compController.getZoomFactor().getValue();
+            double deScaledLowY = lowestY/this.compController.getZoomFactor().getValue();
+            double deScaledWidth = Math.abs(event.getX()/this.compController.getZoomFactor().getValue()-this.deScaledStartX);
+            double deScaledHeight = Math.abs(event.getY()/this.compController.getZoomFactor().getValue()-this.deScaledStartY);
+
+            if (rectangle.intersects(deScaledLeftX, deScaledLowY, deScaledWidth, deScaledHeight)) {
                 rectangle.setSelected(true);
             }
         }
