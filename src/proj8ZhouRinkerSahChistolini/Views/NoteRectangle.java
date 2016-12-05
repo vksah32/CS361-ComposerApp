@@ -60,14 +60,6 @@ public class NoteRectangle extends SelectableRectangle {
         this.selected.set(selected);
     }
 
-    /**
-     * getter for selectedProperty
-     * @return selectedProperty
-     */
-    public BooleanProperty selectedProperty() {
-        return this.selected;
-    }
-
     @Override
     /**
      * x,y,width, name, channel, integer representing MIDI instrucment

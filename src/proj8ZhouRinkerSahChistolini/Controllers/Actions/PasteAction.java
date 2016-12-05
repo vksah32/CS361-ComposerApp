@@ -3,6 +3,7 @@ package proj8ZhouRinkerSahChistolini.Controllers.Actions;
 import javafx.scene.Node;
 import proj8ZhouRinkerSahChistolini.Controllers.CompositionPanelController;
 import proj8ZhouRinkerSahChistolini.Models.Note;
+import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.Collection;
@@ -15,9 +16,9 @@ public class PasteAction implements Actionable{
     /** deleted notes from Composition Panel */
     private Collection<SelectableRectangle> graphicalNote;
     /** deleted model notes from Compostion */
-    private Collection<Note> modelNotes;
+    private Collection<Playable> modelNotes;
     /** reference to all notes in Composition */
-    private Collection<Note> allNotesOnComposition;
+    private Collection<Playable> allNotesOnComposition;
     /** reference to all rectangel on Composition Panel */
     private Collection<Node> recs;
 
@@ -29,7 +30,7 @@ public class PasteAction implements Actionable{
      * @param comp reference to the composition panel controller
      *
      */
-    public PasteAction(Collection<SelectableRectangle> graphicalNotes, Collection<Note> modelNotes, CompositionPanelController comp ){
+    public PasteAction(Collection<SelectableRectangle> graphicalNotes, Collection<Playable> modelNotes, CompositionPanelController comp ){
 
         this.graphicalNote = graphicalNotes;
         this.modelNotes = modelNotes;
@@ -47,7 +48,7 @@ public class PasteAction implements Actionable{
             recs.remove(rec);
         }
 
-        for(Note note : modelNotes){
+        for(Playable note : modelNotes){
             allNotesOnComposition.remove(note);
         }
 
@@ -62,7 +63,7 @@ public class PasteAction implements Actionable{
             recs.add(rec);
         }
 
-        for(Note note : modelNotes){
+        for(Playable note : modelNotes){
             allNotesOnComposition.add(note);
         }
     }

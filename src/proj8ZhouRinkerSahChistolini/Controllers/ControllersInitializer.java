@@ -1,5 +1,5 @@
 /**
- * File: Controller.java
+ * File: ControllersInitializer.java
  * @author Victoria Chistolini
  * @author Edward (osan) Zhou
  * @author Alex Rinker
@@ -16,7 +16,7 @@ import javafx.fxml.FXML;
 /**
  * Handles menu GUI interactions with other controllers
  */
-public class Controller {
+public class ControllersInitializer {
 
     /** The compositionPanel object that is modified */
     @FXML
@@ -38,47 +38,52 @@ public class Controller {
     @FXML
     private ActionMenuController actionMenuController;
 
-    /** a controller to assist in bindings between the menus and controllers*/
-    private BindingController bindingController;
-
-    private ClipBoardController clipboardController;
-
-    /** create the XMLHandler*/
-    private XMLHandler XMLhandler;
-
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
     public void initialize() {
-        //Initialize Composition Controller
+        //Initialize CompositionPanelController
         this.compositionPanelController.init(this.instrumentPaneController);
-        //Initialize the XMLHandler
-        this.XMLhandler = new XMLHandler(this.compositionPanelController);
-        //initialize Clipboard Controller
-        this.clipboardController = new ClipBoardController(
+
+        // Initialize the non-fxml tools
+        XMLHandler XMLhandler = new XMLHandler(this.compositionPanelController);
+        ClipBoardController clipboardController = new ClipBoardController(
                 this.compositionPanelController,
-                this.XMLhandler
+                XMLhandler
         );
-        //initialize Binding Controller init
-        this.bindingController = new BindingController(
-                this,
+        BindingController bindingController = new BindingController(
                 this.compositionPanelController,
-                this.clipboardController
-        );
-        //File Menu Controller init
+                clipboardController
+        );;
+
+        //Set up the Menu Controllers with the needed tools
+        initializeMenuControllers(XMLhandler, bindingController, clipboardController);
+    }
+
+    /**
+     * Initializes the FileMenuController providing them with the
+     * necessary connections
+     * @param XMLhandler the global XMLhandler
+     * @param bindingController  the global binding controller
+     * @param clipboardController the global clipboard controller
+     */
+    private void initializeMenuControllers(XMLHandler XMLhandler,
+                                           BindingController bindingController,
+                                           ClipBoardController clipboardController) {
+        //File Menu ControllersInitializer init
         this.fileMenuController.init(
                 this.compositionPanelController,
-                this.XMLhandler
+                XMLhandler
         );
-        //Initialize Edit Controller
+        //Initialize Edit ControllersInitializer
         this.editMenuController.init(
                 this.compositionPanelController,
-                this.bindingController,
-                this.clipboardController
+                bindingController,
+                clipboardController
         );
-        //Initialize Action Controller
+        //Initialize Action ControllersInitializer
         this.actionMenuController.init(this.compositionPanelController,
-                                       this.bindingController);
+                bindingController);
     }
 }
 

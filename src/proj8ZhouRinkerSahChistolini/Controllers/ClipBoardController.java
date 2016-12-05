@@ -10,13 +10,14 @@
  */
 
 package proj8ZhouRinkerSahChistolini.Controllers;
+import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.*;
+import java.io.IOException;
+import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
 import java.util.*;
 
 /**
@@ -59,7 +60,7 @@ public class ClipBoardController {
     public String getClipboardContent() {
         try {
             return String.valueOf(this.board.getData(DataFlavor.stringFlavor));
-        } catch (Exception e) {
+        } catch (UnsupportedFlavorException | IOException e) {
             return "";
         }
     }
@@ -77,7 +78,7 @@ public class ClipBoardController {
         // an unmatched type
         try {
             this.XMLHandler.loadNotesFromXML(stringNotes);
-        } catch (Exception e) {
+        } catch (SAXException | ParserConfigurationException | IOException e) {
             return;
         }
         for (SelectableRectangle rec : this.compController.getRectangles()) {
@@ -92,24 +93,8 @@ public class ClipBoardController {
      * adds them to the clipboard
      */
     public void copySelected() {
-        String mainString = createXML(this.compController.getSelectedRectangles());
+        String mainString = XMLHandler.createXML(this.compController.getNotesfromComposition());
         this.addToClipBoard(mainString);
-    }
-
-    /**
-     * Creates an xml string of the given Selectable Rectangles
-     * @param recs
-     * @return
-     */
-    public static String createXML(Collection<SelectableRectangle> recs) {
-        String mainString = "";
-
-        for (SelectableRectangle sr : recs) {
-            if (!sr.xProperty().isBound()) {
-                mainString += sr.toXML(1);
-            }
-        }
-        return "<Composition>\n" + mainString + "</Composition>\n";
     }
 
     /**
