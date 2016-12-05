@@ -27,7 +27,7 @@ public class Composition {
     private MidiPlayer player;
 
     /** The notes to build the composition */
-    private HashSet<Note> notes;
+    private HashSet<Playable> notes;
 
     /** Creates a new Composition object with a midiplayer which has
      * 60 beats per minute and 100 ticks per beat*/
@@ -54,17 +54,28 @@ public class Composition {
      * Adds a note to this composition
      * @param note the note which will be added to the composition
      */
-    public void addNote(Note note){
-        this.addNote(note.getStartTick(),note.getDuration(),
-                     note.getPitch(),note.getInstrument());
+    public void addNote(Playable note){
+        if (note instanceof Note) {
+            Note temp = (Note) note;
+            this.addNote(temp.getStartTick(), temp.getDuration(),
+                    temp.getPitch(), temp.getInstrument());
+        }
+        else if(note instanceof Gesture){
+            ((Gesture) note).getChildren().forEach(n -> this.addNote(n));
+        }
     }
 
     /**
-     * Appends a note to the the notes field
+     * Appends a playable to the note field
+     * removes children of gestures from top of collection
      * @param note the note to be added to the field
      */
-    public void appendNote(Note note){
+    public void appendPlayable(Playable note){
+        if (note instanceof Gesture){
+            this.notes.removeAll(((Gesture) note).getChildren());
+        }
         this.notes.add(note);
+
 
     }
 
@@ -80,7 +91,7 @@ public class Composition {
      * Constructs a composition from the notes collection
      */
     public void buildSong(){
-        for(Note note: notes){
+        for(Playable note: notes){
             this.addNote(note);
         }
     }
@@ -104,16 +115,16 @@ public class Composition {
      * getter for notes
      * @return
      */
-    public HashSet<Note> getNotes() {
+    public HashSet<Playable> getNotes() {
         return notes;
     }
 
 
 
-    public Collection<Note> getSelectedCompositionNotes() {
-        HashSet<Note> selectedNotes = new HashSet<>();
+    public Collection<Playable> getSelectedCompositionNotes() {
+        HashSet<Playable> selectedNotes = new HashSet<>();
 
-        for (Note note : notes) {
+        for (Playable note : notes) {
             if (note.selectedProperty().getValue()) {
                 selectedNotes.add(note);
             }

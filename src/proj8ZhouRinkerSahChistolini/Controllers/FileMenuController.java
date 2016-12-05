@@ -1,5 +1,5 @@
 /**
- * File: Controller.java
+ * File: FileMenuController.java
  * @author Victoria Chistolini
  * @author Edward (osan) Zhou
  * @author Alex Rinker
@@ -21,8 +21,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,7 +42,7 @@ public class FileMenuController {
         this.currentOpenFile =null;
         chooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "fxml files(*.fxml)", "*.fxml"
+                "xml files(*.xml)", "*.xml"
         );
         chooser.getExtensionFilters().add(extFilter);
     }
@@ -60,22 +58,13 @@ public class FileMenuController {
      * destruction of the window.
      */
     @FXML
-    public void cleanUpOnExit() throws IOException{
+    public void cleanUpOnExit() {
         this.compositionPanelController.stopComposition();
-        if(hasUnsavedChanges()) {
-            int result = generateConfirmationDialog();
-            switch(result) {
-                case 1:
-                    save();
-                case 0:
-                    break;
-                case 2:
-                    return;
-            }
-        }
+        if(!handleUnsavedChanges()) { return; }
         Platform.exit();
         System.exit(0);
     }
+
 
     /** Dialog window that gives information about the application */
     @FXML
@@ -93,53 +82,43 @@ public class FileMenuController {
      * Create new Composition based on whether or not the composition has changed
      */
     @FXML
-    public void createNewDocument() throws IOException {
+    public void createNewDocument() {
         this.compositionPanelController.stopComposition();
         // check if modified
-        if(hasUnsavedChanges()) {
-            int result = generateConfirmationDialog();
-            switch(result) {
-                case 1:
-                    save();
-                case 0:
-                    break;
-                case 2:
-                    return;
-            }
-        }
+        if (!handleUnsavedChanges()) { return; }
         //clear the document
         this.compositionPanelController.reset();
         this.currentOpenFile = null;
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /** Open a new composition file */
     @FXML
-    public void open() throws IOException {
+    public void open() {
         this.compositionPanelController.stopComposition();
-        if(hasUnsavedChanges()) {
-            int result = generateConfirmationDialog();
-            switch(result) {
-                case 1:
-                    save();
-                case 0:
-                    break;
-                case 2:
-                    return;
+        if(!handleUnsavedChanges()){ return; }
+        //Create a placeholder for the current file
+        File temp = this.chooser.showOpenDialog(new Stage());
+        if(temp == null) {//If the user cancels
+            return;
+        }
+        try {
+            String lines = readFile(temp);
+            this.compositionPanelController.reset();
+            try {
+                this.XMLHandler.loadNotesFromXML(lines);
+            } catch (SAXException e) {
+                this.errorAlert("Error Parsing File", "Malformed XML File");
+            } catch (ParserConfigurationException e) {
+                return;
             }
+            this.currentOpenFile = temp;
         }
-        this.currentOpenFile = this.chooser.showOpenDialog(new Stage());
-        if(this.currentOpenFile == null) {//If the user cancels
+        catch(IOException x){
+            errorAlert("File Could Not Be Read", x.getMessage());
             return;
         }
-        String lines = readFile(this.currentOpenFile);
-        this.compositionPanelController.reset();
-        try{
-            this.XMLHandler.loadNotesFromXML(lines);
-        }catch(SAXException e){
-            this.errorAlert("Error Parsing File","Malformed XML File");
-        }catch(ParserConfigurationException e){
-            return;
-        }
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /**
@@ -155,10 +134,11 @@ public class FileMenuController {
         } else {
             this.currentOpenFile = temp;
         }
-        this.writeFile(ClipBoardController.createXML(
-                this.compositionPanelController.getRectangles()),
+        this.writeFile(XMLHandler.createXML(
+                this.compositionPanelController.getNotesfromComposition()),
                 this.currentOpenFile
         );
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /**
@@ -174,7 +154,7 @@ public class FileMenuController {
             fileWriter.close();
         }
         catch (IOException ex) {
-            System.out.println("ERROR: " + ex);
+            errorAlert("File Could not be Written", ex.getMessage());
         }
     }
 
@@ -188,11 +168,12 @@ public class FileMenuController {
             this.saveAs();
         }
         else {
-            this.writeFile(ClipBoardController.createXML(
-                    this.compositionPanelController.getRectangles()),
+            this.writeFile(XMLHandler.createXML(
+                    this.compositionPanelController.getNotesfromComposition()),
                     this.currentOpenFile
             );
         }
+        this.compositionPanelController.getActionController().saveList();
     }
 
     /**
@@ -205,7 +186,7 @@ public class FileMenuController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Warning: You Have Unsaved Changes");
         alert.setHeaderText("You currently have unsaved changes in your composition.\n" +
-                "Would you like to save those changes before closing?");
+                "Would you like to save those changes ?");
 
         ButtonType yesButton = new ButtonType("Yes");
         ButtonType noButton = new ButtonType("No");
@@ -223,20 +204,44 @@ public class FileMenuController {
         }
     }
 
+
+    /**
+     * if there are unsaved changes, ask user if they want to save
+     */
+    public boolean handleUnsavedChanges(){
+        if(!compositionPanelController.getActionController().isSaved()) {
+            int result = generateConfirmationDialog();
+            switch(result) {
+                //user selected save changes
+                case 1:
+                    save();
+                    //user did not select a button
+                case 0:
+                    break;
+                //user selected not to save changes
+                case 2:
+                    return false;
+            }
+        }
+        return true;
+    }
     /**
      * returns a String representing the characters
      * read from the input File
      * @param file the input File to be read
      * @returns lines a String representation of the file
      */
-    public String readFile(File file) throws IOException {
+    public String readFile(File file) throws IOException{
         String lines = "";
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        while ((line =  br.readLine()) != null){
-            lines += line + "\n";
-        }
-        br.close();
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line =  br.readLine()) != null){
+                lines += line + "\n";
+            }
+            br.close();
+
+
         return lines;
     }
 
@@ -251,35 +256,5 @@ public class FileMenuController {
         alert.setHeaderText(type);
         alert.setContentText(e);
         alert.show();
-    }
-    /**
-     * compares the current composition to the saved file (if available)
-     * and returns true if they are different and false if there are no differences
-     * @returns result boolean which represent whether or not there are unsaved changes
-     */
-    public boolean hasUnsavedChanges() throws IOException {
-        boolean result = false;
-        //if there are rectangles in the composition, prompt the warning
-        if (this.currentOpenFile == null &&
-                this.compositionPanelController.getRectangles().size() > 0) {
-            result = true;
-        }
-        //if the current save file differs from the composition, prompt the warning
-        else if (this.currentOpenFile != null){
-            List<String> saved = Arrays.asList(
-                    readFile(this.currentOpenFile).split("\n")
-            );
-            List<String> current = Arrays.asList(ClipBoardController.createXML(
-                    this.compositionPanelController.getRectangles()
-            ).split("\n"));
-            for (String s : saved) {
-                if (!current.contains(s)) {result = true;}
-            }
-            for (String s : current) {
-                if (!saved.contains(s)) {result = true;}
-            }
-        }
-        return result;
-
     }
 }

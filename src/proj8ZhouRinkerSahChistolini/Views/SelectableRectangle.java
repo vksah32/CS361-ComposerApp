@@ -91,7 +91,7 @@ public abstract class SelectableRectangle extends Rectangle {
      *  gets the selected property
      * @return a BooleanProperty
      */
-    public BooleanProperty SelectedProperty(){
+    public BooleanProperty selectedProperty(){
         return this.selected;
     }
 

@@ -1,5 +1,5 @@
 /**
- * File: Controller.java
+ * File: EditMenuController.java
  * @author Victoria Chistolini
  * @author Edward (osan) Zhou
  * @author Alex Rinker
