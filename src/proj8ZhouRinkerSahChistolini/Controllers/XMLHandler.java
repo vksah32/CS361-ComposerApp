@@ -127,10 +127,12 @@ public class XMLHandler {
                 case "Note":
                     break;
                 case "Gesture":
-                    GroupRectangle temp = compController.createGroupRectangle(this.pStack.pop());
-                    Gesture modelTemp = compController.createGesture(temp, notesStack.pop());
-                    this.notesStack.peek().add(modelTemp);
-                    this.pStack.peek().add(temp);
+                    if(!this.pStack.peek().isEmpty()) {
+                        GroupRectangle temp = compController.createGroupRectangle(this.pStack.pop());
+                        Gesture modelTemp = compController.createGesture(temp, notesStack.pop());
+                        this.notesStack.peek().add(modelTemp);
+                        this.pStack.peek().add(temp);
+                    }
             }
         }
     }
