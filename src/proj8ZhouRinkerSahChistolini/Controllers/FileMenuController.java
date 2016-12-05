@@ -257,37 +257,4 @@ public class FileMenuController {
         alert.setContentText(e);
         alert.show();
     }
-    /**
-     * compares the current composition to the saved file (if available)
-     * and returns true if they are different and false if there are no differences
-     * @returns result boolean which represent whether or not there are unsaved changes
-     */
-    public boolean hasUnsavedChanges() {
-        boolean result = false;
-        String saved;
-        String current;
-
-        //if there are rectangles in the composition, prompt the warning
-        if (this.currentOpenFile == null &&
-                this.compositionPanelController.getRectangles().size() > 0) {
-            result = true;
-        }
-        //if the current save file differs from the composition, prompt the warning
-        else if (this.currentOpenFile != null) {
-            try {
-                saved = readFile(this.currentOpenFile);
-            }
-            catch (IOException e){
-                //passively tell user there are unsaved changes
-                return true;
-            }
-            current = this.XMLHandler.createXML(
-                    this.compositionPanelController.getNotesfromComposition()
-            );
-
-            //Call the XMLHandler's helper method
-            result = !this.XMLHandler.areEqualCompositions(saved, current);
-        }
-        return result;
-    }
 }

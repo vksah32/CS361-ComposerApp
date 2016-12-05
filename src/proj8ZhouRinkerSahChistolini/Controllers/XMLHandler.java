@@ -16,8 +16,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Collection;
 import java.util.Stack;
 
@@ -50,59 +48,6 @@ public class XMLHandler {
         SAXNoteHandler handler = new SAXNoteHandler();
         parser.parse(new InputSource(new StringReader(xmlString)), handler);
         addToComposition(handler);
-    }
-
-    /**
-     * returns whether or not the two input strings will build the
-     * same composition
-     * @param comp1 the XML String representation of composition 1
-     * @param comp2 the XML String representation of composition 2
-     * @return boolean representing the equality of the parameters
-     */
-    public boolean areEqualCompositions(String comp1, String comp2) {
-        List<String> gestures1 = Arrays.asList(comp1.split("<Gesture>|</Gesture>"));
-        List<String> gestures2 = Arrays.asList(comp2.split("<Gesture>|</Gesture>"));
-
-        //If the compositions don't have the same number of gestures, they are different
-        if(gestures1.size() != gestures2.size()) { return false; }
-
-        //Loop through each gesture, and compare the notes in them
-        for(int i=0; i<gestures1.size(); i++) {
-            //Determine if the gesture is empty
-            if(gestures1.get(i).isEmpty() && gestures2.get(i).isEmpty()) {
-                continue;
-            } else if (gestures1.get(i).isEmpty() || gestures2.get(i).isEmpty()) {
-                return false;
-            }
-
-            //If neither gesture is empty, determine if they have the same notes
-            if (!areEqualGestures(gestures1.get(i), gestures2.get(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * returns whether or not the two input strings will build the
-     * same gesture
-     * @param gesture1 the XML String representation of gesture 1
-     * @param gesture2 the XML String representation of gesture 2
-     * @return boolean representing the equality of the parameters
-     */
-    public boolean areEqualGestures(String gesture1, String gesture2) {
-        List<String> gest1 = Arrays.asList(gesture1.split("\n"));
-        List<String> gest2 = Arrays.asList(gesture2.split("\n"));
-        gest1.forEach(g -> g.trim());
-        gest2.forEach(g -> g.trim());
-
-        for(String note : gest1) {
-            if(!gest2.contains(note)) { return false; }
-        }
-        for(String note : gest2) {
-            if(!gest1.contains(note)) { return false; }
-        }
-        return true;
     }
 
     /**
