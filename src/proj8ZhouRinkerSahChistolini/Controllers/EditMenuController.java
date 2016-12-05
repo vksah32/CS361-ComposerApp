@@ -33,8 +33,6 @@ public class EditMenuController {
     /** CompositionPanelController reference */
     private CompositionPanelController compositionPanelController;
 
-    private ZoomHandler zoomHandler;
-
     /**
      * All of our MenuItem are put into fields
      * Each of the following FXML elements are MenuItems defined in
@@ -68,9 +66,7 @@ public class EditMenuController {
         this.compositionPanelController = compController;
         this.bindingController = bindingController;
         this.clipboardController = clipboardController;
-        this.zoomHandler = new ZoomHandler(this.compositionPanelController);
         this.bindMenuItems();
-
     }
 
     @FXML
@@ -161,22 +157,6 @@ public class EditMenuController {
         this.compositionPanelController.ungroupSelected(
                 this.compositionPanelController.getSelectedRectangles()
         );
-    }
-
-    @FXML
-    /**
-     * zoom in 25%
-     */
-    public void zoomIn() {
-        this.zoomHandler.zoomIn();
-    }
-
-    @FXML
-    /**
-     * zoom out 25%
-     */
-    public void zoomOut(){
-        this.zoomHandler.zoomOut();
     }
 
     @FXML

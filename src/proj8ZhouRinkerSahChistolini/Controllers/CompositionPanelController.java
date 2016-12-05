@@ -12,16 +12,12 @@
 package proj8ZhouRinkerSahChistolini.Controllers;
 
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Scale;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
@@ -81,19 +77,6 @@ public class CompositionPanelController {
     /** maps the NoteRectangles to the specific associated note */
     private HashMap<NoteRectangle, Note> noteMap;
 
-    private Scale scale = new Scale(1,1);
-
-    public DoubleProperty getZoomFactor() {
-        return zoomFactor;
-    }
-
-    public DoubleProperty zoomFactorProperty() {
-        return zoomFactor;
-    }
-
-    private DoubleProperty zoomFactor = new SimpleDoubleProperty(1);
-    private DoubleProperty lineGapProperty = new SimpleDoubleProperty(1);
-
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -105,31 +88,11 @@ public class CompositionPanelController {
                 this.selectionRectangle,
                 this
         );
-
-        this.compositionPanel.getTransforms().add(this.scale);
         this.compositionPanel.toFront();
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
         noteMap = new HashMap<>();
-        this.zoomFactor.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                for(SelectableRectangle r : getRectangles()){
-                    System.out.println(r.getHeight());
-                }
-                scale.setX(newValue.doubleValue());
-                scale.setY(newValue.doubleValue());
-                for (Node l : staffPane.getChildren()
-                     ) {
-                    if(l instanceof  Line) {
-                        ((Line) l).startYProperty().set(((Line) l).getStartY() +1+  zoomFactor.getValue());
-                        ((Line) l).endYProperty().set(((Line) l).getEndY()+1 + zoomFactor.getValue());
-                    }
-                }
-
-            }
-        });
     }
 
     /**
@@ -150,8 +113,6 @@ public class CompositionPanelController {
         if(selected){
             rectangle.setSelected(true);
         }
-        rectangle.getTransforms().add(scale);
-        System.out.println(rectangle.getTransforms());
         this.compositionPanel.getChildren().add(rectangle);
     }
 
@@ -181,19 +142,9 @@ public class CompositionPanelController {
     private void drawLines()  {
         for(int i = 1; i < 128; i++)
         {
-            Rectangle rec = new Rectangle(0, i*10+1, 2000, 10);
-            rec.setFill(null);
-            rec.setStroke(Color.GRAY);
-            rec.getTransforms().add(scale);
-
-            //Line line = new Line(0, i*10+1, 2000,i*10+1);
-
-
-            //line.startYProperty().bind(this.lineGapProperty);
-            //line.setId("lines");
-            rec.getTransforms().add(scale);
-            this.staffPane.getChildren().add(rec);
-
+            Line line = new Line(0, i*10+1, 2000,i*10+1);
+            line.setId("lines");
+            this.staffPane.getChildren().add(line);
         }
     }
 

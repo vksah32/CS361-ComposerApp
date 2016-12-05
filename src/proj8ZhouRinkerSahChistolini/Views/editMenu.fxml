@@ -53,15 +53,4 @@
               text="Paste"
               onAction="#pasteSelected"
               accelerator="Shortcut+V"/>
-    <SeparatorMenuItem/>
-    <MenuItem fx:id="zoominButton"
-              text="Zoom In"
-              onAction="#zoomIn"
-              accelerator="Shortcut+M"/>
-    <MenuItem fx:id="zoomoutButton"
-              text="Zoom Out"
-              onAction="#zoomOut"
-              accelerator="Shortcut+N"/>
-
-
 </Menu>
