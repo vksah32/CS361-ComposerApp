@@ -11,6 +11,7 @@
 package proj8ZhouRinkerSahChistolini.Controllers.Actions;
 
 import proj8ZhouRinkerSahChistolini.Controllers.CompositionPanelController;
+import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj8ZhouRinkerSahChistolini.Models.Note;
 
@@ -32,7 +33,7 @@ public class AddNoteAction implements Actionable {
     /** collection of all rectangles */
     private Collection<Node> recs;
     /** collection of all notes */
-    private Collection<Note> notes;
+    private Collection<Playable> notes;
     /** collection of all selectable rectangles */
     private Collection<SelectableRectangle> selected;
     /** collection of all */

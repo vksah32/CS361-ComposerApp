@@ -16,7 +16,7 @@ import javafx.beans.property.*;
 /**
  * Holds all the information of a note
  */
-public class Note {
+public class Note extends Playable{
 
     /** the instrument that the note plays */
     private Instrument instrument;
@@ -26,17 +26,15 @@ public class Note {
     private DoubleProperty pitch;
     /** the start tick of the note */
     private DoubleProperty startTick;
-    /**selectedproperty to track selectionOfrectangle**/
-    private BooleanProperty selected;
 
     /**
      * The constructor for Note
      */
     public Note(Instrument instrument){
+        super();
         this.startTick = new SimpleDoubleProperty();
         this.duration = new SimpleDoubleProperty();
         this.pitch = new SimpleDoubleProperty();
-        this.selected = new SimpleBooleanProperty();
         this.instrument = instrument;
     }
 
@@ -105,27 +103,25 @@ public class Note {
         return startTick;
     }
 
+    @Override
     /**
-     * getter for selectedProperty
-     * @return BooleanProperty  the selectedProperty
+     * x,y,width, name, channel, integer representing MIDI instrucment
+     * @return
      */
-    public BooleanProperty selectedProperty() {
-        return selected;
-    }
+    public String toString() {return toXML(0);}
 
     /**
      * x,y,width, name, channel, integer representing MIDI instrucment
      * @return
      */
-    public String toString() {
-
-        String noteString = this.startTick.intValue()    +" "+
-                            this.pitchProperty().intValue() +" "+
-                            this.duration.getValue()     +" " +
-                            this.instrument.getName()    + " " +
-                            this.instrument.getChannel() + " " +
-                            this.instrument.getValue()   +"\n";
-
-        return noteString;
+    public String toXML(int numTabs) {
+        String tabbing = (numTabs > 0) ? String.format("%" + numTabs*4 + "s", " ") : "";
+        return tabbing +
+                "<Note " +
+                "xpos=\"" + this.startTickProperty().intValue()    +"\" "+
+                "ypos=\"" + this.pitchProperty().intValue() +"\" "+
+                "width=\"" + this.durationProperty().getValue()     + "\" " +
+                "instValue=\"" + this.instrument.getValue()  +"\" " +
+                "/>\n";
     }
 }
