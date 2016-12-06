@@ -79,6 +79,11 @@ public abstract class SelectableRectangle extends Rectangle {
     }
 
     /**
+     * sets rectangles to specific instrument
+     */
+    public abstract void setInstrument(int val);
+
+    /**
      * returns whether or not the rectangle is selected
      * @return selected boolean which represent whether or not
      * the rectangle is selected

@@ -126,6 +126,10 @@ public class GroupRectangle extends SelectableRectangle{
         pane.getChildren().add(this);
         this.getChildren().forEach(rec -> rec.populate(pane));
     }
+    @Override
+    public void setInstrument(int val){
+        this.children.forEach(rec -> rec.setInstrument(val));
+    }
 
     @Override
     /**

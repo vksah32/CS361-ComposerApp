@@ -12,6 +12,9 @@
 package proj8ZhouRinkerSahChistolini.Views;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import proj8ZhouRinkerSahChistolini.Controllers.InstrumentPanelController;
 
 /**
  * Represents a musical note in the gui interface
@@ -19,8 +22,7 @@ import javafx.beans.property.BooleanProperty;
 public class NoteRectangle extends SelectableRectangle {
 
     /**int value for the instrument**/
-    private int instrument;
-
+    private IntegerProperty instrument;
     /**
      * The constructor of the NoteRectangle
      * @param x
@@ -32,18 +34,35 @@ public class NoteRectangle extends SelectableRectangle {
      */
     public NoteRectangle(double x, double y,
                          double width, double height,
-                         int instr, String styleName ) {
+                         int instr, String styleName,
+                         InstrumentPanelController instrController) {
         super(x, y, width, height);
         this.getStyleClass().add("note");
         this.getStyleClass().add(styleName.toLowerCase().replace(" ", "-"));
-        this.instrument = instr;
+        this.instrument = new SimpleIntegerProperty();
+        this.instrument.addListener(e -> {
+            this.getStyleClass().remove(styleName.toLowerCase().replace(" ", "-"));
+            this.getStyleClass().add("note");
+            this.getStyleClass().add(instrController.getInstrument(
+                    this.getInstrument()).getName().toLowerCase().replace(" ", "-"));
+        });
+        this.instrument.setValue(instr);
     }
 
     /**
      * returns the instrument value of this rectangle
      */
-    public int getInstrument() {return this.instrument;}
+    public int getInstrument() {return this.instrument.intValue();}
 
+    /**
+     * returns the instrument property
+     */
+    public IntegerProperty instrumentProperty(){return this.instrument;}
+
+    public void setInstrument(int val){
+        this.instrument.set(val);
+
+    }
     /**
      * sets the selection of the rectangle
      * @param selected
@@ -78,7 +97,7 @@ public class NoteRectangle extends SelectableRectangle {
                 "xpos=\"" + this.xProperty().intValue()    +"\" "+
                 "ypos=\"" + this.yProperty().intValue() +"\" "+
                 "width=\"" + this.widthProperty().getValue()     + "\" " +
-                "instValue=\"" + this.instrument  +"\" " +
+                "instValue=\"" + this.instrument.intValue()  +"\" " +
                 "/>\n";
     }
 }

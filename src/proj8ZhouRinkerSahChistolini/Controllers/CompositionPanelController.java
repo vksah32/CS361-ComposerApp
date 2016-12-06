@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -350,9 +349,10 @@ public class CompositionPanelController {
         gesture.setOnMouseReleased(handler::handleMouseReleased);
         gesture.setOnMouseClicked(new ClickInNoteHandler(this));
 
-        ContextMenu contextMenu =
-                ContextMenuHandler.createRightClickMenu(this, gesture);
-        ContextMenuHandler.setUpListeners(gesture, contextMenu);
+        // Create right click menu handlers
+        ContextMenuFactory factory = new ContextMenuFactory(this, gesture);
+        ContextMenu menu = factory.createPlayableRightClickMenu();
+        factory.setUpListeners(menu);
         return gesture;
     }
 

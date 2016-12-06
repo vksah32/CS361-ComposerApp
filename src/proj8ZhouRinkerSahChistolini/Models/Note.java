@@ -26,6 +26,8 @@ public class Note extends Playable{
     private DoubleProperty pitch;
     /** the start tick of the note */
     private DoubleProperty startTick;
+    /** Instrument binding to rectangle*/
+    private IntegerProperty instrVal;
 
     /**
      * The constructor for Note
@@ -35,6 +37,7 @@ public class Note extends Playable{
         this.startTick = new SimpleDoubleProperty();
         this.duration = new SimpleDoubleProperty();
         this.pitch = new SimpleDoubleProperty();
+        this.instrVal= new SimpleIntegerProperty();
         this.instrument = instrument;
     }
 
@@ -44,6 +47,10 @@ public class Note extends Playable{
      */
     public Instrument getInstrument() {
         return instrument;
+    }
+
+    public int getInstrumentValue(){
+        return this.instrVal.intValue();
     }
 
     /**
@@ -106,6 +113,12 @@ public class Note extends Playable{
     public DoubleProperty startTickProperty() {
         return startTick;
     }
+
+    /**
+     * Gets the intrVal property
+     * @return DoubleProperty instrVal
+     */
+    public IntegerProperty intrValProperty() {return this.instrVal;}
 
     @Override
     /**
