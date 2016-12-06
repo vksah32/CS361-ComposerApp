@@ -21,6 +21,12 @@ public abstract class Playable {
         return selected;
     }
 
+    public abstract double getX();
+
+    public abstract double getRightX();
+
+    public abstract double getWidth();
+
     public String toXML(int numTabs) {
         return this.toXML(0);
     }

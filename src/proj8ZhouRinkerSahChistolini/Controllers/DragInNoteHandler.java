@@ -12,6 +12,7 @@
 
 package proj8ZhouRinkerSahChistolini.Controllers;
 
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.ExtendNoteAction;
@@ -66,8 +67,12 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse press
      */
     public void handleMousePressed(MouseEvent event) {
-        this.beforeState = this.compController.getSelectedRectangles();
         this.compController.stopComposition();
+        if (event.getButton() == MouseButton.SECONDARY) {
+            return;
+        }
+
+        this.beforeState = this.compController.getSelectedRectangles();
         if (event.getX() >= this.sourceRectangle.getX() +
                             this.sourceRectangle.getWidth() - 5
         ) {
@@ -86,6 +91,7 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with this mouse drag
      */
     public void handleDragged(MouseEvent event) {
+
         this.compController.stopComposition();
         if (!this.sourceRectangle.isSelected()) {
             this.compController.clearSelected();
@@ -106,6 +112,9 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteTranslate(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) {
+            return;
+        }
         double deltaX = event.getX() - this.previousX;
         double deltaY = event.getY() - this.previousY;
         for (
@@ -125,6 +134,9 @@ public class DragInNoteHandler {
      * @param event the MouseEvent associated with the mouse drag
      */
     private void handleNoteExtend(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) {
+            return;
+        }
         double deltaX = event.getX() -
                         this.sourceRectangle.getWidth() -
                         this.sourceRectangle.getX();
@@ -147,6 +159,9 @@ public class DragInNoteHandler {
      * @param event the MouseEvent fired when the mouse was released
      */
     public void handleMouseReleased(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) {
+            return;
+        }
         Collection<SelectableRectangle> changedRectangles = new ArrayList<>();
         double adjustY = 0;
         for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()){

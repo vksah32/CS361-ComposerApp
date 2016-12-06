@@ -12,6 +12,10 @@
 
 package proj8ZhouRinkerSahChistolini.Controllers;
 
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.AddNoteAction;
 import proj8ZhouRinkerSahChistolini.Models.Instrument;
@@ -55,6 +59,7 @@ public class ClickInPanelHandler {
      * @param event
      */
     public void handle(MouseEvent event, int instId) {
+        if (event.getButton() == MouseButton.SECONDARY){ return; }
         this.before = (
                 this.compController.getSelectedRectangles()
         );
@@ -94,6 +99,10 @@ public class ClickInPanelHandler {
         rectangle.setOnMouseReleased(handler::handleMouseReleased);
         rectangle.setOnMouseClicked(new ClickInNoteHandler(this.compController));
 
+        // Create right click menu handlers
+        ContextMenu contextMenu =
+                ContextMenuHandler.createRightClickMenu(this.compController, rectangle);
+        ContextMenuHandler.setUpListeners(rectangle, contextMenu);
         return rectangle;
     }
 
@@ -141,7 +150,6 @@ public class ClickInPanelHandler {
         note.durationProperty().bind(rectangle.widthProperty());
         note.startTickProperty().bind(rectangle.xProperty());
         note.selectedProperty().bind(rectangle.selectedProperty());
-
     }
 }
 

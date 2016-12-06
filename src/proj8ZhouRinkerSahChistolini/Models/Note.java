@@ -79,6 +79,10 @@ public class Note extends Playable{
         return this.startTickProperty().intValue();
     }
 
+    public double getX(){return this.getStartTick();}
+    public double getWidth(){return this.getDuration();}
+    public double getRightX(){return this.getX()+this.getWidth();}
+
     /**
      * Gets the duration property
      * @return DoubleProperty duration

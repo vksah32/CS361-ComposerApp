@@ -1,6 +1,7 @@
 package proj8ZhouRinkerSahChistolini.Models;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 /**
  * Grouping class of playable sounds
@@ -24,6 +25,30 @@ public class Gesture extends Playable{
     public Collection<Playable> getChildren(){
         return this.children;
     }
+
+    public double getX(){
+        return this.children.stream().min(Comparator.comparing(Playable::getX)).get().getX();
+    }
+    public double getRightX(){
+        return this.children.stream()
+                .max(
+                        Comparator.comparing(
+                                n -> n.getX()+n.getWidth())
+                ).get().getRightX();
+    }
+    public double getWidth(){
+        Playable left = this.children.stream()
+                .min(
+                        Comparator.comparing(Playable::getX)
+                ).get();
+        Playable right = this.children.stream()
+                .max(
+                        Comparator.comparing(
+                                n -> n.getX()+n.getWidth())
+                ).get();
+        return right.getX() + right.getWidth() - left.getX();
+    }
+
     @Override
     /**
      * Returns FXML formatted string of GroupRectangle and

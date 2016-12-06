@@ -14,7 +14,9 @@ package proj8ZhouRinkerSahChistolini.Controllers;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -43,6 +45,8 @@ public class CompositionPanelController {
     /** a Pane to hold all the notes */
     @FXML
     private Pane compositionPanel;
+    @FXML
+    private ContextMenu contextMenu;
 
     /** a Pane to hold all of the lines */
     @FXML
@@ -133,6 +137,7 @@ public class CompositionPanelController {
     public void populateCompositionPanel(Collection<SelectableRectangle> rectangles){
         for (SelectableRectangle rec : rectangles){
             rec.populate(this.compositionPanel);
+            rec.toFront();
         }
     }
 
@@ -222,7 +227,14 @@ public class CompositionPanelController {
         this.composition.buildSong();
         this.beginAnimation();
         this.composition.play();
+    }
 
+    // TODO: 12/6/2016 make this work well with zoom
+    public void playSection(Collection<Playable> notes){
+        this.stopComposition();
+        this.composition.buildSong(notes);
+        this.beginAnimation(notes);
+        this.composition.play();
     }
 
     /**
@@ -239,10 +251,25 @@ public class CompositionPanelController {
      */
     public void beginAnimation() {
         double maxX = 0;
-        for(SelectableRectangle rectangle: this.getRectangles()){
-            maxX = Math.max(maxX, rectangle.getX() + rectangle.getWidth());
+        for(Playable note: this.getNotesfromComposition()){
+            maxX = Math.max(maxX, note.getX() + note.getWidth());
         }
         this.tempoLine.updateTempoLine(maxX);
+        this.tempoLine.playAnimation();
+    }
+
+    /**
+     * Instantiate line and transition fields and begins the animation based on notes
+     * @param notes the notes to be played
+     */
+    public void beginAnimation(Collection<Playable> notes) {
+        double maxX = 0;
+        double minX = Integer.MAX_VALUE;
+        for(Playable note: notes){
+            maxX = Math.max(maxX, note.getX() + note.getWidth());
+            minX = Math.min(minX, note.getX());
+        }
+        this.tempoLine.updateTempoLine(minX, maxX);
         this.tempoLine.playAnimation();
     }
 
@@ -322,6 +349,10 @@ public class CompositionPanelController {
         gesture.setOnMouseDragged(handler::handleDragged);
         gesture.setOnMouseReleased(handler::handleMouseReleased);
         gesture.setOnMouseClicked(new ClickInNoteHandler(this));
+
+        ContextMenu contextMenu =
+                ContextMenuHandler.createRightClickMenu(this, gesture);
+        ContextMenuHandler.setUpListeners(gesture, contextMenu);
         return gesture;
     }
 

@@ -32,9 +32,13 @@ public class TempoLine extends Line {
      * location of the right edge of the final note to be played
      */
     public void updateTempoLine(double stopTime) {
+        updateTempoLine(0, stopTime);
+    }
+
+    public void updateTempoLine(double beginTime, double stopTime){
         this.tempoAnimation.stop();
-        this.setTranslateX(0);
-        this.tempoAnimation.setDuration(new Duration(stopTime*10));
+        this.setTranslateX(beginTime);
+        this.tempoAnimation.setDuration(new Duration((stopTime-beginTime)*10));
         this.tempoAnimation.setToX(stopTime);
         this.setVisible(true);
         this.isPlaying.set(true);
