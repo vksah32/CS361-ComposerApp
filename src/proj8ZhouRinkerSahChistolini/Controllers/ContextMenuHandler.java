@@ -24,6 +24,7 @@ public class ContextMenuHandler {
     }
 
     public void playSelected(ActionEvent e){
+        this.compController.playSection(this.compController.getSelectedNotes());
     }
 
     /**
@@ -38,6 +39,7 @@ public class ContextMenuHandler {
         MenuItem delete = new MenuItem("Delete");
         delete.setOnAction(handler::delete);
         MenuItem playSelected = new MenuItem("Play selected");
+        playSelected.setOnAction(handler::playSelected);
         MenuItem setInstrument = new MenuItem("Set Instrument...");
         MenuItem setVolume = new MenuItem("Set Volume...");
         menu.getItems().addAll(delete, playSelected, setInstrument, setVolume);
