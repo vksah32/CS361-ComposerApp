@@ -152,7 +152,6 @@ public class CompositionPanelController {
             rectangle.setSelected(true);
         }
         rectangle.getTransforms().add(scale);
-        System.out.println(rectangle.getTransforms());
         this.compositionPanel.getChildren().add(rectangle);
     }
 
@@ -167,6 +166,7 @@ public class CompositionPanelController {
         if(selected){
             rectangle.setSelected(true);
         }
+        rectangle.getTransforms().add(scale);
         this.compositionPanel.getChildren().add(rectangle);
     }
 
