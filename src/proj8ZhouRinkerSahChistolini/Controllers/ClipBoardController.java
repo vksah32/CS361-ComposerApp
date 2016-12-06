@@ -93,7 +93,7 @@ public class ClipBoardController {
      * adds them to the clipboard
      */
     public void copySelected() {
-        String mainString = XMLHandler.createXML(this.compController.getNotesfromComposition());
+        String mainString = XMLHandler.createXML(this.compController.getSelectedNotes());
         this.addToClipBoard(mainString);
     }
 

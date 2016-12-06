@@ -15,6 +15,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Transform;
 
 /**
  * Created by Edward on 10/18/2016.
@@ -113,8 +114,9 @@ public abstract class SelectableRectangle extends Rectangle {
     }
 
     /** Populate a given pane with this object*/
-    public void populate(Pane pane){
+    public void populate(Pane pane, Transform transform){
         this.setSelected(true);
+        this.getTransforms().add(transform);
         pane.getChildren().add(this);
     }
 }

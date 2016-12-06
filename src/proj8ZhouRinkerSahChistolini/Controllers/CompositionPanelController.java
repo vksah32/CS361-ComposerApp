@@ -108,6 +108,7 @@ public class CompositionPanelController {
 
         this.compositionPanel.getTransforms().add(this.scale);
         this.compositionPanel.toFront();
+        //this.get
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
@@ -171,7 +172,7 @@ public class CompositionPanelController {
 
     public void populateCompositionPanel(Collection<SelectableRectangle> rectangles){
         for (SelectableRectangle rec : rectangles){
-            rec.populate(this.compositionPanel);
+            rec.populate(this.compositionPanel, this.scale);
         }
     }
 
