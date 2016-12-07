@@ -57,6 +57,7 @@ public class CompositionPanelController {
     @FXML
     private TempoLine tempoLine;
 
+    /**  group that wraps around the composition panel and the staffpanel*/
     @FXML
     private Group groupToScale;
 
@@ -82,19 +83,10 @@ public class CompositionPanelController {
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
-    /** maps the NoteRectangles to the specific associated note */
-    private HashMap<NoteRectangle, Note> noteMap;
-
-    public Scale getScale() {
-        return scale;
-    }
-
+    /** current composition scale used for transformations*/
     private Scale scale = new Scale(1,1);
 
-    public DoubleProperty getZoomFactor() {
-        return zoomFactor;
-    }
-
+    /** current zoom, bound to zoom property in the zoomHandler */
     private DoubleProperty zoomFactor = new SimpleDoubleProperty(1);
 
     /**
@@ -111,14 +103,18 @@ public class CompositionPanelController {
 
 
         this.compositionPanel.toFront();
+        //adds the scale transformation to the group
         this.groupToScale.getTransforms().add(scale);
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
-        noteMap = new HashMap<>();
+
+        // creates binding for zoom
         this.zoomFactor.addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            public void changed(ObservableValue<? extends Number> observable,
+                                Number oldValue, Number newValue
+            ){
                 scale.setX(newValue.doubleValue());
                 scale.setY(newValue.doubleValue());
             }
@@ -137,8 +133,8 @@ public class CompositionPanelController {
 
     /**
      * adds the NoteRectangles
-     * @param rectangle
-     * @param selected
+     * @param rectangle note to be added to the composition panel
+     * @param selected if rectangle is selected
      */
     public void addNoteRectangle(NoteRectangle rectangle, boolean selected){
         if(selected){
@@ -163,6 +159,10 @@ public class CompositionPanelController {
         this.compositionPanel.getChildren().add(rectangle);
     }
 
+    /**
+     * Fills given pane with the given collection of selectable rectangles
+     * @param rectangles collection of selectable rectangles to add
+     */
     public void populateCompositionPanel(Collection<SelectableRectangle> rectangles){
         for (SelectableRectangle rec : rectangles){
             rec.populate(this.compositionPanel, this.scale);
@@ -214,9 +214,6 @@ public class CompositionPanelController {
      */
     public Collection<Playable> getSelectedNotes() {return this.composition.getSelectedCompositionNotes();}
 
-    public void addNotestoMap(Note note, NoteRectangle nr){
-        this.noteMap.put(nr,note);
-    }
 
     /**
      * gets the action controller
@@ -261,6 +258,13 @@ public class CompositionPanelController {
 
     }
 
+    /**
+     * gets the current composition zoom
+     * @return
+     */
+    public DoubleProperty getZoomFactor() {
+        return zoomFactor;
+    }
     /**
      * Stops and clears the composition and destroys the animation if there is one.
      */
@@ -467,9 +471,6 @@ public class CompositionPanelController {
         return this.clickInPanelHandler;
     }
 
-    public HashMap<NoteRectangle, Note> getNoteMap() {
-        return noteMap;
-    }
 
     /**
      * resets the entire composition to a fresh slate
