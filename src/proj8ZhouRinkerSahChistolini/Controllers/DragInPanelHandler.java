@@ -49,8 +49,8 @@ public class DragInPanelHandler {
      * @param event the event associated with the mouse push down
      */
     public void handleMousePressed(MouseEvent event){
-        this.startX = event.getX()/this.compController.getZoomFactor().getValue();
-        this.startY = event.getY()/this.compController.getZoomFactor().getValue();
+        this.startX = event.getX();
+        this.startY = event.getY();
         this.selectionRectangle.setX(this.startX);
         this.selectionRectangle.setY(this.startY);
         this.metaDown = event.isShortcutDown();
@@ -69,16 +69,19 @@ public class DragInPanelHandler {
         {
             this.compController.clearSelected();
         }
-        double leftX = Math.min(event.getX()/this.compController.getZoomFactor().getValue(),this.startX);
-        double width = Math.abs(event.getX()/this.compController.getZoomFactor().getValue()-this.startX);
-        double lowestY = Math.min(event.getY()/this.compController.getZoomFactor().getValue(),this.startY);
-        double height = Math.abs(event.getY()/this.compController.getZoomFactor().getValue()-this.startY);
-        this.selectionRectangle.setWidth(width);
-        this.selectionRectangle.setHeight(height);
-        this.selectionRectangle.setX(leftX);
-        this.selectionRectangle.setY(lowestY);
+        double left = Math.min(event.getX(),this.startX);
+        double widt = Math.abs(event.getX()-this.startX);
+        double lowest = Math.min(event.getY(),this.startY);
+        double heigh = Math.abs(event.getY()-this.startY);
+        this.selectionRectangle.setWidth(widt);
+        this.selectionRectangle.setHeight(heigh);
+        this.selectionRectangle.setX(left);
+        this.selectionRectangle.setY(lowest);
 
-        //System.out.println("startX" + );
+        double leftX = Math.min(event.getX()/this.compController.getZoomFactor().getValue(),this.startX/this.compController.getZoomFactor().getValue());
+        double width = Math.abs(event.getX()/this.compController.getZoomFactor().getValue()-this.startX/this.compController.getZoomFactor().getValue());
+        double lowestY = Math.min(event.getY()/this.compController.getZoomFactor().getValue(),this.startY/this.compController.getZoomFactor().getValue());
+        double height = Math.abs(event.getY()/this.compController.getZoomFactor().getValue()-this.startY/this.compController.getZoomFactor().getValue());
 
         for (SelectableRectangle rectangle : compController.getRectangles()) {
             if (rectangle.intersects(leftX, lowestY, width, height)) {
