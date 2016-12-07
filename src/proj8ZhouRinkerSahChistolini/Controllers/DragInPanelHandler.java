@@ -34,8 +34,8 @@ public class DragInPanelHandler {
     private Collection<SelectableRectangle> before;
     private Collection<SelectableRectangle> after;
 
-    /** Creates a new DragInPaneHandler
-     *
+    /**
+     * Creates a new DragInPaneHandler
      * @param compController The main composition controller
      */
     public DragInPanelHandler(Rectangle selectionRectangle,
@@ -58,7 +58,7 @@ public class DragInPanelHandler {
     }
 
     /**
-     * Handles when the mouse is dragged
+     * creates a selection rectangle when the mouse is dragged in panel
      * @param event The even associated with this mouse drag
      */
     public void handleDragged(MouseEvent event) {
@@ -80,13 +80,18 @@ public class DragInPanelHandler {
         this.selectionRectangle.setX(leftX);
         this.selectionRectangle.setY(lowestY);
 
-        double descaledLeftX = Math.min(event.getX()/scaleFactor,this.startX/scaleFactor);
-        double descaledWidth = Math.abs(event.getX()/scaleFactor-this.startX/scaleFactor);
-        double descaledLowestY = Math.min(event.getY()/scaleFactor,this.startY/scaleFactor);
-        double descaledHeight = Math.abs(event.getY()/scaleFactor-this.startY/scaleFactor);
+        double descaledLeftX = Math.min(event.getX()/scaleFactor,
+                this.startX/scaleFactor);
+        double descaledWidth = Math.abs(event.getX()/scaleFactor-
+                this.startX/scaleFactor);
+        double descaledLowestY = Math.min(event.getY()/scaleFactor,
+                this.startY/scaleFactor);
+        double descaledHeight = Math.abs(event.getY()/scaleFactor
+                -this.startY/scaleFactor);
 
         for (SelectableRectangle rectangle : compController.getRectangles()) {
-            if (rectangle.intersects(descaledLeftX, descaledLowestY, descaledWidth, descaledHeight)) {
+            if (rectangle.intersects(descaledLeftX, descaledLowestY,
+                    descaledWidth, descaledHeight)) {
                 rectangle.setSelected(true);
             }
         }
@@ -94,8 +99,8 @@ public class DragInPanelHandler {
 
     }
 
-    /** handles when the mouse is released
-     *
+    /**
+     * handles when the mouse is released after being dragged in panel
      * @param event The mouse event associated with this mouse release
      */
     public void handleDragReleased(MouseEvent event) {

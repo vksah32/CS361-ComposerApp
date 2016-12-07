@@ -38,6 +38,9 @@ public class FileMenuController {
     /** The application's XMLHandler */
     private XMLHandler XMLHandler;
 
+    /**
+     * initializes the filemenu controller
+     */
     public void initialize(){
         this.currentOpenFile =null;
         chooser = new FileChooser();
@@ -47,6 +50,11 @@ public class FileMenuController {
         chooser.getExtensionFilters().add(extFilter);
     }
 
+    /**
+     * Initializes the controller by setting the refernce to other cotrollers
+     * @param compositionPanelController
+     * @param xmlHandler
+     */
     public void init(CompositionPanelController compositionPanelController,
                      XMLHandler xmlHandler){
         this.compositionPanelController = compositionPanelController;
@@ -143,8 +151,8 @@ public class FileMenuController {
 
     /**
      * Write content to a file
-     * @param contentToWrite
-     * @param file
+     * @param contentToWrite String to write
+     * @param file destination file
      */
     @FXML
     private void writeFile(String contentToWrite, File file){
@@ -225,6 +233,8 @@ public class FileMenuController {
         }
         return true;
     }
+
+
     /**
      * returns a String representing the characters
      * read from the input File

@@ -85,6 +85,9 @@ public class XMLHandler {
         private Stack<Collection<SelectableRectangle>> pStack;
         private Stack<Collection<Playable>> notesStack;
 
+        /**
+         * initializer for SAXNoteHandler
+         */
         public SAXNoteHandler(){
             this.pStack = new Stack<>();
             this.notesStack = new Stack<>();

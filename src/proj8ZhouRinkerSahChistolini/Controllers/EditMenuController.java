@@ -28,6 +28,7 @@ public class EditMenuController {
     /** a controller to assist in bindings between the menus and controllers*/
     private BindingController bindingController;
 
+    /**a controller to assist with clipboard actions ***/
     private ClipBoardController clipboardController;
 
     /** CompositionPanelController reference */
@@ -165,7 +166,7 @@ public class EditMenuController {
 
     @FXML
     /**
-     * zoom in 25%
+     * zoom in 20%
      */
     public void zoomIn() {
         this.zoomHandler.zoomIn();
@@ -173,7 +174,7 @@ public class EditMenuController {
 
     @FXML
     /**
-     * zoom out 25%
+     * zoom out 20%
      */
     public void zoomOut(){
         this.zoomHandler.zoomOut();
