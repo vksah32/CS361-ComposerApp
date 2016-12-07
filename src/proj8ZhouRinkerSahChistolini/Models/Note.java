@@ -26,6 +26,9 @@ public class Note extends Playable{
     private DoubleProperty pitch;
     /** the start tick of the note */
     private DoubleProperty startTick;
+    /** Instrument binding to rectangle*/
+    private IntegerProperty instrVal;
+    private IntegerProperty volume;
 
     /**
      * The constructor for Note
@@ -35,7 +38,10 @@ public class Note extends Playable{
         this.startTick = new SimpleDoubleProperty();
         this.duration = new SimpleDoubleProperty();
         this.pitch = new SimpleDoubleProperty();
+        this.instrVal= new SimpleIntegerProperty();
+        this.volume = new SimpleIntegerProperty();
         this.instrument = instrument;
+        this.volume.set(100);
     }
 
     /**
@@ -44,6 +50,10 @@ public class Note extends Playable{
      */
     public Instrument getInstrument() {
         return instrument;
+    }
+
+    public int getInstrumentValue(){
+        return this.instrVal.intValue();
     }
 
     /**
@@ -79,6 +89,10 @@ public class Note extends Playable{
         return this.startTickProperty().intValue();
     }
 
+    public double getX(){return this.getStartTick();}
+    public double getWidth(){return this.getDuration();}
+    public double getRightX(){return this.getX()+this.getWidth();}
+
     /**
      * Gets the duration property
      * @return DoubleProperty duration
@@ -86,6 +100,21 @@ public class Note extends Playable{
     public DoubleProperty durationProperty() {
         return duration;
     }
+
+    /**
+     * Gets the volume property
+     * @return IntegerProperty volume
+     */
+    public IntegerProperty volumeProperty() { return this.volume; }
+
+    public int getVolume(){
+        return this.volumeProperty().intValue();
+    }
+    /**
+     * Gets the volume property
+     * @return IntegerProperty volume
+     */
+    public void setVolume(int val) { this.volume.set(val); }
 
     /**
      * Gets the pitch property
@@ -102,6 +131,12 @@ public class Note extends Playable{
     public DoubleProperty startTickProperty() {
         return startTick;
     }
+
+    /**
+     * Gets the intrVal property
+     * @return DoubleProperty instrVal
+     */
+    public IntegerProperty intrValProperty() {return this.instrVal;}
 
     @Override
     /**
@@ -124,6 +159,7 @@ public class Note extends Playable{
                 "ypos=\"" + this.pitchProperty().intValue() +"\" "+
                 "width=\"" + this.durationProperty().getValue()     + "\" " +
                 "instValue=\"" + this.instrument.getValue()  +"\" " +
+                "volume=\"" + this.getVolume()  +"\" " +
                 "/>\n";
     }
 }

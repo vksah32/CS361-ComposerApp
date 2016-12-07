@@ -1,6 +1,7 @@
 package proj8ZhouRinkerSahChistolini.Models;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 /**
  * Grouping class of playable sounds
@@ -24,8 +25,46 @@ public class Gesture extends Playable{
     public Collection<Playable> getChildren(){
         return this.children;
     }
-    @Override
+
+    public void setVolume(int val){
+        this.children.forEach(n->n.setVolume(val));
+    }
+
+    public int getVolume(){
+        int total = 0;
+        for (Playable child : this.children){
+            total += child.getVolume();
+        }
+        return total/this.children.size();
+    }
+
     /**
+     * Get the left x of the gesture
+     * @return
+     */
+    public double getX(){
+        return this.children.stream().min(Comparator.comparing(Playable::getX)).get().getX();
+    }
+
+    /**
+     * Get the right x of the gesture
+     */
+    public double getRightX(){
+        return this.children.stream()
+                .max(Comparator.comparing(n -> n.getX()+n.getWidth())).get().getRightX();
+    }
+    public double getWidth(){
+        Playable left = this.children.stream().min(
+            Comparator.comparing(Playable::getX)
+        ).get();
+        Playable right = this.children.stream().max(
+            Comparator.comparing(n -> n.getX()+n.getWidth())
+        ).get();
+        return right.getX() + right.getWidth() - left.getX();
+    }
+
+     @Override
+     /**
      * Returns XML formatted string of GroupRectangle and
      * its children
      * @return String representation of the object

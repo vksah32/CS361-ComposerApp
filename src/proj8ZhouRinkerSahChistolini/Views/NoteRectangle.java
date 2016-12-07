@@ -11,7 +11,13 @@
 
 package proj8ZhouRinkerSahChistolini.Views;
 
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Transform;
+import proj8ZhouRinkerSahChistolini.Controllers.InstrumentPanelController;
 
 /**
  * Represents a musical note in the gui interface
@@ -19,8 +25,11 @@ import javafx.beans.property.BooleanProperty;
 public class NoteRectangle extends SelectableRectangle {
 
     /**int value for the instrument**/
-    private int instrument;
-
+    private IntegerProperty instrument;
+    private String instrString;
+    /** Modifier to color opacity */
+    private IntegerProperty volume;
+    private Rectangle transparency;
     /**
      * The constructor of the NoteRectangle
      * @param x
@@ -32,17 +41,59 @@ public class NoteRectangle extends SelectableRectangle {
      */
     public NoteRectangle(double x, double y,
                          double width, double height,
-                         int instr, String styleName ) {
+                         int instr, String styleName,
+                         InstrumentPanelController instrController) {
         super(x, y, width, height);
         this.getStyleClass().add("note");
-        this.getStyleClass().add(styleName.toLowerCase().replace(" ", "-"));
-        this.instrument = instr;
+        this.instrString = styleName.toLowerCase().replace(" ", "-");
+        this.getStyleClass().add(this.instrString);
+        this.instrument = new SimpleIntegerProperty();
+        this.instrument.addListener(e -> {
+            getStyleClass().removeAll(instrString);
+            String newInstrument = instrController.getInstrument(
+                    getInstrument()).getName().toLowerCase().replace(" ", "-");
+            getStyleClass().add(newInstrument);
+            instrString = newInstrument;
+        });
+        this.instrument.setValue(instr);
+        this.volume = new SimpleIntegerProperty();
+        this.transparency = new Rectangle();
+        this.transparency.xProperty().bind(this.xProperty());
+        this.transparency.yProperty().bind(this.yProperty());
+        this.transparency.heightProperty().bind(this.heightProperty());
+        this.transparency.widthProperty().bind(this.widthProperty());
+        this.transparency.setMouseTransparent(true);
+        this.volume.addListener(e -> {
+            this.transparency.setFill(Color.rgb(255,255,255,1.0 -  ((double) volumeProperty().intValue())/127.0));
+            });
     }
 
     /**
      * returns the instrument value of this rectangle
      */
-    public int getInstrument() {return this.instrument;}
+    public int getInstrument() {return this.instrument.intValue();}
+
+    /**
+     * returns the instrument property
+     */
+    public IntegerProperty instrumentProperty(){return this.instrument;}
+
+    /**
+     * Set the instrument property
+     */
+    public void setInstrument(int val){
+        this.instrument.set(val);
+    }
+
+    /** Return the rectangle responsibile for tranparency*/
+    public Rectangle getTransparency(){
+        return this.transparency;
+    }
+
+    /**
+     * returns the volume property
+     */
+    public IntegerProperty volumeProperty(){ return this.volume; }
 
     /**
      * sets the selection of the rectangle
@@ -60,6 +111,18 @@ public class NoteRectangle extends SelectableRectangle {
         this.selected.set(selected);
     }
 
+    public void populate(Pane pane, Transform transform){
+        this.setSelected(true);
+        this.getTransforms().add(transform);
+        this.transparency.getTransforms().add(transform);
+        pane.getChildren().add(this);
+        pane.getChildren().add(this.transparency);
+    }
+    @Override
+    public void toFront(){
+        super.toFront();
+        this.transparency.toFront();
+    }
     @Override
     /**
      * x,y,width, name, channel, integer representing MIDI instrucment
@@ -80,7 +143,7 @@ public class NoteRectangle extends SelectableRectangle {
                 "xpos=\"" + this.xProperty().intValue()    +"\" "+
                 "ypos=\"" + this.yProperty().intValue() +"\" "+
                 "width=\"" + this.widthProperty().getValue()     + "\" " +
-                "instValue=\"" + this.instrument  +"\" " +
+                "instValue=\"" + this.instrument.intValue()  +"\" " +
                 "/>\n";
     }
 }

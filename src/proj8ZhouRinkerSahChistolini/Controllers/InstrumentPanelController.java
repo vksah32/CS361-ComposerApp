@@ -7,6 +7,7 @@ import javafx.scene.control.ToggleGroup;
 import proj8ZhouRinkerSahChistolini.Models.Instrument;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *  This class holds all the info for instruments
@@ -43,6 +44,9 @@ public class InstrumentPanelController {
         this.instrumentToggle.getToggles().get(0).setSelected(true);
     }
 
+    public Collection<Instrument> getInstruments(){
+        return this.instruments;
+    }
     /**
      * Adds a new instrument to the pane
      * @param name The title of the instrument

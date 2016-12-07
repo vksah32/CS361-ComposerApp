@@ -80,6 +80,11 @@ public abstract class SelectableRectangle extends Rectangle {
     }
 
     /**
+     * sets rectangles to specific instrument
+     */
+    public abstract void setInstrument(int val);
+
+    /**
      * returns whether or not the rectangle is selected
      * @return selected boolean which represent whether or not
      * the rectangle is selected
@@ -118,9 +123,5 @@ public abstract class SelectableRectangle extends Rectangle {
      * @param pane The pane to populate
      * @param transform the transform to be applied to this object
      */
-    public void populate(Pane pane, Transform transform){
-        this.setSelected(true);
-        this.getTransforms().add(transform);
-        pane.getChildren().add(this);
-    }
+    public abstract void populate(Pane pane, Transform transform);
 }
