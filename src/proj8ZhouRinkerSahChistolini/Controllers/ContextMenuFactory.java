@@ -19,12 +19,13 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+import proj8ZhouRinkerSahChistolini.Controllers.Actions.ChangeInstrumentAction;
+import proj8ZhouRinkerSahChistolini.Controllers.Actions.ChangeVolumeAction;
+import proj8ZhouRinkerSahChistolini.Controllers.Actions.DeleteNoteAction;
 import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -93,7 +94,14 @@ public class ContextMenuFactory {
          * Delete selected notes
          */
         private void delete(ActionEvent e) {
+            compController.stopComposition();
+            DeleteNoteAction deletedNotes = new DeleteNoteAction(
+                    compController.getSelectedRectangles(),
+                    compController.getSelectedNotes(),
+                    compController
+            );
             compController.deleteSelectedNotes();
+            compController.addAction(deletedNotes);
         }
 
         /** Play selected notes */
@@ -103,7 +111,10 @@ public class ContextMenuFactory {
 
         /** Set selected Rectangles to a specified instrument*/
         private void setInstrument(String text){
-            compController.getSelectedRectangles().forEach(n-> {
+            List<SelectableRectangle> before = new ArrayList<>();
+            compController.getSelectedRectangles().forEach(n->before.add(n));
+            compController.addAction(new ChangeInstrumentAction(compController,before,text));
+            before.forEach(n-> {
                 n.setInstrument(
                         compController.getInstrumentPanelController().getInstruments()
                                 .stream()
@@ -133,6 +144,7 @@ public class ContextMenuFactory {
             });
             Optional<Integer> result = dialog.showAndWait();
             if (result.isPresent()){
+                compController.addAction(new ChangeVolumeAction(compController.getSelectedNotes(),result.get()));
                 compController.getSelectedNotes().forEach( n -> {
                     n.setVolume(result.get());
                 });
