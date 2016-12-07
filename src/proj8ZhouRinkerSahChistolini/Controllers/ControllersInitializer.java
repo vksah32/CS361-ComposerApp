@@ -54,7 +54,7 @@ public class ControllersInitializer {
         BindingController bindingController = new BindingController(
                 this.compositionPanelController,
                 clipboardController
-        );;
+        );
 
         //Set up the Menu Controllers with the needed tools
         initializeMenuControllers(XMLhandler, bindingController, clipboardController);

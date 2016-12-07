@@ -11,6 +11,7 @@
 
 package proj8ZhouRinkerSahChistolini.Controllers;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,26 +21,24 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
 import proj8ZhouRinkerSahChistolini.Models.Gesture;
-import proj8ZhouRinkerSahChistolini.Models.Note;
 import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj8ZhouRinkerSahChistolini.Models.Composition;
 import proj8ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj8ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj8ZhouRinkerSahChistolini.Views.TempoLine;
+import javafx.beans.binding.DoubleBinding;
 
 import java.util.HashSet;
 import java.util.Collection;
-
-import java.util.*;
 
 /**
  * The pane in which all of the notes are stored and displayed.
@@ -53,6 +52,10 @@ public class CompositionPanelController {
     /** a Pane to hold all of the lines */
     @FXML
     private Pane staffPane;
+
+    /** a reference to the ScrollPane */
+    @FXML
+    private ScrollPane scrollPane;
 
     /** the tempoLine */
     @FXML
@@ -90,6 +93,10 @@ public class CompositionPanelController {
     /** current zoom, bound to zoom property in the zoomHandler */
     private DoubleProperty zoomFactor = new SimpleDoubleProperty(1);
 
+    /** current width of the composition */
+    private double width = 2000.0;
+    private double height = 1280.0;
+
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -107,6 +114,11 @@ public class CompositionPanelController {
         //adds the scale transformation to the group
         this.groupToScale.getTransforms().add(scale);
 
+        this.bindScrollPane();
+
+        //make sure the tempoline doesn't get too big/small
+        this.tempoLine.getTransforms().add(scale);
+
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
 
@@ -120,6 +132,25 @@ public class CompositionPanelController {
                 scale.setY(newValue.doubleValue());
             }
         });
+    }
+
+    /**
+     * Constrains the scrollpane based on the dimentions
+     * of the compositionpanel
+     */
+    private void bindScrollPane() {
+        DoubleBinding widthBinding = Bindings.createDoubleBinding(
+                () -> (width * this.zoomFactor.getValue()),
+                this.zoomFactor
+        );
+
+        DoubleBinding heightBinding = Bindings.createDoubleBinding(
+                () -> (height * this.zoomFactor.getValue()),
+                this.zoomFactor
+        );
+
+        this.scrollPane.hmaxProperty().bind(widthBinding);
+        this.scrollPane.vmaxProperty().bind(heightBinding);
     }
 
 
@@ -184,7 +215,6 @@ public class CompositionPanelController {
             rec.setStroke(Color.GRAY);
             rec.getTransforms().add(scale);
             this.staffPane.getChildren().add(rec);
-
         }
     }
 
