@@ -157,6 +157,7 @@ public class Note extends Playable{
                 "ypos=\"" + this.pitchProperty().intValue() +"\" "+
                 "width=\"" + this.durationProperty().getValue()     + "\" " +
                 "instValue=\"" + this.instrument.getValue()  +"\" " +
+                "volume=\"" + this.getVolume()  +"\" " +
                 "/>\n";
     }
 }

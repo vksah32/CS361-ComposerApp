@@ -5,6 +5,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import proj8ZhouRinkerSahChistolini.Models.Gesture;
+import proj8ZhouRinkerSahChistolini.Models.Note;
 import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj8ZhouRinkerSahChistolini.Views.NoteRectangle;
@@ -60,7 +61,6 @@ public class XMLHandler {
         handler.notesStack.peek().forEach(n -> this.compController.addNoteToComposition(n));
     }
 
-
     /**
      * Creates an xml string of the given Selectable Rectangles
      * @param recs
@@ -107,9 +107,10 @@ public class XMLHandler {
                                     Double.parseDouble(attributes.getValue("ypos")),
                                     Integer.parseInt(attributes.getValue("instValue"))
                             );
-                    this.notesStack.peek().add(compController.getClickInPanelHandler().addBoundNote(
-                            rec, rec.getInstrument())
-                    );
+                    Note note = compController.getClickInPanelHandler().addBoundNote(
+                            rec, rec.getInstrument());
+                    note.setVolume(Integer.parseInt(attributes.getValue("volume")));
+                    this.notesStack.peek().add(note);
                     this.pStack.peek().add(rec);
                     break;
                 case "Gesture":
