@@ -23,14 +23,14 @@ public class ZoomHandler {
      */
     public void zoomIn(){
 
-        this.currentZoomScale.set(this.currentZoomScale.getValue()+0.25);
+        this.currentZoomScale.set(this.currentZoomScale.getValue()+0.20);
     }
 
     /**
      * zoom out by 25%
      */
     public void zoomOut(){
-        double newScale = Math.max(1,this.currentZoomScale.getValue()-0.25 );
+        double newScale = Math.max(0.75,this.currentZoomScale.getValue()-0.20 );
         this.currentZoomScale.set(newScale);
     }
 }

@@ -15,6 +15,7 @@ import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -56,6 +57,9 @@ public class CompositionPanelController {
     @FXML
     private TempoLine tempoLine;
 
+    @FXML
+    private Group groupToScale;
+
     /** The rectangle which appears when you select a group of notes*/
     @FXML
     private Rectangle selectionRectangle;
@@ -81,18 +85,17 @@ public class CompositionPanelController {
     /** maps the NoteRectangles to the specific associated note */
     private HashMap<NoteRectangle, Note> noteMap;
 
+    public Scale getScale() {
+        return scale;
+    }
+
     private Scale scale = new Scale(1,1);
 
     public DoubleProperty getZoomFactor() {
         return zoomFactor;
     }
 
-    public DoubleProperty zoomFactorProperty() {
-        return zoomFactor;
-    }
-
     private DoubleProperty zoomFactor = new SimpleDoubleProperty(1);
-    private DoubleProperty lineGapProperty = new SimpleDoubleProperty(1);
 
     /**
      * Constructs the Panel and draws the appropriate lines.
@@ -106,9 +109,9 @@ public class CompositionPanelController {
                 this
         );
 
-        this.compositionPanel.getTransforms().add(this.scale);
+
         this.compositionPanel.toFront();
-        //this.get
+        this.groupToScale.getTransforms().add(scale);
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
@@ -116,22 +119,12 @@ public class CompositionPanelController {
         this.zoomFactor.addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                for(SelectableRectangle r : getRectangles()){
-                    System.out.println(r.getHeight());
-                }
                 scale.setX(newValue.doubleValue());
                 scale.setY(newValue.doubleValue());
-                for (Node l : staffPane.getChildren()
-                     ) {
-                    if(l instanceof  Line) {
-                        ((Line) l).startYProperty().set(((Line) l).getStartY() +1+  zoomFactor.getValue());
-                        ((Line) l).endYProperty().set(((Line) l).getEndY()+1 + zoomFactor.getValue());
-                    }
-                }
-
             }
         });
     }
+
 
     /**
      * Initializes the controller with the parent controller
@@ -185,13 +178,6 @@ public class CompositionPanelController {
             Rectangle rec = new Rectangle(0, i*10+1, 2000, 10);
             rec.setFill(null);
             rec.setStroke(Color.GRAY);
-            rec.getTransforms().add(scale);
-
-            //Line line = new Line(0, i*10+1, 2000,i*10+1);
-
-
-            //line.startYProperty().bind(this.lineGapProperty);
-            //line.setId("lines");
             rec.getTransforms().add(scale);
             this.staffPane.getChildren().add(rec);
 
