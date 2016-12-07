@@ -38,6 +38,7 @@ public class ClickInPanelHandler {
     /** a boolean field that keeps track of whether a meta/shortcut is pressed */
     private boolean isMetaDown;
 
+    /** selection states before click */
     private Collection<SelectableRectangle> before;
 
     /**
@@ -62,7 +63,8 @@ public class ClickInPanelHandler {
         if (!isMetaDown) {
             this.compController.clearSelected();
         }
-        addNote(event.getX(), event.getY(), this.DEFAULT_RECTANGLE_WIDTH, instId);
+        addNote(event.getX()/this.compController.getZoomFactor().getValue(), event.getY()/this.compController.getZoomFactor().getValue()
+                , this.DEFAULT_RECTANGLE_WIDTH, instId);
     }
 
     /**
@@ -97,7 +99,13 @@ public class ClickInPanelHandler {
         return rectangle;
     }
 
-    public Note addBoundNote(NoteRectangle rectangle, int instId){
+    /**
+     * creates new Note and binds it to corresponding Note Rectangle
+     * @param rectangle Note Rectangle to bind to
+     * @param instId selected instrument
+     * @return new Note
+     */
+    public Note createBoundNote(NoteRectangle rectangle, int instId){
         Note note = new Note(this.instController.getInstrument(instId));
         bindNotetoRectangle(note, rectangle);
 
@@ -113,12 +121,11 @@ public class ClickInPanelHandler {
      */
     public void addNote(double x, double y, double width, int instId) {
         NoteRectangle rectangle = this.addNoteRectangle(x,y,instId);
-        Note note = addBoundNote(rectangle, instId);
+        Note note = createBoundNote(rectangle, instId);
 
         this.compController.addNoteRectangle(rectangle, true);
         this.compController.addNoteToComposition(note);
 
-        this.compController.addNotestoMap(note,rectangle);
         //add the undoable action
         AddNoteAction actionPreformed = new AddNoteAction(
                 rectangle,

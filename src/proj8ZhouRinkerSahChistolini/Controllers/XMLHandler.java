@@ -85,6 +85,9 @@ public class XMLHandler {
         private Stack<Collection<SelectableRectangle>> pStack;
         private Stack<Collection<Playable>> notesStack;
 
+        /**
+         * initializer for SAXNoteHandler
+         */
         public SAXNoteHandler(){
             this.pStack = new Stack<>();
             this.notesStack = new Stack<>();
@@ -107,7 +110,7 @@ public class XMLHandler {
                                     Double.parseDouble(attributes.getValue("ypos")),
                                     Integer.parseInt(attributes.getValue("instValue"))
                             );
-                    this.notesStack.peek().add(compController.getClickInPanelHandler().addBoundNote(
+                    this.notesStack.peek().add(compController.getClickInPanelHandler().createBoundNote(
                             rec, rec.getInstrument())
                     );
                     this.pStack.peek().add(rec);

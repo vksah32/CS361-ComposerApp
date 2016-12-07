@@ -12,12 +12,17 @@
 package proj8ZhouRinkerSahChistolini.Controllers;
 
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
@@ -52,6 +57,10 @@ public class CompositionPanelController {
     @FXML
     private TempoLine tempoLine;
 
+    /**  group that wraps around the composition panel and the staffpanel*/
+    @FXML
+    private Group groupToScale;
+
     /** The rectangle which appears when you select a group of notes*/
     @FXML
     private Rectangle selectionRectangle;
@@ -74,8 +83,11 @@ public class CompositionPanelController {
     /** a boolean property that keeps track of whether the composition is being played */
     private BooleanProperty isPlaying = new SimpleBooleanProperty();
 
-    /** maps the NoteRectangles to the specific associated note */
-    private HashMap<NoteRectangle, Note> noteMap;
+    /** current composition scale used for transformations*/
+    private Scale scale = new Scale(1,1);
+
+    /** current zoom, bound to zoom property in the zoomHandler */
+    private DoubleProperty zoomFactor = new SimpleDoubleProperty(1);
 
     /**
      * Constructs the Panel and draws the appropriate lines.
@@ -88,12 +100,27 @@ public class CompositionPanelController {
                 this.selectionRectangle,
                 this
         );
+
+
         this.compositionPanel.toFront();
+        //adds the scale transformation to the group
+        this.groupToScale.getTransforms().add(scale);
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
-        noteMap = new HashMap<>();
+
+        // creates binding for zoom
+        this.zoomFactor.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                                Number oldValue, Number newValue
+            ){
+                scale.setX(newValue.doubleValue());
+                scale.setY(newValue.doubleValue());
+            }
+        });
     }
+
 
     /**
      * Initializes the controller with the parent controller
@@ -106,13 +133,14 @@ public class CompositionPanelController {
 
     /**
      * adds the NoteRectangles
-     * @param rectangle
-     * @param selected
+     * @param rectangle note to be added to the composition panel
+     * @param selected if rectangle is selected
      */
     public void addNoteRectangle(NoteRectangle rectangle, boolean selected){
         if(selected){
             rectangle.setSelected(true);
         }
+        rectangle.getTransforms().add(scale);
         this.compositionPanel.getChildren().add(rectangle);
     }
 
@@ -127,12 +155,17 @@ public class CompositionPanelController {
         if(selected){
             rectangle.setSelected(true);
         }
+        rectangle.getTransforms().add(scale);
         this.compositionPanel.getChildren().add(rectangle);
     }
 
+    /**
+     * Fills given pane with the given collection of selectable rectangles
+     * @param rectangles collection of selectable rectangles to add
+     */
     public void populateCompositionPanel(Collection<SelectableRectangle> rectangles){
         for (SelectableRectangle rec : rectangles){
-            rec.populate(this.compositionPanel);
+            rec.populate(this.compositionPanel, this.scale);
         }
     }
 
@@ -142,9 +175,12 @@ public class CompositionPanelController {
     private void drawLines()  {
         for(int i = 1; i < 128; i++)
         {
-            Line line = new Line(0, i*10+1, 2000,i*10+1);
-            line.setId("lines");
-            this.staffPane.getChildren().add(line);
+            Rectangle rec = new Rectangle(0, i*10+1, 2000, 10);
+            rec.setFill(null);
+            rec.setStroke(Color.GRAY);
+            rec.getTransforms().add(scale);
+            this.staffPane.getChildren().add(rec);
+
         }
     }
 
@@ -178,9 +214,6 @@ public class CompositionPanelController {
      */
     public Collection<Playable> getSelectedNotes() {return this.composition.getSelectedCompositionNotes();}
 
-    public void addNotestoMap(Note note, NoteRectangle nr){
-        this.noteMap.put(nr,note);
-    }
 
     /**
      * gets the action controller
@@ -225,6 +258,13 @@ public class CompositionPanelController {
 
     }
 
+    /**
+     * gets the current composition zoom
+     * @return
+     */
+    public DoubleProperty getZoomFactor() {
+        return zoomFactor;
+    }
     /**
      * Stops and clears the composition and destroys the animation if there is one.
      */
@@ -431,9 +471,6 @@ public class CompositionPanelController {
         return this.clickInPanelHandler;
     }
 
-    public HashMap<NoteRectangle, Note> getNoteMap() {
-        return noteMap;
-    }
 
     /**
      * resets the entire composition to a fresh slate
