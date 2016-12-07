@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import proj8ZhouRinkerSahChistolini.Controllers.CompositionPanelController;
 import proj8ZhouRinkerSahChistolini.Models.Note;
 import proj8ZhouRinkerSahChistolini.Models.Playable;
+import proj8ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj8ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.Collection;
@@ -21,7 +22,7 @@ public class DeleteNoteAction implements Actionable{
     private Collection<Playable> allNotesOnComposition;
     /** reference to all rectangel on Composition Panel */
     private Collection<Node> recs;
-
+    private CompositionPanelController compController;
     /**
      * Initilize DeleteNoteAction when notes are deleted from panel
      *
@@ -38,6 +39,7 @@ public class DeleteNoteAction implements Actionable{
         this.modelNotes = modelNotes;
         this.allNotesOnComposition = comp.getNotesfromComposition();
         this.recs = comp.getCompositionPane().getChildren();
+        this.compController = comp;
 
     }
 
@@ -46,14 +48,11 @@ public class DeleteNoteAction implements Actionable{
      */
     @Override
     public void reDoIt() {
-        for(SelectableRectangle rec : graphicalNote){
-            recs.remove(rec);
-        }
+        compController.deleteSelected(graphicalNote);
 
         for(Playable note : modelNotes){
             allNotesOnComposition.remove(note);
         }
-
     }
 
     /**
@@ -62,7 +61,10 @@ public class DeleteNoteAction implements Actionable{
     @Override
     public void unDoIt() {
         for(SelectableRectangle rec : graphicalNote){
-            recs.add(rec);
+            compController.addRectangle(rec, true);
+            if (rec instanceof NoteRectangle){
+                recs.add(((NoteRectangle) rec).getTransparency());
+            }
         }
 
         for(Playable note : modelNotes){

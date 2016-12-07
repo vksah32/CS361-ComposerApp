@@ -77,7 +77,7 @@ public class AddNoteAction implements Actionable {
             }
         }
         this.graphicalNote.setSelected(true);
-        recs.add(this.graphicalNote);
+        compController.addNoteRectangle(this.graphicalNote, true);
         notes.add(this.modelNote);
     }
 
@@ -87,6 +87,7 @@ public class AddNoteAction implements Actionable {
     @Override
     public void unDoIt() {
         recs.remove(this.graphicalNote);
+        recs.remove(this.graphicalNote.getTransparency());
         notes.remove(this.modelNote);
         for (SelectableRectangle  rec : this.selected) {
             rec.setSelected(true);

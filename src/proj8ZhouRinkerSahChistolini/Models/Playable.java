@@ -21,11 +21,20 @@ public abstract class Playable {
         return selected;
     }
 
+    /** Get leftmost X of self */
     public abstract double getX();
 
+    /** Get rightmost X of self */
     public abstract double getRightX();
 
+    /** Get width of the playable notes */
     public abstract double getWidth();
+
+    /** Set volume of self and all children */
+    public abstract void setVolume(int val);
+
+    /** Get volume of the sound */
+    public abstract int getVolume();
 
     public String toXML(int numTabs) {
         return this.toXML(0);

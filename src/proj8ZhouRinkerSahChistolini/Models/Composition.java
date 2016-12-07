@@ -47,8 +47,8 @@ public class Composition {
      * @param instrument the instrument with which this note will be played
      *
      */
-    public void addNote(int startTick, int duration, int pitch, Instrument instrument) {
-        this.player.addNote(pitch, this.VOLUME, startTick,
+    public void addNote(int startTick, int duration, int pitch, Instrument instrument, int volume) {
+        this.player.addNote(pitch, volume, startTick,
                 duration, instrument.getChannel(), this.TRACK_INDEX,
                 instrument.getValue());
     }
@@ -65,7 +65,7 @@ public class Composition {
         if (note instanceof Note) {
             Note temp = (Note) note;
             this.addNote(temp.getStartTick() - offset, temp.getDuration(),
-                    temp.getPitch(), temp.getInstrument());
+                    temp.getPitch(), temp.getInstrument(), temp.volumeProperty().intValue());
         }
         else if(note instanceof Gesture){
             ((Gesture) note).getChildren().forEach(n -> this.addNote(n, offset));

@@ -154,6 +154,7 @@ public class ClickInPanelHandler {
         note.startTickProperty().bind(rectangle.xProperty());
         note.selectedProperty().bind(rectangle.selectedProperty());
         note.intrValProperty().bind(rectangle.instrumentProperty());
+        rectangle.volumeProperty().bind(note.volumeProperty());
     }
 }
 

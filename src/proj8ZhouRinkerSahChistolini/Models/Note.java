@@ -28,6 +28,7 @@ public class Note extends Playable{
     private DoubleProperty startTick;
     /** Instrument binding to rectangle*/
     private IntegerProperty instrVal;
+    private IntegerProperty volume;
 
     /**
      * The constructor for Note
@@ -38,7 +39,9 @@ public class Note extends Playable{
         this.duration = new SimpleDoubleProperty();
         this.pitch = new SimpleDoubleProperty();
         this.instrVal= new SimpleIntegerProperty();
+        this.volume = new SimpleIntegerProperty();
         this.instrument = instrument;
+        this.volume.set(100);
     }
 
     /**
@@ -97,6 +100,21 @@ public class Note extends Playable{
     public DoubleProperty durationProperty() {
         return duration;
     }
+
+    /**
+     * Gets the volume property
+     * @return IntegerProperty volume
+     */
+    public IntegerProperty volumeProperty() { return this.volume; }
+
+    public int getVolume(){
+        return this.volumeProperty().intValue();
+    }
+    /**
+     * Gets the volume property
+     * @return IntegerProperty volume
+     */
+    public void setVolume(int val) { this.volume.set(val); }
 
     /**
      * Gets the pitch property

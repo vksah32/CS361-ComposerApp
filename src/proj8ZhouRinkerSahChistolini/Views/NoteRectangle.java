@@ -11,9 +11,11 @@
 
 package proj8ZhouRinkerSahChistolini.Views;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import proj8ZhouRinkerSahChistolini.Controllers.InstrumentPanelController;
 
 /**
@@ -23,6 +25,9 @@ public class NoteRectangle extends SelectableRectangle {
 
     /**int value for the instrument**/
     private IntegerProperty instrument;
+    /** Modifier to color opacity */
+    private IntegerProperty volume;
+    private Rectangle transparency;
     /**
      * The constructor of the NoteRectangle
      * @param x
@@ -47,6 +52,16 @@ public class NoteRectangle extends SelectableRectangle {
                     this.getInstrument()).getName().toLowerCase().replace(" ", "-"));
         });
         this.instrument.setValue(instr);
+        this.volume = new SimpleIntegerProperty();
+        this.transparency = new Rectangle();
+        this.transparency.xProperty().bind(this.xProperty());
+        this.transparency.yProperty().bind(this.yProperty());
+        this.transparency.heightProperty().bind(this.heightProperty());
+        this.transparency.widthProperty().bind(this.widthProperty());
+        this.transparency.setMouseTransparent(true);
+        this.volume.addListener(e -> {
+            this.transparency.setFill(Color.rgb(255,255,255,1.0 -  ((double) volumeProperty().intValue())/127.0));
+            });
     }
 
     /**
@@ -59,10 +74,23 @@ public class NoteRectangle extends SelectableRectangle {
      */
     public IntegerProperty instrumentProperty(){return this.instrument;}
 
+    /**
+     * Set the instrument property
+     */
     public void setInstrument(int val){
         this.instrument.set(val);
-
     }
+
+    /** Return the rectangle responsibile for tranparency*/
+    public Rectangle getTransparency(){
+        return this.transparency;
+    }
+
+    /**
+     * returns the volume property
+     */
+    public IntegerProperty volumeProperty(){ return this.volume; }
+
     /**
      * sets the selection of the rectangle
      * @param selected
@@ -79,6 +107,16 @@ public class NoteRectangle extends SelectableRectangle {
         this.selected.set(selected);
     }
 
+    public void populate(Pane pane){
+        this.setSelected(true);
+        pane.getChildren().add(this);
+        pane.getChildren().add(this.transparency);
+    }
+    @Override
+    public void toFront(){
+        super.toFront();
+        this.transparency.toFront();
+    }
     @Override
     /**
      * x,y,width, name, channel, integer representing MIDI instrucment

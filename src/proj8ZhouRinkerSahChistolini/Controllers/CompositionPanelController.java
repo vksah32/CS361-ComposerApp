@@ -44,8 +44,6 @@ public class CompositionPanelController {
     /** a Pane to hold all the notes */
     @FXML
     private Pane compositionPanel;
-    @FXML
-    private ContextMenu contextMenu;
 
     /** a Pane to hold all of the lines */
     @FXML
@@ -117,6 +115,7 @@ public class CompositionPanelController {
             rectangle.setSelected(true);
         }
         this.compositionPanel.getChildren().add(rectangle);
+        this.compositionPanel.getChildren().add(rectangle.getTransparency());
     }
 
     /**
@@ -305,6 +304,9 @@ public class CompositionPanelController {
         //first remove from the panel
         for (Rectangle r: selected){
             this.compositionPanel.getChildren().remove(r);
+            if (r instanceof NoteRectangle){
+                this.compositionPanel.getChildren().remove(((NoteRectangle) r).getTransparency());
+            }
         }
         //remove selected notes from composition
         this.composition.getNotes().removeIf(n ->
@@ -455,6 +457,10 @@ public class CompositionPanelController {
      */
     public Pane getCompositionPane(){
         return this.compositionPanel;
+    }
+
+    public InstrumentPanelController getInstrumentPanelController(){
+        return this.instController;
     }
 
     /** Get the click in panel handler*/

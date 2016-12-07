@@ -118,8 +118,5 @@ public abstract class SelectableRectangle extends Rectangle {
     }
 
     /** Populate a given pane with this object*/
-    public void populate(Pane pane){
-        this.setSelected(true);
-        pane.getChildren().add(this);
-    }
+    public abstract void populate(Pane pane);
 }
