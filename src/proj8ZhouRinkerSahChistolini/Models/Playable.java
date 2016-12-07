@@ -13,6 +13,7 @@ public abstract class Playable {
     public Playable(){
         this.selected = new SimpleBooleanProperty();
     }
+
     /**
      * getter for selectedProperty
      * @return BooleanProperty  the selectedProperty
@@ -21,6 +22,11 @@ public abstract class Playable {
         return selected;
     }
 
+    /**
+     * get a XML string representing the item
+     * @param numTabs number of tabs to be used in XML
+     * @return the string XML
+     */
     public String toXML(int numTabs) {
         return this.toXML(0);
     }
