@@ -63,28 +63,30 @@ public class DragInPanelHandler {
      */
     public void handleDragged(MouseEvent event) {
         this.selectionRectangle.setVisible(true);
+        double scaleFactor = this.compController.getZoomFactor().getValue();
         if(!this.metaDown &&
                 (this.selectionRectangle.getWidth() > 5 ||
                         this.selectionRectangle.getHeight() > 5))
         {
             this.compController.clearSelected();
         }
-        double left = Math.min(event.getX(),this.startX);
-        double widt = Math.abs(event.getX()-this.startX);
-        double lowest = Math.min(event.getY(),this.startY);
-        double heigh = Math.abs(event.getY()-this.startY);
-        this.selectionRectangle.setWidth(widt);
-        this.selectionRectangle.setHeight(heigh);
-        this.selectionRectangle.setX(left);
-        this.selectionRectangle.setY(lowest);
+        double leftX = Math.min(event.getX(),this.startX);
+        double width = Math.abs(event.getX()-this.startX);
+        double lowestY = Math.min(event.getY(),this.startY);
+        double height = Math.abs(event.getY()-this.startY);
 
-        double leftX = Math.min(event.getX()/this.compController.getZoomFactor().getValue(),this.startX/this.compController.getZoomFactor().getValue());
-        double width = Math.abs(event.getX()/this.compController.getZoomFactor().getValue()-this.startX/this.compController.getZoomFactor().getValue());
-        double lowestY = Math.min(event.getY()/this.compController.getZoomFactor().getValue(),this.startY/this.compController.getZoomFactor().getValue());
-        double height = Math.abs(event.getY()/this.compController.getZoomFactor().getValue()-this.startY/this.compController.getZoomFactor().getValue());
+        this.selectionRectangle.setWidth(width);
+        this.selectionRectangle.setHeight(height);
+        this.selectionRectangle.setX(leftX);
+        this.selectionRectangle.setY(lowestY);
+
+        double descaledLeftX = Math.min(event.getX()/scaleFactor,this.startX/scaleFactor);
+        double descaledWidth = Math.abs(event.getX()/scaleFactor-this.startX/scaleFactor);
+        double descaledLowestY = Math.min(event.getY()/scaleFactor,this.startY/scaleFactor);
+        double descaledHeight = Math.abs(event.getY()/scaleFactor-this.startY/scaleFactor);
 
         for (SelectableRectangle rectangle : compController.getRectangles()) {
-            if (rectangle.intersects(leftX, lowestY, width, height)) {
+            if (rectangle.intersects(descaledLeftX, descaledLowestY, descaledWidth, descaledHeight)) {
                 rectangle.setSelected(true);
             }
         }

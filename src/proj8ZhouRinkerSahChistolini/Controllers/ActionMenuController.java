@@ -14,7 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
 /**
- * Created by Alex on 11/14/16.
+ * Controller for the action menu. Injects Action Menu items from FXML
  */
 public class ActionMenuController {
 
