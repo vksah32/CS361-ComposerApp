@@ -28,10 +28,13 @@ public class EditMenuController {
     /** a controller to assist in bindings between the menus and controllers*/
     private BindingController bindingController;
 
+    /**a controller to assist with clipboard actions ***/
     private ClipBoardController clipboardController;
 
     /** CompositionPanelController reference */
     private CompositionPanelController compositionPanelController;
+
+    private ZoomHandler zoomHandler;
 
     /**
      * All of our MenuItem are put into fields
@@ -66,7 +69,9 @@ public class EditMenuController {
         this.compositionPanelController = compController;
         this.bindingController = bindingController;
         this.clipboardController = clipboardController;
+        this.zoomHandler = new ZoomHandler(this.compositionPanelController);
         this.bindMenuItems();
+
     }
 
     @FXML
@@ -157,6 +162,22 @@ public class EditMenuController {
         this.compositionPanelController.ungroupSelected(
                 this.compositionPanelController.getSelectedRectangles()
         );
+    }
+
+    @FXML
+    /**
+     * zoom in 20%
+     */
+    public void zoomIn() {
+        this.zoomHandler.zoomIn();
+    }
+
+    @FXML
+    /**
+     * zoom out 20%
+     */
+    public void zoomOut(){
+        this.zoomHandler.zoomOut();
     }
 
     @FXML

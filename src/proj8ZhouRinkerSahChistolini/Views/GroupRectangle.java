@@ -2,6 +2,7 @@ package proj8ZhouRinkerSahChistolini.Views;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Transform;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -121,10 +122,11 @@ public class GroupRectangle extends SelectableRectangle{
     }
 
     @Override
-    public void populate(Pane pane){
+    public void populate(Pane pane, Transform transform){
         this.setSelected(true);
+        this.getTransforms().add(transform);
         pane.getChildren().add(this);
-        this.getChildren().forEach(rec -> rec.populate(pane));
+        this.getChildren().forEach(rec -> rec.populate(pane, transform));
     }
 
     @Override

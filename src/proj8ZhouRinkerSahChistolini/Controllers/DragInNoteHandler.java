@@ -149,7 +149,8 @@ public class DragInNoteHandler {
     public void handleMouseReleased(MouseEvent event) {
         Collection<SelectableRectangle> changedRectangles = new ArrayList<>();
         double adjustY = 0;
-        for (SelectableRectangle rectangle : this.compController.getSelectedRectangles()){
+        for (SelectableRectangle rectangle :
+                this.compController.getSelectedRectangles()){
             double newPitch = Math.floor((rectangle.getY() - 1) / 10) * 10 + 1;
             //change adjust based on parent rectangle if grouping
             if(!rectangle.xProperty().isBound())

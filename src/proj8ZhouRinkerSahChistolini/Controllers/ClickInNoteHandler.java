@@ -64,7 +64,6 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
             }
 
             // add a new action
-
             Collection<SelectableRectangle> after = (
                 this.compController.getSelectedRectangles()
             );
@@ -73,7 +72,7 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
                     new SelectAction(before, after, this.compController)
                 );
             }
-            //So that the border pane doesn't get the action
+            //stop the event so that the border pane doesn't get the action
             event.consume();
         }
     }

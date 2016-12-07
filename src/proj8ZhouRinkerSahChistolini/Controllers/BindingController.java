@@ -17,6 +17,7 @@ import java.util.List;
  * between controllers and view/model
  */
 public class BindingController {
+
     /** The application's composition panel controller*/
     private CompositionPanelController compositionController;
     /** The application's ClipBoardController */
