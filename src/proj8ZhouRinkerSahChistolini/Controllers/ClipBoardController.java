@@ -27,14 +27,11 @@ import java.util.*;
  *
  */
 public class ClipBoardController {
-    /**
-     * The Clipboard which all the data is sent to
-     */
+    /** The Clipboard which all the data is sent to */
     private Clipboard board;
-    /**
-     * A reference to the main compositionController & instrument controller
-     */
+    /** A reference to the main compositionController & instrument controller */
     private CompositionPanelController compController;
+    /** xml formatter and parser */
     private XMLHandler XMLHandler;
 
     /**
@@ -53,7 +50,7 @@ public class ClipBoardController {
 
     /**
      * returns a String which has been copied to the clipboard.
-     * Throws an error if the copied element is unsupported
+     * returns empty string if content is unsupported
      *
      * @return result the result String
      */
