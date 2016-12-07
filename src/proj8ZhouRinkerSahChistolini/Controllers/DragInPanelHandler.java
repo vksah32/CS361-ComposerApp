@@ -49,8 +49,8 @@ public class DragInPanelHandler {
      * @param event the event associated with the mouse push down
      */
     public void handleMousePressed(MouseEvent event){
-        this.startX = event.getX();
-        this.startY = event.getY();
+        this.startX = event.getX()/this.compController.getZoomFactor().getValue();
+        this.startY = event.getY()/this.compController.getZoomFactor().getValue();
         this.selectionRectangle.setX(this.startX);
         this.selectionRectangle.setY(this.startY);
         this.metaDown = event.isShortcutDown();
@@ -69,10 +69,10 @@ public class DragInPanelHandler {
         {
             this.compController.clearSelected();
         }
-        double leftX = Math.min(event.getX(),this.startX);
-        double width = Math.abs(event.getX()-this.startX);
-        double lowestY = Math.min(event.getY(),this.startY);
-        double height = Math.abs(event.getY()-this.startY);
+        double leftX = Math.min(event.getX()/this.compController.getZoomFactor().getValue(),this.startX);
+        double width = Math.abs(event.getX()/this.compController.getZoomFactor().getValue()-this.startX);
+        double lowestY = Math.min(event.getY()/this.compController.getZoomFactor().getValue(),this.startY);
+        double height = Math.abs(event.getY()/this.compController.getZoomFactor().getValue()-this.startY);
         this.selectionRectangle.setWidth(width);
         this.selectionRectangle.setHeight(height);
         this.selectionRectangle.setX(leftX);
@@ -85,6 +85,8 @@ public class DragInPanelHandler {
                 rectangle.setSelected(true);
             }
         }
+
+
     }
 
     /** handles when the mouse is released
