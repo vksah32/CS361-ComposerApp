@@ -9,12 +9,6 @@
  * Date: October 23, 2016
  */
 
-/* set the pane size */
-#compositionPanel {
-    -fx-pref-width: 2000;
-    -fx-pref-height: 1280;
-}
-
 /* set the styling for the composition lines */
 #lines {
     -fx-stroke: gray;
