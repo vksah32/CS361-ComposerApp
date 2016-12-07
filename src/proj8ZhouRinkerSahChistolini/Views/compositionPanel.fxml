@@ -18,35 +18,36 @@
 <?import javafx.scene.Group?>
 <ScrollPane xmlns:fx="http://javafx.com/fxml"
             stylesheets="@Main.css"
-            fx:controller="proj8ZhouRinkerSahChistolini.Controllers.CompositionPanelController">
+            fx:controller="proj8ZhouRinkerSahChistolini.Controllers.CompositionPanelController"
+            fx:id="scrollPane">
    <content>
-    <Group>
-       <children>
-    <Group fx:id="groupToScale">
-        <children>
-    <StackPane>
-        <Pane fx:id="staffPane">
-            <TempoLine fx:id="tempoLine"
-                       styleClass="tempo-line"
-                       startX="0.0"
-                       startY="0.0"
-                       endX="0.0"
-                       endY="1280.0"
-                       visible="false"/>
-            <Rectangle fx:id="selectionRectangle"
-                       visible="false"
-                       styleClass="selection-rectangle"/>
-        </Pane>
-        <Pane fx:id="compositionPanel"
-              onMouseClicked="#handleMouseClick"
-              onMousePressed="#handleMousePressed"
-              onMouseDragged="#handleDragged"
-              onMouseReleased="#handleDragReleased"/>
+       <Group>
+           <children>
+               <Group fx:id="groupToScale">
+                   <children>
+                       <StackPane>
+                           <Pane fx:id="staffPane">
+                               <TempoLine fx:id="tempoLine"
+                                          styleClass="tempo-line"
+                                          startX="0.0"
+                                          startY="0.0"
+                                          endX="0.0"
+                                          endY="1280.0"
+                                          visible="false"/>
+                               <Rectangle fx:id="selectionRectangle"
+                                          visible="false"
+                                          styleClass="selection-rectangle"/>
+                           </Pane>
+                           <Pane fx:id="compositionPanel"
+                                 onMouseClicked="#handleMouseClick"
+                                 onMousePressed="#handleMousePressed"
+                                 onMouseDragged="#handleDragged"
+                                 onMouseReleased="#handleDragReleased"/>
 
-    </StackPane>
-        </children>
-    </Group>
-       </children>
-   </Group>
+                       </StackPane>
+                   </children>
+               </Group>
+           </children>
+       </Group>
    </content>
 </ScrollPane>
