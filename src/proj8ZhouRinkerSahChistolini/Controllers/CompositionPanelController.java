@@ -21,14 +21,12 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.Actionable;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.GroupNoteAction;
 import proj8ZhouRinkerSahChistolini.Controllers.Actions.UngroupNoteAction;
 import proj8ZhouRinkerSahChistolini.Models.Gesture;
-import proj8ZhouRinkerSahChistolini.Models.Note;
 import proj8ZhouRinkerSahChistolini.Models.Playable;
 import proj8ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj8ZhouRinkerSahChistolini.Models.Composition;
@@ -38,8 +36,6 @@ import proj8ZhouRinkerSahChistolini.Views.TempoLine;
 
 import java.util.HashSet;
 import java.util.Collection;
-
-import java.util.*;
 
 /**
  * The pane in which all of the notes are stored and displayed.
@@ -106,6 +102,9 @@ public class CompositionPanelController {
         this.compositionPanel.toFront();
         //adds the scale transformation to the group
         this.groupToScale.getTransforms().add(scale);
+
+        //make sure the tempoline doesn't get too big/small
+        this.tempoLine.getTransforms().add(scale);
 
         //bind to tempoLine
         this.isPlaying.bind(this.tempoLine.isPlayingProperty());
