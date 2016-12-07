@@ -65,14 +65,14 @@ public class Gesture extends Playable{
 
      @Override
      /**
-      * Returns FXML formatted string of GroupRectangle and
-      * its children
-      * @return String representation of the object
+     * Returns XML formatted string of GroupRectangle and
+     * its children
+     * @return String representation of the object
      */
     public String toString() { return toXML(0); }
 
     /**
-     * Returns FXML formatted string of GroupRectangle and
+     * Returns XML formatted string of GroupRectangle and
      * its children
      * @param numTabs an int representing the indentation level
      *                to make the string more readable

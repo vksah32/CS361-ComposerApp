@@ -13,6 +13,7 @@ public abstract class Playable {
     public Playable(){
         this.selected = new SimpleBooleanProperty();
     }
+
     /**
      * getter for selectedProperty
      * @return BooleanProperty  the selectedProperty
@@ -36,7 +37,10 @@ public abstract class Playable {
     /** Get volume of the sound */
     public abstract int getVolume();
 
-    public String toXML(int numTabs) {
-        return this.toXML(0);
-    }
+    /**
+     * get a XML string representing the item
+     * @param numTabs number of tabs to be used in XML
+     * @return the string XML
+     */
+    public abstract String toXML(int numTabs);
 }

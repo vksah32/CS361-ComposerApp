@@ -15,9 +15,15 @@
 <?import javafx.scene.shape.Rectangle?>
 
 <?import proj8ZhouRinkerSahChistolini.Views.*?>
+<?import javafx.scene.Group?>
 <ScrollPane xmlns:fx="http://javafx.com/fxml"
             stylesheets="@Main.css"
             fx:controller="proj8ZhouRinkerSahChistolini.Controllers.CompositionPanelController">
+   <content>
+    <Group>
+       <children>
+    <Group fx:id="groupToScale">
+        <children>
     <StackPane>
         <Pane fx:id="staffPane">
             <TempoLine fx:id="tempoLine"
@@ -36,5 +42,11 @@
               onMousePressed="#handleMousePressed"
               onMouseDragged="#handleDragged"
               onMouseReleased="#handleDragReleased"/>
+
     </StackPane>
+        </children>
+    </Group>
+       </children>
+   </Group>
+   </content>
 </ScrollPane>

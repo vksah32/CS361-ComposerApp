@@ -15,6 +15,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Transform;
 
 /**
  * Created by Edward on 10/18/2016.
@@ -108,7 +109,7 @@ public abstract class SelectableRectangle extends Rectangle {
     public abstract void setSelected(boolean bool);
 
     /**
-     * Returns a string representation of the object
+     * Returns a XML string representation of the object
      * which is indented numTabs times
      * @param numTabs the indentation level
      * @return String representation of the object
@@ -117,6 +118,10 @@ public abstract class SelectableRectangle extends Rectangle {
         return this.toXML(0);
     }
 
-    /** Populate a given pane with this object*/
-    public abstract void populate(Pane pane);
+    /**
+     * Populate a given pane with this object after applying the given transform
+     * @param pane The pane to populate
+     * @param transform the transform to be applied to this object
+     */
+    public abstract void populate(Pane pane, Transform transform);
 }

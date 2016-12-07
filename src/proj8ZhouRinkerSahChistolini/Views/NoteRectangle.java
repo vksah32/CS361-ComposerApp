@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Transform;
 import proj8ZhouRinkerSahChistolini.Controllers.InstrumentPanelController;
 
 /**
@@ -25,6 +26,7 @@ public class NoteRectangle extends SelectableRectangle {
 
     /**int value for the instrument**/
     private IntegerProperty instrument;
+    private String instrString;
     /** Modifier to color opacity */
     private IntegerProperty volume;
     private Rectangle transparency;
@@ -43,13 +45,15 @@ public class NoteRectangle extends SelectableRectangle {
                          InstrumentPanelController instrController) {
         super(x, y, width, height);
         this.getStyleClass().add("note");
-        this.getStyleClass().add(styleName.toLowerCase().replace(" ", "-"));
+        this.instrString = styleName.toLowerCase().replace(" ", "-");
+        this.getStyleClass().add(this.instrString);
         this.instrument = new SimpleIntegerProperty();
         this.instrument.addListener(e -> {
-            this.getStyleClass().remove(styleName.toLowerCase().replace(" ", "-"));
-            this.getStyleClass().add("note");
-            this.getStyleClass().add(instrController.getInstrument(
-                    this.getInstrument()).getName().toLowerCase().replace(" ", "-"));
+            getStyleClass().removeAll(instrString);
+            String newInstrument = instrController.getInstrument(
+                    getInstrument()).getName().toLowerCase().replace(" ", "-");
+            getStyleClass().add(newInstrument);
+            instrString = newInstrument;
         });
         this.instrument.setValue(instr);
         this.volume = new SimpleIntegerProperty();
@@ -107,8 +111,10 @@ public class NoteRectangle extends SelectableRectangle {
         this.selected.set(selected);
     }
 
-    public void populate(Pane pane){
+    public void populate(Pane pane, Transform transform){
         this.setSelected(true);
+        this.getTransforms().add(transform);
+        this.transparency.getTransforms().add(transform);
         pane.getChildren().add(this);
         pane.getChildren().add(this.transparency);
     }
@@ -125,8 +131,10 @@ public class NoteRectangle extends SelectableRectangle {
     public String toString() {return toXML(0);}
 
     /**
-     * x,y,width, name, channel, integer representing MIDI instrucment
-     * @return
+     * Returns XML formatted string of NoteRectangle object
+     * @param numTabs an int representing the indentation level
+     *                to make the string more readable
+     * @return String representation of the NoteRectangle
      */
     public String toXML(int numTabs) {
         String tabbing = (numTabs > 0) ? String.format("%" + numTabs*4 + "s", " ") : "";

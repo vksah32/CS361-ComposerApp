@@ -14,7 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
 /**
- * Created by Alex on 11/14/16.
+ * Controller for the action menu.
  */
 public class ActionMenuController {
 
@@ -25,8 +25,10 @@ public class ActionMenuController {
      * we can bind their disable properties
      */
     @FXML
+    //field to control the stop button
     private MenuItem stopButton;
     @FXML
+    //filed to control the start button
     public MenuItem startButton;
 
     /** reference to the CompositionPanelController */
@@ -46,9 +48,15 @@ public class ActionMenuController {
     }
 
     @FXML
+    /**
+     * Plays the composition
+     */
     public void playComposition() { this.compositionPanelController.playComposition(); }
 
     @FXML
+    /**
+     * Stops the composition from playing
+     */
     public void stopComposition() { this.compositionPanelController.stopComposition(); }
 
     /**

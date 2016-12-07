@@ -138,7 +138,10 @@ public class Composition {
     }
 
 
-
+    /**
+     * gets the selected notes from Compostion
+     * @return collection of note objects which are selected
+     */
     public Collection<Playable> getSelectedCompositionNotes() {
         HashSet<Playable> selectedNotes = new HashSet<>();
 

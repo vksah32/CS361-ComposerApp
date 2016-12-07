@@ -103,15 +103,15 @@ public class ContextMenuFactory {
 
         /** Set selected Rectangles to a specified instrument*/
         private void setInstrument(String text){
-            compController.getSelectedRectangles().forEach(n->
-                     n.setInstrument(
-                            compController.getInstrumentPanelController().getInstruments()
-                                    .stream()
-                                    .filter(
+            compController.getSelectedRectangles().forEach(n-> {
+                n.setInstrument(
+                        compController.getInstrumentPanelController().getInstruments()
+                                .stream()
+                                .filter(
                                         i -> i.getName().equals(text)
-                            ).collect(Collectors.toList()).get(0).getValue()
-                    )
-            );
+                                ).collect(Collectors.toList()).get(0).getValue()
+                );
+            });
         }
 
         /** Set selected Notes to a specified volume through dialog box */
