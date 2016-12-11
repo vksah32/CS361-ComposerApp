@@ -114,7 +114,8 @@ public class CompositionPanelController {
         //adds the scale transformation to the group
         this.groupToScale.getTransforms().add(scale);
 
-        this.bindScrollPane();
+        // TODO: 12/11/16 FIX THIS BROKEN BINDING
+        //this.bindScrollPane();
 
         //make sure the tempoline doesn't get too big/small
         this.tempoLine.getTransforms().add(scale);
