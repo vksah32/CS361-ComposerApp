@@ -216,9 +216,15 @@ public class CompositionPanelController {
             rec.setStroke(Color.GRAY);
             rec.getTransforms().add(scale);
             this.staffPane.getChildren().add(rec);
+            if(i%12 == 7) { //Draw special bars for C notes
+                rec = new Rectangle(0, i*10+1, 2000, 10);
+                rec.getStyleClass().add("c-note");
+                if(i==67) {rec.getStyleClass().add("middle-c");}
+                this.staffPane.getChildren().add(rec);
+            }
         }
     }
-
+    
     /**
      * gets the rectangles
      * @return a collection of SelectableRectangles
@@ -446,7 +452,6 @@ public class CompositionPanelController {
      *  Ungroups the selected group
      */
     public void ungroupSelected(Collection<SelectableRectangle> selectRect) {
-
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
         for (SelectableRectangle rec : selectRect){
             if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
