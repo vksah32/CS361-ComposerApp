@@ -262,8 +262,7 @@ public class FileMenuController {
 
     @FXML
     private void importMidi(){
-        this.compositionPanelController.stopComposition();
-        if(!handleUnsavedChanges()){ return; }
+        createNewDocument();
         //Create a placeholder for the current file
         FileChooser importer = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
@@ -282,7 +281,6 @@ public class FileMenuController {
             errorAlert("File Could Not Be Read", x.getMessage());
         }
         catch (SAXException | ParserConfigurationException e) {
-            System.out.println(e.toString());
             this.errorAlert("Error Parsing File", "Malformed XML created");
         }
     }

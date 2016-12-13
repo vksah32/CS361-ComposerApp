@@ -40,6 +40,9 @@ import javafx.beans.binding.DoubleBinding;
 import java.util.HashSet;
 import java.util.Collection;
 
+import static java.lang.Math.min;
+import static java.lang.Math.max;
+
 /**
  * The pane in which all of the notes are stored and displayed.
  */
@@ -331,7 +334,7 @@ public class CompositionPanelController {
     public void beginAnimation() {
         double maxX = 0;
         for(Playable note: this.getNotesfromComposition()){
-            maxX = Math.max(maxX, note.getX() + note.getWidth());
+            maxX = max(maxX, note.getX() + note.getWidth());
         }
         this.tempoLine.updateTempoLine(maxX,
                                        zoomFactor.getValue(),
@@ -347,7 +350,7 @@ public class CompositionPanelController {
         double maxX = 0;
         double minX = Integer.MAX_VALUE;
         for(Playable note: notes){
-            maxX = Math.max(maxX, note.getX() + note.getWidth());
+            maxX = max(maxX, note.getX() + note.getWidth());
             minX = Math.min(minX, note.getX());
         }
         this.tempoLine.updateTempoLine(minX,
@@ -564,8 +567,8 @@ public class CompositionPanelController {
      */
     public void updatePreferences(int noteWidth, int volume, int tempo) {
         if(noteWidth != 0) { this.noteWidth = noteWidth; }
-        this.composition.setVolume(volume);
-        this.composition.setTempo(tempo);
+        this.composition.setVolume(max(0, min(volume, 127)));
+        this.composition.setTempo(max(tempo, 1));
     }
 
 

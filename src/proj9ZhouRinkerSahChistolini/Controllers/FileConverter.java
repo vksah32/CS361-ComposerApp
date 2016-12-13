@@ -9,6 +9,7 @@ import javax.sound.midi.*;
 import javax.xml.parsers.ParserConfigurationException;
 
 import static java.lang.Integer.max;
+import static java.lang.Integer.min;
 
 /**
  * Allows easy importing and exporting to different file formats of the composition
@@ -27,6 +28,14 @@ public class FileConverter {
         this.xmlHandler = xmlHandler;
     }
 
+    /**
+     * import a midi file into the composition
+     * @param file
+     * @throws IOException
+     * @throws InvalidMidiDataException
+     * @throws ParserConfigurationException
+     * @throws org.xml.sax.SAXException
+     */
     public void importMidi(File file) throws IOException, InvalidMidiDataException,
             ParserConfigurationException, org.xml.sax.SAXException {
         this.sequence = MidiSystem.getSequence(file);
@@ -41,17 +50,14 @@ public class FileConverter {
      * @return
      */
     private String createNoteString(MidiEvent on, MidiEvent off){
-        int bpmMod = sequence.getResolution()/(30);
-        if (true){
-            return "    <Note " +
-                    "xpos=\"" + (int)on.getTick()/bpmMod  +"\" "+
-                    "ypos=\"" + ((127-(((ShortMessage) on.getMessage()).getData1()))*10) +"\" "+
-                    "width=\"" + ((off.getTick() - (on.getTick()))/bpmMod) + "\" " +
-                    "instValue=\"" + ((ShortMessage) on.getMessage()).getData1()  +"\" " +
-                    "volume=\"" + ((ShortMessage) on.getMessage()).getData2()  +"\" " +
-                    "/>\n";
-    }
-    else{return "";}
+        int bpmMod = sequence.getResolution()/(compositionPanelController.getCompositionTempo()/2);
+        return "    <Note " +
+                "xpos=\"" + (int)on.getTick()/bpmMod  +"\" "+
+                "ypos=\"" + ((127-(((ShortMessage) on.getMessage()).getData1()))*10) +"\" "+
+                "width=\"" + ((off.getTick() - (on.getTick()))/bpmMod) + "\" " +
+                "instValue=\"" + 6  +"\" " +
+                "volume=\"" + ((ShortMessage) on.getMessage()).getData2()  +"\" " +
+                "/>\n";
     }
 
     /**
@@ -98,11 +104,11 @@ public class FileConverter {
                     // Add a new instrument to the panel
                     if (!compositionPanelController
                             .getInstrumentPanelController().contains(sm.getData1())){
-                        compositionPanelController.getInstrumentPanelController().addInstrument(
-                                Integer.toString(sm.getData1()),
-                                sm.getData1(),
-                                sm.getChannel()
-                        );
+//                        compositionPanelController.getInstrumentPanelController().addInstrument(
+//                                Integer.toString(sm.getData1()),
+//                                sm.getData1(),
+//                                sm.getChannel()
+//                        );
                     }
 
                     //parse on and off events
@@ -111,18 +117,20 @@ public class FileConverter {
                             on.add(event);
                         }
                         else { //some midifiles just set the note_on with volume 0 as off
-                            try{builtXML += createNoteString(getAssociatedOnMessage(on,sm), event);}
-                            catch (Exception e){continue;}
+                            MidiEvent onEvent = getAssociatedOnMessage(on, sm);
+                            if (onEvent != null) {
+                                builtXML += createNoteString(onEvent, event);
+                            }
                         }
                     } else if (sm.getCommand() == NOTE_OFF) {
-                        try{builtXML += createNoteString(getAssociatedOnMessage(on,sm), event);}
-                        catch (Exception e){continue;}
-
+                        MidiEvent onEvent = getAssociatedOnMessage(on, sm);
+                        if (onEvent != null) {
+                            builtXML += createNoteString(onEvent, event);
+                        }
                     }
                 }
             }
         }
-        compositionPanelController.getCompositionPane().setMaxWidth(maxTick);
         return builtXML;
 
     }

@@ -13,6 +13,9 @@ package proj9ZhouRinkerSahChistolini.Models;
 
 import javafx.beans.property.*;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 /**
  * Holds all the information of a note
  */
@@ -114,7 +117,7 @@ public class Note extends Playable{
      * Gets the volume property
      * @return IntegerProperty volume
      */
-    public void setVolume(int val) { this.volume.set(val); }
+    public void setVolume(int val) { this.volume.set(max(0, min(val, 127))); }
 
     /**
      * Gets the pitch property
