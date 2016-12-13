@@ -38,6 +38,10 @@ public class ControllersInitializer {
     @FXML
     private ActionMenuController actionMenuController;
 
+    /** a Preference menu controller field */
+    @FXML
+    private PreferencesMenuController preferencesMenuController;
+
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
@@ -82,8 +86,12 @@ public class ControllersInitializer {
                 clipboardController
         );
         //Initialize Action ControllersInitializer
-        this.actionMenuController.init(this.compositionPanelController,
-                bindingController);
+        this.actionMenuController.init(
+                this.compositionPanelController,
+                bindingController
+        );
+        //Initialize Preferences Controller
+        this.preferencesMenuController.init(this.compositionPanelController);
     }
 }
 

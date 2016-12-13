@@ -23,6 +23,8 @@
                         source="editMenu.fxml"/>
             <fx:include fx:id="actionMenu"
                         source="actionMenu.fxml"/>
+            <fx:include fx:id="preferencesMenu"
+                        source="preferencesMenu.fxml"/>
         </MenuBar>
     </top>
     <left>

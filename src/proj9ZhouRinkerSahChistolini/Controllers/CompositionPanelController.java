@@ -90,6 +90,9 @@ public class CompositionPanelController {
     /** current composition scale used for transformations*/
     private Scale scale = new Scale(1,1);
 
+    /** the default width of the notes in the composition*/
+    private int noteWidth = 100;
+
     /** current zoom, bound to zoom property in the zoomHandler */
     private DoubleProperty zoomFactor = new SimpleDoubleProperty(1);
 
@@ -224,7 +227,7 @@ public class CompositionPanelController {
             }
         }
     }
-    
+
     /**
      * gets the rectangles
      * @return a collection of SelectableRectangles
@@ -330,7 +333,9 @@ public class CompositionPanelController {
         for(Playable note: this.getNotesfromComposition()){
             maxX = Math.max(maxX, note.getX() + note.getWidth());
         }
-        this.tempoLine.updateTempoLine(maxX, zoomFactor.getValue());
+        this.tempoLine.updateTempoLine(maxX,
+                                       zoomFactor.getValue(),
+                                       this.composition.getTempo());
         this.tempoLine.playAnimation();
     }
 
@@ -345,7 +350,10 @@ public class CompositionPanelController {
             maxX = Math.max(maxX, note.getX() + note.getWidth());
             minX = Math.min(minX, note.getX());
         }
-        this.tempoLine.updateTempoLine(minX, maxX, zoomFactor.getValue());
+        this.tempoLine.updateTempoLine(minX,
+                                       maxX,
+                                       zoomFactor.getValue(),
+                                       this.composition.getTempo());
         this.tempoLine.playAnimation();
     }
 
@@ -490,7 +498,10 @@ public class CompositionPanelController {
                 this.stopComposition();
             } else {
                 this.clickInPanelHandler.handle(
-                        event, this.instController.getSelectedInstrument()
+                        event,
+                        this.instController.getSelectedInstrument(),
+                        this.noteWidth,
+                        this.composition.getVolume()
                 );
             }
         }
@@ -545,6 +556,18 @@ public class CompositionPanelController {
         return this.clickInPanelHandler;
     }
 
+    /**
+     * updates the compositionPanelFields with the given data
+     * @param noteWidth default width of a note
+     * @param volume default volume of a note
+     * @param tempo default tempo of a note
+     */
+    public void updatePreferences(int noteWidth, int volume, int tempo) {
+        if(noteWidth != 0) { this.noteWidth = noteWidth; }
+        this.composition.setVolume(volume);
+        this.composition.setTempo(tempo);
+    }
+
 
     /**
      * resets the entire composition to a fresh slate
@@ -553,5 +576,21 @@ public class CompositionPanelController {
         selectAllNotes();
         deleteSelectedNotes();
         this.actionController.clearLists();
+    }
+
+    /**
+     * returns the default width of the notes
+     * @return noteWidth (int)
+     */
+    public int getNoteWidth() {
+        return this.noteWidth;
+    }
+
+    public int getNoteVolume() {
+        return this.composition.getVolume();
+    }
+
+    public int getCompositionTempo() {
+        return this.composition.getTempo();
     }
 }
