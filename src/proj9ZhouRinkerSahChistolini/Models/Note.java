@@ -21,7 +21,7 @@ public class Note extends Playable{
     /** the instrument that the note plays */
     private Instrument instrument;
     /** the duration of the note */
-    private DoubleProperty duration;
+    private IntegerProperty duration;
     /** the pitch of the note */
     private DoubleProperty pitch;
     /** the start tick of the note */
@@ -33,15 +33,15 @@ public class Note extends Playable{
     /**
      * The constructor for Note
      */
-    public Note(Instrument instrument){
+    public Note(Instrument instrument, int volume){
         super();
         this.startTick = new SimpleDoubleProperty();
-        this.duration = new SimpleDoubleProperty();
+        this.duration = new SimpleIntegerProperty();
         this.pitch = new SimpleDoubleProperty();
         this.instrVal= new SimpleIntegerProperty();
         this.volume = new SimpleIntegerProperty();
         this.instrument = instrument;
-        this.volume.set(100);
+        this.volume.set(volume);
     }
 
     /**
@@ -97,7 +97,7 @@ public class Note extends Playable{
      * Gets the duration property
      * @return DoubleProperty duration
      */
-    public DoubleProperty durationProperty() {
+    public IntegerProperty durationProperty() {
         return duration;
     }
 

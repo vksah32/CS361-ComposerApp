@@ -90,6 +90,9 @@ public class CompositionPanelController {
     /** current composition scale used for transformations*/
     private Scale scale = new Scale(1,1);
 
+    /** the default width of the notes in the composition*/
+    private int noteWidth = 100;
+
     /** current zoom, bound to zoom property in the zoomHandler */
     private DoubleProperty zoomFactor = new SimpleDoubleProperty(1);
 
@@ -114,7 +117,8 @@ public class CompositionPanelController {
         //adds the scale transformation to the group
         this.groupToScale.getTransforms().add(scale);
 
-        this.bindScrollPane();
+        // TODO: 12/11/16 FIX THIS BROKEN BINDING
+        //this.bindScrollPane();
 
         //make sure the tempoline doesn't get too big/small
         this.tempoLine.getTransforms().add(scale);
@@ -215,6 +219,12 @@ public class CompositionPanelController {
             rec.setStroke(Color.GRAY);
             rec.getTransforms().add(scale);
             this.staffPane.getChildren().add(rec);
+            if(i%12 == 7) { //Draw special bars for C notes
+                rec = new Rectangle(0, i*10+1, 2000, 10);
+                rec.getStyleClass().add("c-note");
+                if(i==67) {rec.getStyleClass().add("middle-c");}
+                this.staffPane.getChildren().add(rec);
+            }
         }
     }
 
@@ -323,7 +333,9 @@ public class CompositionPanelController {
         for(Playable note: this.getNotesfromComposition()){
             maxX = Math.max(maxX, note.getX() + note.getWidth());
         }
-        this.tempoLine.updateTempoLine(maxX, zoomFactor.getValue());
+        this.tempoLine.updateTempoLine(maxX,
+                                       zoomFactor.getValue(),
+                                       this.composition.getTempo());
         this.tempoLine.playAnimation();
     }
 
@@ -338,7 +350,10 @@ public class CompositionPanelController {
             maxX = Math.max(maxX, note.getX() + note.getWidth());
             minX = Math.min(minX, note.getX());
         }
-        this.tempoLine.updateTempoLine(minX, maxX, zoomFactor.getValue());
+        this.tempoLine.updateTempoLine(minX,
+                                       maxX,
+                                       zoomFactor.getValue(),
+                                       this.composition.getTempo());
         this.tempoLine.playAnimation();
     }
 
@@ -445,7 +460,6 @@ public class CompositionPanelController {
      *  Ungroups the selected group
      */
     public void ungroupSelected(Collection<SelectableRectangle> selectRect) {
-
         HashSet<GroupRectangle> selectedGroup = new HashSet<>();
         for (SelectableRectangle rec : selectRect){
             if (!rec.xProperty().isBound() && rec instanceof GroupRectangle){
@@ -484,7 +498,10 @@ public class CompositionPanelController {
                 this.stopComposition();
             } else {
                 this.clickInPanelHandler.handle(
-                        event, this.instController.getSelectedInstrument()
+                        event,
+                        this.instController.getSelectedInstrument(),
+                        this.noteWidth,
+                        this.composition.getVolume()
                 );
             }
         }
@@ -539,6 +556,18 @@ public class CompositionPanelController {
         return this.clickInPanelHandler;
     }
 
+    /**
+     * updates the compositionPanelFields with the given data
+     * @param noteWidth default width of a note
+     * @param volume default volume of a note
+     * @param tempo default tempo of a note
+     */
+    public void updatePreferences(int noteWidth, int volume, int tempo) {
+        if(noteWidth != 0) { this.noteWidth = noteWidth; }
+        this.composition.setVolume(volume);
+        this.composition.setTempo(tempo);
+    }
+
 
     /**
      * resets the entire composition to a fresh slate
@@ -547,5 +576,21 @@ public class CompositionPanelController {
         selectAllNotes();
         deleteSelectedNotes();
         this.actionController.clearLists();
+    }
+
+    /**
+     * returns the default width of the notes
+     * @return noteWidth (int)
+     */
+    public int getNoteWidth() {
+        return this.noteWidth;
+    }
+
+    public int getNoteVolume() {
+        return this.composition.getVolume();
+    }
+
+    public int getCompositionTempo() {
+        return this.composition.getTempo();
     }
 }
