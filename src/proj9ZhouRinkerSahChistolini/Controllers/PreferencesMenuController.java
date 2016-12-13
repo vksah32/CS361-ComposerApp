@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -27,9 +28,10 @@ public class PreferencesMenuController {
 
     @FXML
     /**
-     *
+     * updates the composition preferences based on the user's interaction with the
+     * dialog menu
      */
-    public void displayCompPreferences() {
+    public void updateCompPreferences() {
         String tempo = String.valueOf(
                 this.compositionPanelController.getCompositionTempo()
         );
@@ -40,9 +42,8 @@ public class PreferencesMenuController {
                                                                           tempo);
         Optional<HashMap<String, String>> result = dialog.showAndWait();
 
-        HashMap<String,String> results = result.get();
-
-        if(results != null) {
+        if(result.isPresent()) { //If the result isn't present, then cancel was pressed
+            HashMap<String,String> results = result.get();
             this.compositionPanelController.updatePreferences(
                     getWidthFromNote(results.get("duration"), 100),
                     Integer.parseInt(results.get("volume")),
@@ -74,7 +75,7 @@ public class PreferencesMenuController {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
+        grid.setPadding(new Insets(20, 20, 10, 10));
 
         //Set up the preferences questions
         TextField tempoSelect = new TextField();
@@ -88,12 +89,14 @@ public class PreferencesMenuController {
         noteLength.setValue(currentNoteLength);
 
         //Add items to the grid
-        grid.add(new Label("Composition Tempo:"), 0, 0);
+        grid.add(new Label("Composition Tempo (bpm):"), 0, 0);
         grid.add(tempoSelect, 1, 0);
-        grid.add(new Label("Default Note Volume:"), 0, 1);
+        grid.add(new Label("Default Note Volume (0-127):"), 0, 1);
         grid.add(noteVolume, 1, 1);
         grid.add(new Label("Default Note Length:"), 0, 2);
         grid.add(noteLength, 1, 2);
+        grid.add(new Text("Note: \n" +
+                          "Illegal input will be set to the nearest legal value"), 0, 3);
 
         dialog.getDialogPane().setContent(grid);
 
