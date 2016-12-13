@@ -108,7 +108,8 @@ public class XMLHandler {
                             .addNoteRectangle(
                                     Double.parseDouble(attributes.getValue("xpos")),
                                     Double.parseDouble(attributes.getValue("ypos")),
-                                    Integer.parseInt(attributes.getValue("instValue"))
+                                    Integer.parseInt(attributes.getValue("instValue")),
+                                    (int)Double.parseDouble(attributes.getValue("width"))
                             );
                     Note note = compController.getClickInPanelHandler().createBoundNote(
                             rec, rec.getInstrument());

@@ -80,10 +80,16 @@ public class ClickInPanelHandler {
     public NoteRectangle addNoteRectangle(double x,
                                           double y,
                                           int instId){
+        return addNoteRectangle(x,y,instId,this.DEFAULT_RECTANGLE_WIDTH);
+    }
+
+    public NoteRectangle addNoteRectangle(double x,
+                                          double y,
+                                          int instId, int width){
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
-                this.DEFAULT_RECTANGLE_WIDTH,
+                width,
                 10,
                 this.instController.getInstrument(instId).getValue(),
                 this.instController.getInstrument(instId).getName(),
