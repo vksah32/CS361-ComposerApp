@@ -92,4 +92,19 @@ public class InstrumentPanelController {
         }
         return null;
     }
+
+    /**
+     * Returns true if there is an instrument in the panel that has the
+     * specified pitch
+     * @param pitch to check against the panel instruments
+     * @return
+     */
+    public boolean contains(int pitch){
+        for (Instrument instrument : this.instruments) {
+            if (instrument.getValue() == pitch) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

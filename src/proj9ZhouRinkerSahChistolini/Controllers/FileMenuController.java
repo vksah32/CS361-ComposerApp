@@ -19,6 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.Optional;
@@ -37,6 +38,8 @@ public class FileMenuController {
     private CompositionPanelController compositionPanelController;
     /** The application's XMLHandler */
     private XMLHandler XMLHandler;
+    /** Application's import and export handler */
+    private FileConverter fileConverter;
 
     /**
      * initializes the filemenu controller
@@ -59,6 +62,8 @@ public class FileMenuController {
                      XMLHandler xmlHandler){
         this.compositionPanelController = compositionPanelController;
         this.XMLHandler = xmlHandler;
+        this.fileConverter = new FileConverter(compositionPanelController,
+                                                xmlHandler);
     }
 
     /**
@@ -253,6 +258,33 @@ public class FileMenuController {
 
 
         return lines;
+    }
+
+    @FXML
+    private void importMidi(){
+        this.compositionPanelController.stopComposition();
+        if(!handleUnsavedChanges()){ return; }
+        //Create a placeholder for the current file
+        FileChooser importer = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "midi files(*.mid)", "*.mid"
+        );
+        importer .getExtensionFilters().add(extFilter);
+
+        File temp = importer.showOpenDialog(new Stage());
+        if(temp == null) {//If the user cancels
+            return;
+        }
+        try {
+            this.fileConverter.importMidi(temp);
+        }
+        catch(IOException | InvalidMidiDataException x){
+            errorAlert("File Could Not Be Read", x.getMessage());
+        }
+        catch (SAXException | ParserConfigurationException e) {
+            System.out.println(e.toString());
+            this.errorAlert("Error Parsing File", "Malformed XML created");
+        }
     }
 
     /**

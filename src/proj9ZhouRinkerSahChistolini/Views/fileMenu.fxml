@@ -20,5 +20,7 @@
     <MenuItem text="Open" onAction="#open" accelerator="Shortcut+O"/>
     <MenuItem text="Save as" onAction="#saveAs"/>
     <MenuItem text="Save" onAction="#save" accelerator="Shortcut+Shift+S"/>
+    <SeparatorMenuItem/>
+    <MenuItem text="Import Midi" onAction="#importMidi"/>
     <MenuItem text="Exit" onAction="#cleanUpOnExit" accelerator="Shortcut+Q"/>
 </Menu>
