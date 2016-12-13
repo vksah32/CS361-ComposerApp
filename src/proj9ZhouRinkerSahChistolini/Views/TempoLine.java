@@ -31,14 +31,18 @@ public class TempoLine extends Line {
      * @param stopTime this is the stop location (e.g time) which is the
      * location of the right edge of the final note to be played
      */
-    public void updateTempoLine(double stopTime, double zoomFactor) {
-        updateTempoLine(0, stopTime, zoomFactor);
+    public void updateTempoLine(double stopTime, double zoomFactor, int tempo) {
+        updateTempoLine(0, stopTime, zoomFactor, tempo);
     }
 
-    public void updateTempoLine(double beginTime, double stopTime, double zoomFactor){
+    public void updateTempoLine(double beginTime,
+                                double stopTime,
+                                double zoomFactor,
+                                int tempo){
         this.tempoAnimation.stop();
         this.setTranslateX(beginTime*zoomFactor);
-        this.tempoAnimation.setDuration(new Duration((stopTime-beginTime)*10));
+        double tpo = (double) tempo;
+        this.tempoAnimation.setDuration(new Duration((stopTime-beginTime)*10*(60.0/tpo)));
         this.tempoAnimation.setToX(stopTime*zoomFactor);
         this.setVisible(true);
         this.isPlaying.set(true);

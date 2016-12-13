@@ -104,14 +104,16 @@ public class XMLHandler {
 
             switch (qName) {
                 case "Note":
+                    int width = Integer.parseInt(attributes.getValue("width"));
                     NoteRectangle rec = compController.getClickInPanelHandler()
                             .addNoteRectangle(
                                     Double.parseDouble(attributes.getValue("xpos")),
                                     Double.parseDouble(attributes.getValue("ypos")),
-                                    Integer.parseInt(attributes.getValue("instValue"))
+                                    Integer.parseInt(attributes.getValue("instValue")),
+                                    width
                             );
                     Note note = compController.getClickInPanelHandler().createBoundNote(
-                            rec, rec.getInstrument());
+                            rec, rec.getInstrument(), width);
                     note.setVolume(Integer.parseInt(attributes.getValue("volume")));
                     this.notesStack.peek().add(note);
 

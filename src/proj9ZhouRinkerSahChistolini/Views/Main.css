@@ -15,6 +15,16 @@
     -fx-stroke-width: 1
 }
 
+.c-note {
+    -fx-stroke: black;
+    -fx-fill: black;
+    -fx-opacity: 0.60;
+}
+
+.middle-c {
+    -fx-opacity: 0.30;
+}
+
 /* set style for radio buttons */
 .instrument-button {
     -fx-padding: 5 10 5 10;
