@@ -226,6 +226,7 @@ public class CompositionPanelController {
                 rec = new Rectangle(0, i*10+1, 2000, 10);
                 rec.getStyleClass().add("c-note");
                 if(i==67) {rec.getStyleClass().add("middle-c");}
+                rec.getTransforms().add(scale);
                 this.staffPane.getChildren().add(rec);
             }
         }

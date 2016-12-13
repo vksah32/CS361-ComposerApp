@@ -18,11 +18,11 @@
 .c-note {
     -fx-stroke: black;
     -fx-fill: black;
-    -fx-opacity: 0.60;
+    -fx-opacity: 0.30;
 }
 
 .middle-c {
-    -fx-opacity: 0.30;
+    -fx-opacity: 0.60;
 }
 
 /* set style for radio buttons */

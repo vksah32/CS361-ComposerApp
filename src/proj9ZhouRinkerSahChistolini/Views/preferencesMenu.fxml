@@ -15,7 +15,7 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="proj9ZhouRinkerSahChistolini.Controllers.PreferencesMenuController">
     <MenuItem text="Composition Preferences"
-              onAction="#displayCompPreferences"/>
+              onAction="#updateCompPreferences"/>
     <MenuItem text="Instrument Preferences"
               onAction="#displayInstPreferences"/>
 </Menu>
