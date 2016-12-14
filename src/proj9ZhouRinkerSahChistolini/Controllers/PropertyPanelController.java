@@ -11,11 +11,8 @@
 package proj9ZhouRinkerSahChistolini.Controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
-
 import java.util.Collection;
 
 /**
@@ -31,12 +28,11 @@ public class PropertyPanelController {
     private InstrumentPanelController instController;
 
     @FXML
-    private AnchorPane anchorPane;
-
-    @FXML
     private ComboBox instrumentSelect;
 
+    public void initilize(){
 
+    }
 
     /**
      * Sets up the references to the necessary controllers this minion needs
@@ -46,11 +42,13 @@ public class PropertyPanelController {
         this.compositionPanelController = compController;
         this.instController = instController;
 
-        //Collection<String> instrumentOptions = this.instController.getInstrumentNames();
-        //for (String s : instrumentOptions){
-          //  box.getItems().add(s);
+        Collection<String> instrumentOptions = this.instController.getInstrumentNames();
+        for (String s : instrumentOptions){
+            instrumentSelect.getItems().add(s);
 
-//        }
+        }
+
+
     }
 
 
