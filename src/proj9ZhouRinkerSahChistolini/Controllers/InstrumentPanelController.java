@@ -8,6 +8,7 @@ import proj9ZhouRinkerSahChistolini.Models.Instrument;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  *  This class holds all the info for instruments
@@ -107,4 +108,21 @@ public class InstrumentPanelController {
         }
         return false;
     }
+
+
+    /**
+     * gets names of current instruments
+     *
+     * @return instrument list
+     */
+    public Collection<String> getInstrumentNames() {
+
+        HashSet<String> nameList = new HashSet<>();
+        for (Instrument inst : this.instruments) {
+            nameList.add(inst.getName());
+        }
+        return nameList;
+    }
+
+
 }

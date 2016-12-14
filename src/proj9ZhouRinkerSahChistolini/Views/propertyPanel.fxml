@@ -1,0 +1,36 @@
+<!-- /**
+ * File: PreferencesMenu.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: Final
+ * Date: December 13, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="205.0" prefWidth="168.0"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@Main.css"
+            fx:id="anchorPane"
+            fx:controller="proj9ZhouRinkerSahChistolini.Controllers.PropertyPanelController">
+    <children>
+        <ComboBox fx:id="instrumentSelect" layoutX="15.0" layoutY="33.0" prefWidth="100.0" promptText="Select">
+
+        </ComboBox>
+        <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="62.0" prefHeight="134.0"
+              prefWidth="140.0" spacing="8.0">
+            <children>
+                <StackPane id="selected-fruit-frame" minHeight="100.0" minWidth="118.0"
+                           prefHeight="108.0" prefWidth="140.0">
+                    <children>
+                    </children>
+                </StackPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
