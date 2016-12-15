@@ -43,7 +43,7 @@ public class ControllersInitializer {
     private PreferencesMenuController preferencesMenuController;
 
     @FXML
-    private PropertyPanelController propertyPanelController;
+    private PropertyPanelController propertyPaneController;
 
 
     /** Initializes the controllers so they can communicate properly */
@@ -66,8 +66,7 @@ public class ControllersInitializer {
         //Set up the Menu Controllers with the needed tools
         initializeMenuControllers(XMLhandler, bindingController, clipboardController);
 
-        System.out.println(this.propertyPanelController == null);
-        //this.propertyPanelController.init(this.compositionPanelController,this.instrumentPaneController);
+        this.propertyPaneController.init(this.compositionPanelController,this.instrumentPaneController);
     }
 
     /**

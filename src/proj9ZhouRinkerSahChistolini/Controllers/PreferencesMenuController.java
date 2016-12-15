@@ -18,6 +18,8 @@ public class PreferencesMenuController {
      */
     private CompositionPanelController compositionPanelController;
 
+
+
     /**
      * Sets up the references to the necessary controllers this minion needs
      * to talk to
