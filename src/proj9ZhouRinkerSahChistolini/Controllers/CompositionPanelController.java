@@ -215,6 +215,7 @@ public class CompositionPanelController {
      * Draws 127 lines with the specified spacing and colors.
      */
     private void drawLines()  {
+        //horizontal lines
         for(int i = 1; i < 128; i++)
         {
             Rectangle rec = new Rectangle(0, i*10+1, 2000, 10);
@@ -229,6 +230,17 @@ public class CompositionPanelController {
                 rec.getTransforms().add(scale);
                 this.staffPane.getChildren().add(rec);
             }
+        }
+
+        //vertical lines at every 400 pixel
+        for(int i = 0; i < 5; i++)
+        {
+            Rectangle rec = new Rectangle(400*i, 0, 400, 1280);
+            rec.setFill(null);
+            rec.setStroke(Color.GRAY);
+            rec.getTransforms().add(scale);
+            this.staffPane.getChildren().add(rec);
+
         }
     }
 
