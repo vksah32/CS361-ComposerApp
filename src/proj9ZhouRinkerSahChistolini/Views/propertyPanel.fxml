@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!-- /**
  * File: PreferencesMenu.fxml
  * @author Victoria Chistolini
@@ -9,28 +11,36 @@
  * Date: December 13, 2016
  */ -->
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="205.0" prefWidth="168.0"
-            xmlns:fx="http://javafx.com/fxml"
-            stylesheets="@Main.css"
-            fx:id="anchorPane"
-            fx:controller="proj9ZhouRinkerSahChistolini.Controllers.PropertyPanelController">
+<AnchorPane maxHeight="50" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50" prefWidth="168.0" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj9ZhouRinkerSahChistolini.Controllers.PropertyPanelController">
     <children>
-        <ComboBox fx:id="instrumentSelect" layoutX="15.0" layoutY="33.0" prefWidth="100.0" promptText="Select">
-
-        </ComboBox>
-        <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="62.0" prefHeight="134.0"
-              prefWidth="140.0" spacing="8.0">
-            <children>
-                <StackPane id="selected-fruit-frame" minHeight="100.0" minWidth="118.0"
-                           prefHeight="108.0" prefWidth="140.0">
-                    <children>
-                    </children>
-                </StackPane>
-            </children>
-        </VBox>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.0" minWidth="10.0" prefWidth="102.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="98.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+              <ComboBox fx:id="instrumentSelect" prefWidth="100.0" promptText="Select" />
+            <TextField GridPane.columnIndex="2" />
+         </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </GridPane>
     </children>
 </AnchorPane>
