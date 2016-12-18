@@ -60,6 +60,10 @@ public class XMLHandler {
      */
     private void addToComposition(SAXNoteHandler handler) {
         //populate composition panel
+        if (compController.getWidth() < handler.maxWidth){
+            compController.setWidth(handler.maxWidth);
+            compController.drawLines();
+        }
         this.compController.populateCompositionPanel(handler.pStack.peek());
         handler.notesStack.peek().forEach(n -> this.compController.addNoteToComposition(n));
     }
@@ -87,6 +91,8 @@ public class XMLHandler {
 
         private Stack<Collection<SelectableRectangle>> pStack;
         private Stack<Collection<Playable>> notesStack;
+        /** Maximum size of the composition*/
+        private int maxWidth;
 
         /**
          * initializer for SAXNoteHandler
@@ -97,6 +103,7 @@ public class XMLHandler {
             //populate the stack with an initial list
             this.pStack.push(new ArrayList<>());
             this.notesStack.push(new ArrayList<>());
+            this.maxWidth = 0;
         }
 
         @Override
@@ -120,6 +127,7 @@ public class XMLHandler {
                     this.notesStack.peek().add(note);
 
                     this.pStack.peek().add(rec);
+                    this.maxWidth = max(this.maxWidth,(int) note.getRightX());
                     break;
                 case "Gesture":
                     pStack.push(new ArrayList<>());

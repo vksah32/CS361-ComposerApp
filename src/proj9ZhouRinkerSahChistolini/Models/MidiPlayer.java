@@ -161,4 +161,8 @@ public class MidiPlayer
             e.printStackTrace();
         }
     }
+
+    public Sequence getSequence(){
+        return this.sequencer.getSequence();
+    }
 }
