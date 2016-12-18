@@ -10,10 +10,15 @@
  */
 package proj9ZhouRinkerSahChistolini.Controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
+import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
+
 import java.util.Collection;
+import java.util.function.BinaryOperator;
 
 /**
  * contorls the property panel
@@ -28,17 +33,19 @@ public class PropertyPanelController {
     private InstrumentPanelController instController;
 
     @FXML
+    private AnchorPane pane;
+
+    @FXML
     private ComboBox instrumentSelect;
-
-    public void initilize(){
-
-    }
+    
 
     /**
      * Sets up the references to the necessary controllers this minion needs
      * to talk to
      */
-    public void init(CompositionPanelController compController, InstrumentPanelController instController) {
+    public void init(CompositionPanelController compController,
+                     InstrumentPanelController instController)
+    {
         this.compositionPanelController = compController;
         this.instController = instController;
 
@@ -48,8 +55,23 @@ public class PropertyPanelController {
 
         }
 
+        BooleanBinding selectedNotesBinding = Bindings.createBooleanBinding(() ->
+                        this.compositionPanelController.getSelectedRectangles().size() > 0,
+                this.compositionPanelController.getActionController().getUndoActionsProperty()
+        );
+
+        this.pane.visibleProperty().bind(selectedNotesBinding);
 
     }
+
+    @FXML
+    public void handleApply(){
+        Collection<SelectableRectangle> selectedList = this.compositionPanelController.getSelectedRectangles();
+
+
+        System.out.println("ere");
+    }
+
 
 
 
