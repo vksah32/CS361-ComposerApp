@@ -3,6 +3,7 @@ package proj9ZhouRinkerSahChistolini.Controllers.Actions;
 import javafx.scene.Node;
 import proj9ZhouRinkerSahChistolini.Controllers.CompositionPanelController;
 import proj9ZhouRinkerSahChistolini.Models.Playable;
+import proj9ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
 
 import java.util.Collection;
@@ -45,6 +46,8 @@ public class PasteAction implements Actionable{
     public void unDoIt() {
         for(SelectableRectangle rec : graphicalNote){
             recs.remove(rec);
+            if (rec instanceof NoteRectangle)
+            recs.remove(((NoteRectangle) rec).getTransparency());
         }
 
         for(Playable note : modelNotes){
