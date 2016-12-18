@@ -32,6 +32,7 @@ public class PreferencesMenuController {
      * dialog menu
      */
     public void updateCompPreferences() {
+        this.compositionPanelController.stopComposition();
         String tempo = String.valueOf(
                 this.compositionPanelController.getCompositionTempo()
         );
