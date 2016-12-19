@@ -135,7 +135,6 @@ public class PropertyPanelController {
 
             //make sure pitch is in valid range and there has been a pitch change
             if (newPitch>=0 && newPitch<=127) {
-                System.out.println("deltapitch"+deltaPitch*10);
 
                 this.compositionPanelController.addAction(new TranslateNoteAction(
                         this.compositionPanelController.getSelectedRectangles(), 0.0,
@@ -209,7 +208,6 @@ public class PropertyPanelController {
         double volume = (this.volumeBar.getValue() / 100) * 127;
         double deltaVolume = this.currentVolume-volume;
         if(deltaVolume == 0){
-            System.out.println("no volume change");
             return;
         }
 

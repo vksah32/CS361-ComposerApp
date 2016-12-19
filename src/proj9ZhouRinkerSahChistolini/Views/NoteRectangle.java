@@ -44,16 +44,19 @@ public class NoteRectangle extends SelectableRectangle {
                          int instr, String styleName,
                          InstrumentPanelController instrController) {
         super(x, y, width, height);
+        this.instrString = styleName;
         this.getStyleClass().add("note");
-        this.instrString = styleName.toLowerCase().replace(" ", "-");
         this.getStyleClass().add(this.instrString);
         this.instrument = new SimpleIntegerProperty();
         this.instrument.addListener(e -> {
-            getStyleClass().removeAll(instrString);
-            String newInstrument = instrController.getInstrument(
-                    getInstrument()).getName().toLowerCase().replace(" ", "-");
-            getStyleClass().add(newInstrument);
-            instrString = newInstrument;
+            getStyleClass().removeAll(this.instrString);
+            String newInstrument = instrController.getStyleMappings().get(
+                    instrController.getInstruments().indexOf(
+                            instrController.getInstrument(this.instrument.intValue())
+                    )
+            );
+            this.instrString = newInstrument;
+            getStyleClass().add(this.instrString);
         });
         this.instrument.setValue(instr);
         this.volume = new SimpleIntegerProperty();

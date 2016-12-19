@@ -37,6 +37,7 @@ import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import proj9ZhouRinkerSahChistolini.Views.TempoLine;
 import javafx.beans.binding.DoubleBinding;
 
+import javax.sound.midi.Sequence;
 import java.util.HashSet;
 import java.util.Collection;
 
@@ -227,17 +228,19 @@ public class CompositionPanelController {
     /**
      * Draws 127 lines with the specified spacing and colors.
      */
-    private void drawLines()  {
-        //horizontal lines
+    public void drawLines()  {
+        staffPane.getChildren().clear();
+        staffPane.getChildren().add(tempoLine);
+        staffPane.getChildren().add(selectionRectangle);
         for(int i = 1; i < 128; i++)
         {
-            Rectangle rec = new Rectangle(0, i*10+1, 2000, 10);
+            Rectangle rec = new Rectangle(0, i*10+1, this.width, 10);
             rec.setFill(null);
             rec.setStroke(Color.GRAY);
             rec.getTransforms().add(scale);
             this.staffPane.getChildren().add(rec);
             if(i%12 == 7) { //Draw special bars for C notes
-                rec = new Rectangle(0, i*10+1, 2000, 10);
+                rec = new Rectangle(0, i*10+1, this.width, 10);
                 rec.getStyleClass().add("c-note");
                 if(i==67) {rec.getStyleClass().add("middle-c");}
                 rec.getTransforms().add(scale);
@@ -330,7 +333,10 @@ public class CompositionPanelController {
         this.composition.play();
     }
 
-    // TODO: 12/6/2016 make this work well with zoom
+    /**
+     * Play a sections of the composition
+     * @param notes
+     */
     public void playSection(Collection<Playable> notes){
         this.stopComposition();
         this.composition.buildSong(notes);
@@ -611,6 +617,25 @@ public class CompositionPanelController {
         this.actionController.clearLists();
     }
 
+    /**
+     * set pane width size
+     * @param width
+     */
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    /**
+     * Get preferred width of the pane
+     * @return
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    public Sequence getSequence(){
+        return composition.getSequence();
+    }
     /**
      * returns the default width of the notes
      * @return noteWidth (int)

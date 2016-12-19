@@ -17,5 +17,5 @@
     <MenuItem text="Composition Preferences"
               onAction="#updateCompPreferences"/>
     <MenuItem text="Instrument Preferences"
-              onAction="#displayInstPreferences"/>
+              onAction="#updateInstPreferences"/>
 </Menu>

@@ -12,6 +12,10 @@
 package proj9ZhouRinkerSahChistolini.Models;
 
 import java.util.*;
+import javax.sound.midi.Sequence;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Collection;
 
 /**
  * The central logic for creating and playing back a composition.
@@ -174,6 +178,12 @@ public class Composition {
         this.volume = volume;
     }
 
+    public Sequence getSequence(){
+        this.buildSong();
+        Sequence clone = this.player.getSequence();
+        this.stop();
+        return clone;
+    }
     /**
      * sets teh default tempo
      * @param tempo

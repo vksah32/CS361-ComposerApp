@@ -52,22 +52,27 @@ public class ContextMenuFactory {
         ContextMenu menu = new ContextMenu();
         MenuItem delete = new MenuItem("Delete");
         MenuItem playSelected = new MenuItem("Play selected");
-        Menu setInstrument = new Menu("Set Instrument...");
         MenuItem setVolume = new MenuItem("Set Volume...");
 
         delete.setOnAction(handler::delete);
         playSelected.setOnAction(handler::playSelected);
+        Menu setInstrument = setUpInstrumentOptions();
+        setVolume.setOnAction(handler::setVolume);
+
+        menu.getItems().addAll(delete, playSelected, setVolume, setInstrument);
+
+        return menu;
+    }
+
+    public Menu setUpInstrumentOptions() {
+        PlayableContextMenuHandler handler = new PlayableContextMenuHandler();
+        Menu setInstrument = new Menu("Set Instrument...");
         this.compController.getInstrumentPanelController().getInstruments().forEach(i -> {
             MenuItem instrument = new MenuItem(i.getName());
             setInstrument.getItems().add(instrument);
             instrument.setOnAction(a -> handler.setInstrument(instrument.getText()));
         });
-        setVolume.setOnAction(handler::setVolume);
-
-        menu.getItems().addAll(delete, playSelected, setInstrument, setVolume);
-
-
-        return menu;
+        return setInstrument;
     }
 
     /**
@@ -77,6 +82,9 @@ public class ContextMenuFactory {
     public void setUpListeners(ContextMenu contextMenu) {
         sourceRectangle.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
             contextMenu.show(sourceRectangle, event.getScreenX(), event.getScreenY());
+            contextMenu.getItems().remove(contextMenu.getItems().size()-1);
+            contextMenu.getItems().add(setUpInstrumentOptions());
+            setUpInstrumentOptions();
             event.consume();
         });
         sourceRectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {

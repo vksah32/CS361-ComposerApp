@@ -9,7 +9,6 @@ import javax.sound.midi.*;
 import javax.xml.parsers.ParserConfigurationException;
 
 import static java.lang.Integer.max;
-import static java.lang.Integer.min;
 
 /**
  * Allows easy importing and exporting to different file formats of the composition
@@ -17,7 +16,6 @@ import static java.lang.Integer.min;
 public class FileConverter {
     public static final int NOTE_ON = ShortMessage.NOTE_ON;
     public static final int NOTE_OFF = ShortMessage.NOTE_OFF;
-    public static final String[] NOTE_NAMES = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
     private Sequence sequence;
 
     private CompositionPanelController compositionPanelController;
@@ -61,7 +59,7 @@ public class FileConverter {
     }
 
     /**
-     * find an associated NOTE_ON message
+     * find an associated NOTE_ON message based on the NOTE_OFF timing
      * @param onList
      * @param off
      * @return
@@ -101,15 +99,6 @@ public class FileConverter {
                 if (message instanceof ShortMessage) {
                     ShortMessage sm = (ShortMessage) message;
                     maxTick = max(((int)event.getTick()), maxTick);
-                    // Add a new instrument to the panel
-                    if (!compositionPanelController
-                            .getInstrumentPanelController().contains(sm.getData1())){
-//                        compositionPanelController.getInstrumentPanelController().addInstrument(
-//                                Integer.toString(sm.getData1()),
-//                                sm.getData1(),
-//                                sm.getChannel()
-//                        );
-                    }
 
                     //parse on and off events
                     if (sm.getCommand() == NOTE_ON) {
@@ -132,7 +121,6 @@ public class FileConverter {
             }
         }
         return builtXML;
-
     }
 }
 

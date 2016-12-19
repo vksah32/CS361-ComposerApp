@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.Optional;
@@ -282,6 +283,27 @@ public class FileMenuController {
         }
         catch (SAXException | ParserConfigurationException e) {
             this.errorAlert("Error Parsing File", "Malformed XML created");
+        }
+    }
+
+    @FXML
+    private void exportMidi(){
+        this.compositionPanelController.stopComposition();
+        //Setup a temporary variable to protect an accidental overwrite
+        FileChooser filer = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "midi files(*.mid)", "*.mid"
+        );
+        filer.getExtensionFilters().add(extFilter);
+        File temp = filer.showSaveDialog(new Stage());
+        if(temp == null) {//If the user cancels
+            return;
+        }
+        try {
+            MidiSystem.write(this.compositionPanelController.getSequence(), 1, temp);
+        }
+        catch (IOException e){
+            errorAlert("Export Error", "Faulty sequence");
         }
     }
 

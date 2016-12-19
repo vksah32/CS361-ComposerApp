@@ -46,7 +46,6 @@ public class TranslateNoteAction implements Actionable {
      */
     @Override
     public void reDoIt() {
-        System.out.println("called");
         moved.forEach(rec -> {
             if(recs.contains(rec)){
                 Double currentXval = rec.getX();
@@ -67,7 +66,6 @@ public class TranslateNoteAction implements Actionable {
      */
     @Override
     public void unDoIt() {
-        System.out.println("calling undo translation");
         moved.forEach(rec -> {
             if(recs.contains(rec)){
                 Double currentXval = rec.getX();
