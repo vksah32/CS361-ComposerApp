@@ -211,6 +211,7 @@ public class DragInNoteHandler {
             this.totalDeltaY = 0;
             this.didExtend = false;
         }
+        this.compController.getPropPanelController().populatePropertyPanel();
         event.consume();
     }
 }

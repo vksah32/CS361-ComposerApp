@@ -104,6 +104,9 @@ public class CompositionPanelController {
     private double width = 2000.0;
     private double height = 1280.0;
 
+    /** property panel controller reference */
+    private PropertyPanelController propPanel;
+
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -165,10 +168,11 @@ public class CompositionPanelController {
     /**
      * Initializes the controller with the parent controller
      */
-    public void init(InstrumentPanelController instController) {
+    public void init(InstrumentPanelController instController, PropertyPanelController propPanel) {
         this.instController = instController;
         this.actionController = new ActionController();
         this.clickInPanelHandler = new ClickInPanelHandler(this, this.instController);
+        this.propPanel=propPanel;
     }
 
     /**
@@ -212,6 +216,15 @@ public class CompositionPanelController {
         }
     }
 
+
+    /**
+     * get composition
+     * @return get composition
+     */
+    public Composition getComposition() {
+        return composition;
+    }
+
     /**
      * Draws 127 lines with the specified spacing and colors.
      */
@@ -233,6 +246,17 @@ public class CompositionPanelController {
                 rec.getTransforms().add(scale);
                 this.staffPane.getChildren().add(rec);
             }
+        }
+
+        //vertical lines at every 400 pixel
+        for(int i = 0; i < 5; i++)
+        {
+            Rectangle rec = new Rectangle(400*i, 0, 400, 1280);
+            rec.setFill(null);
+            rec.setStroke(Color.GRAY);
+            rec.getTransforms().add(scale);
+            this.staffPane.getChildren().add(rec);
+
         }
     }
 
@@ -541,6 +565,10 @@ public class CompositionPanelController {
         dragInPanelHandler.handleDragReleased(event);
     }
 
+
+    public PropertyPanelController getPropPanelController(){
+        return this.propPanel;
+    }
     /**
      * returns the Pane's tempoline
      * @return a tempoLine

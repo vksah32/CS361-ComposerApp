@@ -42,12 +42,15 @@ public class ControllersInitializer {
     @FXML
     private PreferencesMenuController preferencesMenuController;
 
+    @FXML
+    private PropertyPanelController propertyPaneController;
+
 
     /** Initializes the controllers so they can communicate properly */
     @FXML
     public void initialize() {
         //Initialize CompositionPanelController
-        this.compositionPanelController.init(this.instrumentPaneController);
+        this.compositionPanelController.init(this.instrumentPaneController, this.propertyPaneController);
 
         // Initialize the non-fxml tools
         XMLHandler XMLhandler = new XMLHandler(this.compositionPanelController);
@@ -62,6 +65,8 @@ public class ControllersInitializer {
 
         //Set up the Menu Controllers with the needed tools
         initializeMenuControllers(XMLhandler, bindingController, clipboardController);
+
+        this.propertyPaneController.init(this.compositionPanelController,this.instrumentPaneController);
     }
 
     /**

@@ -130,6 +130,8 @@ public class ContextMenuFactory {
                                 ).collect(Collectors.toList()).get(0).getValue()
                 );
             });
+
+            compController.getPropPanelController().populatePropertyPanel();
         }
 
         /** Set selected Notes to a specified volume through dialog box */
@@ -155,7 +157,9 @@ public class ContextMenuFactory {
                 compController.getSelectedNotes().forEach( n -> {
                     n.setVolume(result.get());
                 });
+
             }
+            compController.getPropPanelController().populatePropertyPanel();
         }
 
         /**

@@ -44,7 +44,6 @@ public class ExtendNoteAction implements Actionable {
      */
     @Override
     public void unDoIt() {
-
         for (SelectableRectangle rec : moved ){
 
             Double currentWidth = rec.getWidth();

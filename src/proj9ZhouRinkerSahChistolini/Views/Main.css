@@ -110,6 +110,22 @@
   -fx-text-fill: grey;
 }
 
+.greenButton {
+
+    -fx-background-radius: 6, 5;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: #395306;
+}
+
+.greenButton:hover {
+   -fx-background-color:
+           #3c7fb1,
+           linear-gradient(#fafdfe, #e8f5fc),
+           linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
+
+}
+
 .cyan-inst {
   -fx-fill: cyan;
   -fx-text-fill: cyan;

@@ -143,6 +143,34 @@ public class InstrumentPanelController {
     }
 
     /**
+     * gets names of current instruments
+     *
+     * @return instrument list
+     */
+    public Collection<String> getInstrumentNames() {
+
+        HashSet<String> nameList = new HashSet<>();
+        for (Instrument inst : this.instruments) {
+            nameList.add(inst.getName());
+        }
+        return nameList;
+    }
+
+    /**
+     * gets the intsrument integer value for a fiven instrument
+     * @param instrumentName string name of instrument
+     * @return int value of instrument, default instruent is piano if none found
+     */
+    public int getInstrumentValues(String instrumentName){
+        for (Instrument i : this.instruments){
+            if( i.getName().equals(instrumentName)){
+                return i.getValue();
+            }
+        }
+        return 0;
+    }
+
+    /**
      * Sets the InstrumentPanel's instruments to the input
      * values
      * @param instruments an arraylist of instruments
