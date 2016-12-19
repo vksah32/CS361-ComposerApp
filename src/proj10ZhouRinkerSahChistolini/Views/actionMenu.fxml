@@ -1,0 +1,25 @@
+<!-- /**
+ * File: editMenu.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: 8
+ * Date: November 14, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+
+<Menu text="Action"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="proj10ZhouRinkerSahChistolini.Controllers.ActionMenuController">
+    <MenuItem fx:id="startButton"
+              text="Play"
+              onAction="#playComposition"
+              accelerator="Shortcut+P"/>
+    <MenuItem fx:id="stopButton"
+              text="Stop"
+              onAction="#stopComposition"
+              accelerator="Shortcut+S"/>
+</Menu>
