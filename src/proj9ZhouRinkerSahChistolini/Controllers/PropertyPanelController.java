@@ -22,6 +22,7 @@ import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeInstrumentAction;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeVolumeAction;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ExtendNoteAction;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.TranslateNoteAction;
+import proj9ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj9ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import java.util.ArrayList;
@@ -123,15 +124,19 @@ public class PropertyPanelController {
             int newPitch = Integer.parseInt(this.pitchBox.getCharacters().toString());
             double deltaPitch = this.currentPitch-newPitch;
 
+            if (deltaPitch==0){
+                return;
+            }
             //make sure pitch is in valid range and there has been a pitch change
-            if (newPitch>=0 && newPitch<=127 && deltaPitch !=0) {
+            if (newPitch>=0 && newPitch<=127) {
+                System.out.println("deltapitch"+deltaPitch*10);
 
                 this.compositionPanelController.addAction(new TranslateNoteAction(
                         this.compositionPanelController.getSelectedRectangles(), 0.0,
-                        deltaPitch, this.compositionPanelController));
+                        deltaPitch*10, this.compositionPanelController));
 
                 this.compositionPanelController.getSelectedRectangles().forEach(n -> {
-                    if (n instanceof NoteRectangle) {
+                    if (n instanceof NoteRectangle && !n.yProperty().isBound()) {
                         n.yProperty().setValue(1270 - newPitch * 10);
                     }
                 });
@@ -157,14 +162,20 @@ public class PropertyPanelController {
 
             int newDuration = Integer.parseInt(this.durationBox.getCharacters().toString());
             double deltaDuration = this.currentWidth-newDuration;
+            if(deltaDuration == 0){
+                return;
+            }
 
             //only add action if there has been a change
-            if (newDuration >0 && deltaDuration!=0) {
+            if (newDuration >0 ) {
 
                 this.compositionPanelController.addAction(new ExtendNoteAction(this.compositionPanelController.getSelectedRectangles(), this.currentWidth - newDuration));
-                this.compositionPanelController.getSelectedRectangles().forEach(n -> {
-                    if (n instanceof NoteRectangle) {
-                        n.widthProperty().set(newDuration);
+                this.compositionPanelController.getSelectedRectangles().forEach(n ->{
+                    if(n instanceof NoteRectangle && !n.widthProperty().isBound()) {
+                        ((NoteRectangle) n).widthProperty().set(newDuration);
+                    } else if (n instanceof GroupRectangle && !n.widthProperty().isBound()){
+                        ((GroupRectangle)n).setAllSameWidth(newDuration);
+
                     }
                 });
 
