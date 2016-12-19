@@ -103,6 +103,9 @@ public class CompositionPanelController {
     private double width = 2000.0;
     private double height = 1280.0;
 
+    /** property panel controller reference */
+    private PropertyPanelController propPanel;
+
     /**
      * Constructs the Panel and draws the appropriate lines.
      */
@@ -164,10 +167,11 @@ public class CompositionPanelController {
     /**
      * Initializes the controller with the parent controller
      */
-    public void init(InstrumentPanelController instController) {
+    public void init(InstrumentPanelController instController, PropertyPanelController propPanel) {
         this.instController = instController;
         this.actionController = new ActionController();
         this.clickInPanelHandler = new ClickInPanelHandler(this, this.instController);
+        this.propPanel=propPanel;
     }
 
     /**
@@ -546,6 +550,10 @@ public class CompositionPanelController {
         dragInPanelHandler.handleDragReleased(event);
     }
 
+
+    public PropertyPanelController getPropPanelController(){
+        return this.propPanel;
+    }
     /**
      * returns the Pane's tempoline
      * @return a tempoLine
