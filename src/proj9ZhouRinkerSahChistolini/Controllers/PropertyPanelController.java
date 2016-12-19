@@ -69,6 +69,10 @@ public class PropertyPanelController {
     /* keeps track of current pitch of selected notes */
     private double currentPitch;
 
+    private double currentVolume;
+
+    private String currentIntrument;
+
 
     /**
      * Sets up graphic display of the property panel
@@ -106,6 +110,7 @@ public class PropertyPanelController {
 
         //set volume
         if (!this.volumeBar.isDisabled()){
+
             this.setVolume();
         }
 
@@ -127,6 +132,7 @@ public class PropertyPanelController {
             if (deltaPitch==0){
                 return;
             }
+
             //make sure pitch is in valid range and there has been a pitch change
             if (newPitch>=0 && newPitch<=127) {
                 System.out.println("deltapitch"+deltaPitch*10);
@@ -140,6 +146,7 @@ public class PropertyPanelController {
                         n.yProperty().setValue(1270 - newPitch * 10);
                     }
                 });
+                this.currentPitch = newPitch;
             }
             else{
                 this.warning("Invalid Number", "Please select an integer between 0-127");
@@ -166,10 +173,12 @@ public class PropertyPanelController {
                 return;
             }
 
+
             //only add action if there has been a change
             if (newDuration >0 ) {
 
-                this.compositionPanelController.addAction(new ExtendNoteAction(this.compositionPanelController.getSelectedRectangles(), this.currentWidth - newDuration));
+
+                this.compositionPanelController.addAction(new ExtendNoteAction(this.compositionPanelController.getSelectedRectangles(), newDuration-currentWidth));
                 this.compositionPanelController.getSelectedRectangles().forEach(n ->{
                     if(n instanceof NoteRectangle && !n.widthProperty().isBound()) {
                         ((NoteRectangle) n).widthProperty().set(newDuration);
@@ -178,6 +187,7 @@ public class PropertyPanelController {
 
                     }
                 });
+                this.currentWidth = newDuration;
 
             }
             else {
@@ -197,11 +207,18 @@ public class PropertyPanelController {
     private void setVolume(){
 
         double volume = (this.volumeBar.getValue() / 100) * 127;
+        double deltaVolume = this.currentVolume-volume;
+        if(deltaVolume == 0){
+            System.out.println("no volume change");
+            return;
+        }
+
         this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), (int) volume));
         this.compositionPanelController.getSelectedNotes().forEach(n -> {
             n.setVolume((int) volume);
 
         });
+        this.currentVolume = volume;
 
     }
 
@@ -211,10 +228,16 @@ public class PropertyPanelController {
      * This is undoable/redoable
      */
     private void setInstrument() {
+
         String text = (String) this.instrumentSelect.getValue();
 
-         List<SelectableRectangle> before = new ArrayList<>();
-         this.compositionPanelController.getSelectedRectangles().
+        if(text.equals(currentIntrument)){
+            return;
+        }
+
+
+        List<SelectableRectangle> before = new ArrayList<>();
+        this.compositionPanelController.getSelectedRectangles().
 
         forEach(n->before.add(n));
             this.compositionPanelController.addAction(new
@@ -228,9 +251,11 @@ public class PropertyPanelController {
                         .filter(
                                 i -> i.getName().equals(text)
                         ).collect(Collectors.toList()).get(0).getValue()
-        );
-    });
-}
+                 );
+
+            });
+        this.currentIntrument = text;
+    }
 
     /**
      * Sets the property bar to visible if there are selected notes
@@ -311,6 +336,7 @@ public class PropertyPanelController {
         )) {
             this.instrumentSelect.setDisable(false);
             this.instrumentSelect.setValue(stringInst);
+            this.currentIntrument = stringInst;
 
         } else {
 
@@ -370,6 +396,7 @@ public class PropertyPanelController {
         )) {
             this.volumeBar.setDisable(false);
             this.volumeBar.setValue(volumePercent);
+            this.currentVolume = commonVolume;
 
         } else {
 
