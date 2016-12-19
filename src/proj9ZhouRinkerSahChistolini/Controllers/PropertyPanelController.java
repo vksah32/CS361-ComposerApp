@@ -10,13 +10,11 @@
  */
 package proj9ZhouRinkerSahChistolini.Controllers;
 
+import com.sun.tools.javac.code.Attribute;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeInstrumentAction;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeVolumeAction;
@@ -30,6 +28,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import proj9ZhouRinkerSahChistolini.Models.Note;
+
+import static com.sun.tools.internal.xjc.reader.Ring.add;
 
 
 /**
@@ -321,6 +321,10 @@ public class PropertyPanelController {
      * @param noteSet currently selected notes
      */
     private void populateInstrument(List<Note> noteSet) {
+        //Re-load the instruments
+        this.instrumentSelect.getItems().clear();
+        this.instrumentSelect.getItems().addAll(setUpInstrumentOptions());
+
         if(noteSet.isEmpty()){
             return;
         }
@@ -337,11 +341,25 @@ public class PropertyPanelController {
             this.currentIntrument = stringInst;
 
         } else {
-
             this.instrumentSelect.setDisable(true);
             this.instrumentSelect.setValue("--");
         }
     }
+
+    /**
+     * returns a Menu representing the current state of the InstrumentPanel
+     * @return Menu
+     */
+    public ArrayList<String> setUpInstrumentOptions() {
+        ArrayList<String> setInstrument = new ArrayList<>();
+        this.compositionPanelController.getInstrumentPanelController()
+                .getInstruments()
+                .forEach(i -> {
+                    setInstrument.add(i.getName());
+                });
+        return setInstrument;
+    }
+
 
 
 
@@ -372,7 +390,6 @@ public class PropertyPanelController {
         }
 
     }
-
 
     /**
      * Determine if all selected notes have same volume.
