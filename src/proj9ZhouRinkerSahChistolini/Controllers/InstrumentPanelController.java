@@ -23,7 +23,7 @@ public class InstrumentPanelController {
     /**List of instruments*/
     private List<Instrument> instruments;
     /** List of style classes associated with the instruments */
-    private HashMap<String,String> styleMappings;
+    private List<String> styleList;
     /**Toggle group to handle selection*/
     @FXML
     private ToggleGroup instrumentToggle;
@@ -35,14 +35,14 @@ public class InstrumentPanelController {
     public void initialize() {
         this.instruments = new ArrayList<Instrument>();
         initializeStyleMappings();
-        addInstrument("Harpsichord", 6, 0, this.styleMappings.get("Harpsichord"));
-        addInstrument("Marimba", 12, 1, this.styleMappings.get("Marimba"));
-        addInstrument("Organ", 19, 2, this.styleMappings.get("Organ"));
-        addInstrument("Accordion", 21, 3, this.styleMappings.get("Accordion"));
-        addInstrument("Guitar", 28, 4, this.styleMappings.get("Guitar"));
-        addInstrument("Violin", 40, 5, this.styleMappings.get("Violin"));
-        addInstrument("French Horn", 60, 6, this.styleMappings.get("French Horn"));
-        addInstrument("Piano", 0, 7, this.styleMappings.get("Piano"));
+        addInstrument("Harpsichord", 6, 0, this.styleList.get(0), 0);
+        addInstrument("Marimba", 12, 1, this.styleList.get(1), 1);
+        addInstrument("Organ", 19, 2, this.styleList.get(2), 2);
+        addInstrument("Accordion", 21, 3, this.styleList.get(3), 3);
+        addInstrument("Guitar", 28, 4, this.styleList.get(4), 4);
+        addInstrument("Violin", 40, 5, this.styleList.get(5), 5);
+        addInstrument("French Horn", 60, 6, this.styleList.get(6), 6);
+        addInstrument("Piano", 0, 7, this.styleList.get(7), 7);
         this.instrumentToggle.getToggles().get(0).setSelected(true);
     }
 
@@ -50,15 +50,15 @@ public class InstrumentPanelController {
      * sets up the initial styles
      */
     private void initializeStyleMappings() {
-        this.styleMappings = new HashMap<>();
-        this.styleMappings.put("Harpsichord","green-inst");
-        this.styleMappings.put("Mariba","blue-inst");
-        this.styleMappings.put("Organ","gold-inst");
-        this.styleMappings.put("Accordion","magenta-inst");
-        this.styleMappings.put("Guitar","orange-inst");
-        this.styleMappings.put("Violin","black-inst");
-        this.styleMappings.put("French Horn","pink-inst");
-        this.styleMappings.put("Piano","grey-inst");
+        this.styleList = new ArrayList<>();
+        this.styleList.add("green-inst");
+        this.styleList.add("blue-inst");
+        this.styleList.add("gold-inst");
+        this.styleList.add("magenta-inst");
+        this.styleList.add("orange-inst");
+        this.styleList.add("black-inst");
+        this.styleList.add("pink-inst");
+        this.styleList.add("grey-inst");
     }
 
     public List<Instrument> getInstruments(){
@@ -66,7 +66,7 @@ public class InstrumentPanelController {
     }
 
     /** accessor method for the styleMappings */
-    public HashMap<String, String> getStyleMappings() {return this.styleMappings;}
+    public List<String> getStyleMappings() {return this.styleList;}
 
     /**
      * Adds a new instrument to the pane
@@ -77,11 +77,20 @@ public class InstrumentPanelController {
     public void addInstrument(String name,
                               int instrument,
                               int channel,
-                              String styleClass
+                              String styleClass,
+                              int id
     ){
-        this.instruments.add(new Instrument(name, instrument, channel));
-
+        this.instruments.add(new Instrument(name, instrument, channel, id));
         RadioButton instrButton = new RadioButton(name);
+        instrButton.getStyleClass().add("instrument-button");
+        instrButton.getStyleClass().add(styleClass);
+        instrButton.setToggleGroup(this.instrumentToggle);
+        this.instrumentBox.getChildren().add(instrButton);
+    }
+
+    public void addInstrument(Instrument inst, String styleClass) {
+        this.instruments.add(inst);
+        RadioButton instrButton = new RadioButton(inst.getName());
         instrButton.getStyleClass().add("instrument-button");
         instrButton.getStyleClass().add(styleClass);
         instrButton.setToggleGroup(this.instrumentToggle);
@@ -140,10 +149,9 @@ public class InstrumentPanelController {
      */
     public void updateInstruments(List<Instrument> instruments,
                                   List<String> styleClasses) {
-        ArrayList<Instrument> oldInstruments = new ArrayList(this.instruments);
-        HashMap<String, String> oldStyles = new HashMap<>(styleMappings);
+        ArrayList<String> oldStyles = new ArrayList<>(styleList);
         this.instruments.clear();
-        this.styleMappings.clear();
+        this.styleList.clear();
         this.instrumentToggle.getToggles().clear();
         this.instrumentBox.getChildren().clear();
 
@@ -153,25 +161,13 @@ public class InstrumentPanelController {
             inst = instruments.get(i);
             styleClass = styleClasses.get(i) + "-inst";
             if(!styleClass.equals("-inst")) {
-                addInstrument(
-                        inst.getName(),
-                        inst.getValue(),
-                        i,
-                        styleClass
-                );
-                this.styleMappings.put(inst.getName(), styleClass);
+                addInstrument(inst, styleClass);
+                this.styleList.add(styleClass);
             } else {
-                addInstrument(
-                        inst.getName(),
-                        inst.getValue(),
-                        i,
-                        oldStyles.get(oldInstruments.get(i).getName())
-                );
-                this.styleMappings.put(
-                        inst.getName(),
-                        oldStyles.get(oldInstruments.get(i).getName())
-                );
+                addInstrument(inst, oldStyles.get(i));
+                this.styleList.add(oldStyles.get(i));
             }
+            inst.setId(i);
         }
         this.instrumentToggle.getToggles().get(0).setSelected(true);
     }

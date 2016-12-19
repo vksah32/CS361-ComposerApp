@@ -51,7 +51,9 @@ public class NoteRectangle extends SelectableRectangle {
         this.instrument.addListener(e -> {
             getStyleClass().removeAll(this.instrString);
             String newInstrument = instrController.getStyleMappings().get(
-                    instrController.getInstrument(this.instrument.intValue()).getName()
+                    instrController.getInstruments().indexOf(
+                            instrController.getInstrument(this.instrument.intValue())
+                    )
             );
             this.instrString = newInstrument;
             getStyleClass().add(this.instrString);

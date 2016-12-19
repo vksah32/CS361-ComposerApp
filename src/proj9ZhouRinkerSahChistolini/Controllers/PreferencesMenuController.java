@@ -34,8 +34,7 @@ public class PreferencesMenuController {
         this.compositionPanelController = compController;
         this.instrumentPanelController = instController;
         initializeColorOptions();
-        // TODO: 12/18/16 Eventually this should reference a larger list rather than our default
-        this.instrumentOptions = this.instrumentPanelController.getInstruments();
+        initializeInstrumentOptions(this.instrumentPanelController.getInstruments());
     }
 
     @FXML
@@ -166,15 +165,15 @@ public class PreferencesMenuController {
         for(int i=0; i<instruments.size(); i++) {
             //Instrument Choices
             instBox = new ChoiceBox();
-            instBox.getItems().addAll(instruments);
+            instBox.getItems().addAll(this.instrumentOptions);
             instBox.setValue(instruments.get(i));
             instBoxes.add(instBox);
 
             //Color choices
             instColorBox = new ChoiceBox();
             instColorBox.getItems().addAll(this.colorOptions);
-            instColorBox.getItems().add("Color");
-            instColorBox.setValue("Color");
+            instColorBox.getItems().add("Default Color");
+            instColorBox.setValue("Default Color");
             colorBoxes.add(instColorBox);
 
             //Add items to the grid
@@ -195,7 +194,7 @@ public class PreferencesMenuController {
 
                 for(ChoiceBox c : colorBoxes) {
                     String color = (String) c.getValue();
-                    if(color.equals("Color")) { colorPreferences.add("");
+                    if(color.equals("Default Color")) { colorPreferences.add("");
                     } else {
                         colorPreferences.add((String) c.getValue());
                     }
@@ -254,17 +253,33 @@ public class PreferencesMenuController {
         return 0;
     }
 
+    /**
+     * seeds the instrument color options field
+     */
     private void initializeColorOptions() {
         Collections.addAll(this.colorOptions,
-                "green",
-                "blue",
-                "gold",
-                "magenta",
-                "orange",
-                "black",
-                "pink",
-                "grey"
+                "green", "blue", "gold", "magenta",
+                "orange", "black", "pink", "grey",
+                "cyan", "red", "lime", "fuchsia",
+                "khaki", "lightblue", "plum",
+                "crimson"
         );
+    }
+
+    /**
+     * seeds the Instrument class options field
+     */
+    private void initializeInstrumentOptions(List<Instrument> instruments) {
+        this.instrumentOptions = new ArrayList<>(instruments);
+        this.instrumentOptions.add(new Instrument("Xylophone", 13, 8, 8));
+        this.instrumentOptions.add(new Instrument("Harmonica", 22, 9, 9));
+        this.instrumentOptions.add(new Instrument("Recorder", 74, 10, 10));
+        this.instrumentOptions.add(new Instrument("Alto Sax", 65, 11, 11));
+        this.instrumentOptions.add(new Instrument("Synth Bass", 38, 12, 12));
+        this.instrumentOptions.add(new Instrument("Flute", 73, 13, 13));
+        this.instrumentOptions.add(new Instrument("Electric Piano", 4, 14, 14));
+        this.instrumentOptions.add(new Instrument("Pad 1", 88, 14, 14));
+        this.instrumentOptions.add(new Instrument("Pad 4", 91, 14, 14));
     }
 
     /**

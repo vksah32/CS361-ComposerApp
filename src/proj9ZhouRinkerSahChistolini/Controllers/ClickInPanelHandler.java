@@ -85,13 +85,12 @@ public class ClickInPanelHandler {
                                           int width){
         double pitch = Math.floor((y - 1) / 10) * 10 + 1;
 
+        int instPosition = instController.getInstrument(instId).getId();
         NoteRectangle rectangle = new NoteRectangle(x, pitch,
                 width,
                 10,
                 this.instController.getInstrument(instId).getValue(),
-                this.instController.getStyleMappings().get(
-                        instController.getInstrument(instId).getName()
-                ) + instController.getInstrument(instId).getChannel(),
+                this.instController.getStyleMappings().get(instPosition),
                 this.instController
         );
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);

@@ -109,3 +109,43 @@
   -fx-fill: grey;
   -fx-text-fill: grey;
 }
+
+.cyan-inst {
+  -fx-fill: cyan;
+  -fx-text-fill: cyan;
+}
+
+.red-inst {
+  -fx-fill: red;
+  -fx-text-fill: red;
+}
+
+.lime-inst {
+  -fx-fill: lime;
+  -fx-text-fill: lime;
+}
+
+.fuchsia-inst {
+  -fx-fill: fuchsia;
+  -fx-text-fill: fuchsia;
+}
+
+.khaki-inst {
+  -fx-fill: khaki;
+  -fx-text-fill: khaki;
+}
+
+.lightblue-inst {
+  -fx-fill: lightblue;
+  -fx-text-fill: lightblue;
+}
+
+.plum-inst {
+  -fx-fill: plum;
+  -fx-text-fill: plum;
+}
+
+.crimson-inst {
+  -fx-fill: crimson;
+  -fx-text-fill: crimson;
+}
