@@ -11,16 +11,18 @@
 
 package proj9ZhouRinkerSahChistolini.Models;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * The central logic for creating and playing back a composition.
  */
 public class Composition {
     /** The volume at which all the notes will be played */
-    public static final int VOLUME = 127;
+    private int volume = 127;
+
+    /** The tempo in beats per minute */
+    private int tempo = 60;
+
     /** The track on which this composition will be played */
     public static final int TRACK_INDEX = 0;
 
@@ -33,7 +35,7 @@ public class Composition {
     /** Creates a new Composition object with a midiplayer which has
      * 60 beats per minute and 100 ticks per beat*/
     public Composition(){
-        player = new MidiPlayer(100,60);
+        player = new MidiPlayer(100,this.tempo);
         notes = new HashSet<>();
     }
     /**
@@ -80,8 +82,6 @@ public class Composition {
             this.notes.removeAll(((Gesture) note).getChildren());
         }
         this.notes.add(note);
-
-
     }
 
     /**
@@ -150,5 +150,60 @@ public class Composition {
         }
 
         return selectedNotes;
+    }
+
+    /**
+     * returns the default note volume
+     */
+    public int getVolume() {
+        return this.volume;
+    }
+
+    /**
+     * returns the default tempo
+     */
+    public int getTempo() {
+        return this.tempo;
+    }
+
+    /**
+     * sets the default volume field
+     * @param volume
+     */
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    /**
+     * sets teh default tempo
+     * @param tempo
+     */
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
+        this.player = new MidiPlayer(100, tempo);
+    }
+
+
+    public List<Note> getSelectedNotes(){
+        List<Note> temp = new ArrayList<>();
+        for(Playable playable : this.notes){
+            temp.addAll( this.nestNotes(playable));
+        }
+       return temp;
+    }
+
+    public List<Note> nestNotes(Playable note){
+        List<Note> temp = new ArrayList<>();
+        if( note instanceof Note ){
+            if(((Note)note).selectedProperty().get())
+                temp.add((Note) note);
+        } else if (note instanceof Gesture){
+            for(Playable p : ((Gesture) note).getChildren()){
+                temp.addAll(nestNotes(p));
+            }
+        }
+        return temp;
+
+
     }
 }

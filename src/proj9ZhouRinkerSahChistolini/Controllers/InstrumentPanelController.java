@@ -8,6 +8,7 @@ import proj9ZhouRinkerSahChistolini.Models.Instrument;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  *  This class holds all the info for instruments
@@ -92,4 +93,49 @@ public class InstrumentPanelController {
         }
         return null;
     }
+
+    /**
+     * Returns true if there is an instrument in the panel that has the
+     * specified pitch
+     * @param pitch to check against the panel instruments
+     * @return
+     */
+    public boolean contains(int pitch){
+        for (Instrument instrument : this.instruments) {
+            if (instrument.getValue() == pitch) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * gets names of current instruments
+     *
+     * @return instrument list
+     */
+    public Collection<String> getInstrumentNames() {
+
+        HashSet<String> nameList = new HashSet<>();
+        for (Instrument inst : this.instruments) {
+            nameList.add(inst.getName());
+        }
+        return nameList;
+    }
+
+    /**
+     * gets the intsrument integer value for a fiven instrument
+     * @param instrumentName string name of instrument
+     * @return int value of instrument, default instruent is piano if none found
+     */
+    public int getInstrumentValues(String instrumentName){
+        for (Instrument i : this.instruments){
+            if( i.getName().equals(instrumentName)){
+                return i.getValue();
+            }
+        }
+        return 0;
+    }
+
 }

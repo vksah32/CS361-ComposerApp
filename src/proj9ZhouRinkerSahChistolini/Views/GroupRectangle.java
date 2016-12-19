@@ -164,5 +164,30 @@ public class GroupRectangle extends SelectableRectangle{
      * @returns this.children this class' children field
      */
     public HashSet<SelectableRectangle> getChildren() { return this.children; }
+
+    public void setAllSameWidth(int width){
+        this.unbindChildren();
+        for(SelectableRectangle r : this.getChildren()){
+            if(r instanceof NoteRectangle){
+                ((NoteRectangle)r).widthProperty().set(width);
+            } else if( r instanceof GroupRectangle){
+                ((GroupRectangle)r).setAllSameWidth(width);
+            }
+        }
+        Rectangle left = this.getChildren().stream()
+                .min(
+                        Comparator.comparing(Rectangle::getX)
+                ).get();
+        Rectangle right = this.getChildren().stream()
+                .max(
+                        Comparator.comparing(
+                                rec -> rec.getX()+rec.getWidth())
+                ).get();
+        this.initialWidth = right.getX() + right.getWidth() - left.getX();
+
+        this.setWidth(initialWidth);
+        this.bindChildren();
+
+    }
 }
 

@@ -13,6 +13,9 @@ package proj9ZhouRinkerSahChistolini.Models;
 
 import javafx.beans.property.*;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 /**
  * Holds all the information of a note
  */
@@ -20,8 +23,11 @@ public class Note extends Playable{
 
     /** the instrument that the note plays */
     private Instrument instrument;
+
+
+
     /** the duration of the note */
-    private DoubleProperty duration;
+    private IntegerProperty duration;
     /** the pitch of the note */
     private DoubleProperty pitch;
     /** the start tick of the note */
@@ -33,15 +39,15 @@ public class Note extends Playable{
     /**
      * The constructor for Note
      */
-    public Note(Instrument instrument){
+    public Note(Instrument instrument, int volume){
         super();
         this.startTick = new SimpleDoubleProperty();
-        this.duration = new SimpleDoubleProperty();
+        this.duration = new SimpleIntegerProperty();
         this.pitch = new SimpleDoubleProperty();
         this.instrVal= new SimpleIntegerProperty();
         this.volume = new SimpleIntegerProperty();
         this.instrument = instrument;
-        this.volume.set(100);
+        this.volume.set(volume);
     }
 
     /**
@@ -50,6 +56,10 @@ public class Note extends Playable{
      */
     public Instrument getInstrument() {
         return instrument;
+    }
+
+    public String getInstruemntName(){
+        return this.instrument.getName();
     }
 
     public int getInstrumentValue(){
@@ -97,7 +107,7 @@ public class Note extends Playable{
      * Gets the duration property
      * @return DoubleProperty duration
      */
-    public DoubleProperty durationProperty() {
+    public IntegerProperty durationProperty() {
         return duration;
     }
 
@@ -114,7 +124,7 @@ public class Note extends Playable{
      * Gets the volume property
      * @return IntegerProperty volume
      */
-    public void setVolume(int val) { this.volume.set(val); }
+    public void setVolume(int val) { this.volume.set(max(0, min(val, 127))); }
 
     /**
      * Gets the pitch property
@@ -162,4 +172,5 @@ public class Note extends Playable{
                 "volume=\"" + this.getVolume()  +"\" " +
                 "/>\n";
     }
+
 }

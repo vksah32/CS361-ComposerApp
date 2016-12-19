@@ -44,6 +44,7 @@ public class ExtendNoteAction implements Actionable {
      */
     @Override
     public void unDoIt() {
+        System.out.println("extend undo");
 
         for (SelectableRectangle rec : moved ){
 

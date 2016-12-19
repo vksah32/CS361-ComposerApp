@@ -33,7 +33,7 @@ public class Main extends Application {
 
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 600, 425);
+        Scene scene = new Scene(root, 610, 435);
 
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(e -> System.exit(0));

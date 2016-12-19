@@ -72,6 +72,7 @@ public class ClickInNoteHandler implements EventHandler<MouseEvent> {
                     new SelectAction(before, after, this.compController)
                 );
             }
+            this.compController.getPropPanelController().populatePropertyPanel();
             //stop the event so that the border pane doesn't get the action
             event.consume();
         }

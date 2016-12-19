@@ -64,7 +64,7 @@ public class NoteRectangle extends SelectableRectangle {
         this.transparency.widthProperty().bind(this.widthProperty());
         this.transparency.setMouseTransparent(true);
         this.volume.addListener(e -> {
-            this.transparency.setFill(Color.rgb(255,255,255,1.0 -  ((double) volumeProperty().intValue())/127.0));
+            this.transparency.setFill(Color.rgb(255,255,255,1.0 -  ((double) volumeProperty().intValue())/128.0));
             });
     }
 

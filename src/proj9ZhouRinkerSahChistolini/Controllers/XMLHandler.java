@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
+
 /**
  * Created by Alex on 11/17/16.
  */
@@ -104,15 +107,16 @@ public class XMLHandler {
 
             switch (qName) {
                 case "Note":
+                    int width = (int)Double.parseDouble(attributes.getValue("width"));
                     NoteRectangle rec = compController.getClickInPanelHandler()
                             .addNoteRectangle(
                                     Double.parseDouble(attributes.getValue("xpos")),
                                     Double.parseDouble(attributes.getValue("ypos")),
-                                    Integer.parseInt(attributes.getValue("instValue"))
+                                    Integer.parseInt(attributes.getValue("instValue")),
+                                    width
                             );
                     Note note = compController.getClickInPanelHandler().createBoundNote(
-                            rec, rec.getInstrument());
-                    note.setVolume(Integer.parseInt(attributes.getValue("volume")));
+                            rec, rec.getInstrument(), max(0, min(127,Integer.parseInt(attributes.getValue("volume")))));
                     this.notesStack.peek().add(note);
 
                     this.pStack.peek().add(rec);

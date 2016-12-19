@@ -1,0 +1,21 @@
+<!-- /**
+ * File: PreferencesMenu.fxml
+ * @author Victoria Chistolini
+ * @author Edward Zhou
+ * @author Alex Rinker
+ * @author Vivek Sah
+ * Class: CS361
+ * Project: Final
+ * Date: November 14, 2016
+ */ -->
+
+<?import javafx.scene.control.*?>
+
+<Menu text="Preferences"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="proj9ZhouRinkerSahChistolini.Controllers.PreferencesMenuController">
+    <MenuItem text="Composition Preferences"
+              onAction="#updateCompPreferences"/>
+    <MenuItem text="Instrument Preferences"
+              onAction="#displayInstPreferences"/>
+</Menu>
