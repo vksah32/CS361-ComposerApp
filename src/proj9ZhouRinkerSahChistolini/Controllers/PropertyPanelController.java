@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeInstrumentAction;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeVolumeAction;
+import proj9ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj9ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import java.util.ArrayList;
@@ -130,10 +131,12 @@ public class PropertyPanelController {
             int newDuration = Integer.parseInt(this.durationBox.getCharacters().toString());
             this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newDuration));
 
-            System.out.println(this.compositionPanelController.getSelectedRectangles().size());
             this.compositionPanelController.getSelectedRectangles().forEach(n ->{
-                if(n instanceof NoteRectangle) {
+                if(n instanceof NoteRectangle && !n.widthProperty().isBound()) {
                     ((NoteRectangle) n).widthProperty().set(newDuration);
+                } else if (n instanceof GroupRectangle && !n.widthProperty().isBound()){
+                    ((GroupRectangle)n).setAllSameWidth(newDuration);
+
                 }
             });
         } catch (NumberFormatException e) {

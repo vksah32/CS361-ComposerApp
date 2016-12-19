@@ -54,17 +54,12 @@ public class ChangeVolumeAction implements Actionable{
 
     private void addOnlyNotes(Collection<Playable> sounds){
         sounds.forEach(n-> {
-            if (n instanceof Gesture)
-                ((Gesture) n).getChildren().forEach(s ->
-                        addOnlyNotes(s));
+            if (n instanceof Gesture){
+                addOnlyNotes(((Gesture) n).getChildren());
+            }
+            else if (n instanceof Note){
+                this.notes.add((Note)n);
+            }
         });
-    }
-
-    private void addOnlyNotes(Playable sound){
-        if (sound instanceof Gesture)
-            addOnlyNotes(((Gesture) sound).getChildren());
-        else if (sound instanceof Note){
-            this.notes.add((Note)sound);
-        }
     }
 }
