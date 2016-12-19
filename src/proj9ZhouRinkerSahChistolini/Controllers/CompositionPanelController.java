@@ -215,6 +215,15 @@ public class CompositionPanelController {
         }
     }
 
+
+    /**
+     * get composition
+     * @return get composition
+     */
+    public Composition getComposition() {
+        return composition;
+    }
+
     /**
      * Draws 127 lines with the specified spacing and colors.
      */

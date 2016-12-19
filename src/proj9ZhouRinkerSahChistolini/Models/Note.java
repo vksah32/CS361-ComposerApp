@@ -23,6 +23,9 @@ public class Note extends Playable{
 
     /** the instrument that the note plays */
     private Instrument instrument;
+
+
+
     /** the duration of the note */
     private IntegerProperty duration;
     /** the pitch of the note */
@@ -53,6 +56,10 @@ public class Note extends Playable{
      */
     public Instrument getInstrument() {
         return instrument;
+    }
+
+    public String getInstruemntName(){
+        return this.instrument.getName();
     }
 
     public int getInstrumentValue(){
@@ -165,4 +172,5 @@ public class Note extends Playable{
                 "volume=\"" + this.getVolume()  +"\" " +
                 "/>\n";
     }
+
 }

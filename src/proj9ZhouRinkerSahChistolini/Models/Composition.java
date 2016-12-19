@@ -11,9 +11,7 @@
 
 package proj9ZhouRinkerSahChistolini.Models;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * The central logic for creating and playing back a composition.
@@ -183,5 +181,29 @@ public class Composition {
     public void setTempo(int tempo) {
         this.tempo = tempo;
         this.player = new MidiPlayer(100, tempo);
+    }
+
+
+    public List<Note> getSelectedNotes(){
+        List<Note> temp = new ArrayList<>();
+        for(Playable playable : this.notes){
+            temp.addAll( this.nestNotes(playable));
+        }
+       return temp;
+    }
+
+    public List<Note> nestNotes(Playable note){
+        List<Note> temp = new ArrayList<>();
+        if( note instanceof Note ){
+            if(((Note)note).selectedProperty().get())
+                temp.add((Note) note);
+        } else if (note instanceof Gesture){
+            for(Playable p : ((Gesture) note).getChildren()){
+                temp.addAll(nestNotes(p));
+            }
+        }
+        return temp;
+
+
     }
 }
