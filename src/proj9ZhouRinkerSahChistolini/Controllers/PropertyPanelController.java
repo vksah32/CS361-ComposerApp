@@ -13,6 +13,7 @@ package proj9ZhouRinkerSahChistolini.Controllers;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -80,7 +81,7 @@ public class PropertyPanelController {
 
     @FXML
     /**
-     * called when the apply button is pused to set instrument properties
+     * called when the apply button is pushed to set instrument properties
      */
     public void handleApply() {
 
@@ -105,42 +106,68 @@ public class PropertyPanelController {
     }
 
 
-
-
+    /**
+     * sets selected notes to desired pitch value
+     */
     private void setPitchVal(){
         try {
-            // set pitch and duration
+
+
             int newPitch = Integer.parseInt(this.pitchBox.getCharacters().toString());
-            this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newPitch));
-            this.compositionPanelController.getSelectedRectangles().forEach(n -> {
-                if(n instanceof NoteRectangle) {
-                    ((NoteRectangle) n).yProperty().setValue(1270-newPitch*10);
-                }
-            });
+
+            //make sure pitch is in valid range
+            if (newPitch>=0 && newPitch<=127) {
+
+
+                this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newPitch));
+                this.compositionPanelController.getSelectedRectangles().forEach(n -> {
+                    if (n instanceof NoteRectangle) {
+                        n.yProperty().setValue(1270 - newPitch * 10);
+                    }
+                });
+            }
+            else{
+                this.warning("Invalid Number", "Please select an integer between 0-127");
+            }
 
         } catch (NumberFormatException e) {
+
+            this.warning("Invalid Pitch Input", "Please select a valid integer input between 0-127");
 
         }
 
     }
 
+    /**
+     * sets the selected notes to the new duration
+     */
     private void setDuration(){
 
         try {
-            int newDuration = Integer.parseInt(this.durationBox.getCharacters().toString());
-            this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newDuration));
 
-            System.out.println(this.compositionPanelController.getSelectedRectangles().size());
-            this.compositionPanelController.getSelectedRectangles().forEach(n ->{
-                if(n instanceof NoteRectangle) {
-                    ((NoteRectangle) n).widthProperty().set(newDuration);
-                }
-            });
+            int newDuration = Integer.parseInt(this.durationBox.getCharacters().toString());
+
+            if (newDuration >0) {
+                this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newDuration));
+                this.compositionPanelController.getSelectedRectangles().forEach(n -> {
+                    if (n instanceof NoteRectangle) {
+                        n.widthProperty().set(newDuration);
+                    }
+                });
+            }
+            else {
+                this.warning("Invalid Duration Value", "Please select a positive integer for duration");
+
+            }
         } catch (NumberFormatException e) {
+            this.warning("Invalid Duration Input", "Please select a valid integer");
         }
 
     }
 
+    /**
+     * sets selected rectangles to a specified volume
+     */
     private void setVolume(){
 
         double volume = (this.volumeBar.getValue() / 100) * 127;
@@ -178,6 +205,9 @@ public class PropertyPanelController {
     });
 }
 
+    /**
+     * Sets the property bar to visible if there are selected notes
+     */
     private void setPropertyBarVisibility(){
 
         BooleanBinding selectedNotesBinding = Bindings.createBooleanBinding(() ->
@@ -190,6 +220,9 @@ public class PropertyPanelController {
     }
 
 
+    /**
+     * update property panel with current selected notes
+     */
 
     public void populatePropertyPanel(){
 
@@ -204,6 +237,13 @@ public class PropertyPanelController {
     }
 
 
+    /**
+     * Determine if all selected notes have same duration.
+     * If not the duration input field is disabled
+     * If so the duration input field is set to the current value
+     *
+     * @param list currently selected notes
+     */
     private void populateDuration(List<Note> list){
         if(list.isEmpty()){
             return;
@@ -223,6 +263,13 @@ public class PropertyPanelController {
     }
 
 
+    /**
+     * Determine if all selected notes have same instrument.
+     * If not the instrument input field is disabled
+     * If so the instrument input field is set to the current value
+     *
+     * @param noteSet currently selected notes
+     */
     private void populateInstrument(List<Note> noteSet) {
         if(noteSet.isEmpty()){
             return;
@@ -247,6 +294,13 @@ public class PropertyPanelController {
 
 
 
+    /**
+     * Determine if all selected notes have same pitch.
+     * If not the pitch input field is disabled
+     * If so the pitch input field is set to the current value
+     *
+     * @param list currently selected notes
+     */
     private void populatePitch(List<Note> list) {
         if(list.isEmpty()){
             return;
@@ -268,6 +322,14 @@ public class PropertyPanelController {
 
     }
 
+
+    /**
+     * Determine if all selected notes have same volume.
+     * If not the volume input field is disabled
+     * If so the volume input field is set to the current value
+     *
+     * @param list currently selected notes
+     */
     private void populateVolume(List<Note> list){
         if(list.isEmpty()){
             return;
@@ -288,6 +350,20 @@ public class PropertyPanelController {
             this.volumeBar.setValue(0.0);
         }
 
+    }
+
+
+    /**
+     * Pop up an error box
+     * @param type the type of error that occurred
+     * @param e the message to be displayed in the box
+     */
+    public void warning(String type, String e) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(type);
+        alert.setHeaderText(type);
+        alert.setContentText(e);
+        alert.show();
     }
 
 }
