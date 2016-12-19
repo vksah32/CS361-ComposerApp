@@ -14,6 +14,8 @@ public class Instrument {
     private int instrument;
     /** Channel of the instrument */
     private int channel;
+    /** The id of the instrument */
+    private int id;
 
     /**
      * Initialize a new instrument
@@ -21,10 +23,11 @@ public class Instrument {
      * @param instrument instrument value (0-127)
      * @param channel midi channel associated with instrument (0-15)
      */
-    public Instrument(String name, int instrument, int channel){
+    public Instrument(String name, int instrument, int channel, int id){
         this.name = name;
         this.instrument = instrument;
         this.channel = channel;
+        this.id = id;
     }
 
     /**
@@ -32,7 +35,7 @@ public class Instrument {
      * @return channel int
      */
     public int getChannel() {
-        return channel;
+        return this.channel;
     }
 
     /**
@@ -40,7 +43,7 @@ public class Instrument {
      * @return instrument int
      */
     public int getValue() {
-        return instrument;
+        return this.instrument;
     }
 
     /**
@@ -48,6 +51,23 @@ public class Instrument {
      * @return name string
      */
     public String getName() {
-        return name;
+        return this.name;
     }
+
+    /**
+     * toString method
+     */
+    public String toString(){
+        return this.name;
+    }
+
+    /**
+     * sets the id to the input value
+     */
+    public void setId(int id) { this.id = id;}
+
+    /**
+     * returns the id
+     */
+    public int getId() { return this.id;}
 }

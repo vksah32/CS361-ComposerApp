@@ -218,6 +218,7 @@ public class CompositionPanelController {
     public void drawLines()  {
         staffPane.getChildren().clear();
         staffPane.getChildren().add(tempoLine);
+        staffPane.getChildren().add(selectionRectangle);
         for(int i = 1; i < 128; i++)
         {
             Rectangle rec = new Rectangle(0, i*10+1, this.width, 10);

@@ -70,42 +70,82 @@
 }
 
 /* instrument styles to set the color of the notes */
-.harpsichord {
+.green-inst {
   -fx-fill: green;
   -fx-text-fill: green;
 }
 
-.marimba {
+.blue-inst {
   -fx-fill: blue;
   -fx-text-fill: blue;
 }
 
-.organ {
+.gold-inst {
   -fx-fill: gold;
   -fx-text-fill: gold;
 }
 
-.accordion {
+.magenta-inst {
   -fx-fill: magenta;
   -fx-text-fill: magenta;
 }
 
-.guitar {
+.orange-inst {
   -fx-fill: orange;
   -fx-text-fill: orange;
 }
 
-.violin {
+.black-inst {
   -fx-fill: black;
   -fx-text-fill: black;
 }
 
-.french-horn {
+.pink-inst {
   -fx-fill: pink;
   -fx-text-fill: pink;
 }
 
-.piano {
+.grey-inst {
   -fx-fill: grey;
   -fx-text-fill: grey;
+}
+
+.cyan-inst {
+  -fx-fill: cyan;
+  -fx-text-fill: cyan;
+}
+
+.red-inst {
+  -fx-fill: red;
+  -fx-text-fill: red;
+}
+
+.lime-inst {
+  -fx-fill: lime;
+  -fx-text-fill: lime;
+}
+
+.fuchsia-inst {
+  -fx-fill: fuchsia;
+  -fx-text-fill: fuchsia;
+}
+
+.khaki-inst {
+  -fx-fill: khaki;
+  -fx-text-fill: khaki;
+}
+
+.lightblue-inst {
+  -fx-fill: lightblue;
+  -fx-text-fill: lightblue;
+}
+
+.plum-inst {
+  -fx-fill: plum;
+  -fx-text-fill: plum;
+}
+
+.crimson-inst {
+  -fx-fill: crimson;
+  -fx-text-fill: crimson;
 }
