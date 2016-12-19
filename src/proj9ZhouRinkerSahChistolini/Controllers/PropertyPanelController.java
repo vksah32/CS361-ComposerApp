@@ -10,7 +10,6 @@
  */
 package proj9ZhouRinkerSahChistolini.Controllers;
 
-import com.sun.tools.javac.code.Attribute;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
@@ -28,9 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import proj9ZhouRinkerSahChistolini.Models.Note;
-
-import static com.sun.tools.internal.xjc.reader.Ring.add;
-
 
 /**
  * contorls the property panel

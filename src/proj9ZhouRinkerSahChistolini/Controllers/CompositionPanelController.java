@@ -112,7 +112,6 @@ public class CompositionPanelController {
      */
     @FXML
     public void initialize() {
-        this.drawLines();
         this.composition = new Composition();
         this.dragInPanelHandler = new DragInPanelHandler(
                 this.selectionRectangle,
@@ -123,9 +122,6 @@ public class CompositionPanelController {
         this.compositionPanel.toFront();
         //adds the scale transformation to the group
         this.groupToScale.getTransforms().add(scale);
-
-        // TODO: 12/11/16 FIX THIS BROKEN BINDING
-        //this.bindScrollPane();
 
         //make sure the tempoline doesn't get too big/small
         this.tempoLine.getTransforms().add(scale);
@@ -143,6 +139,7 @@ public class CompositionPanelController {
                 scale.setY(newValue.doubleValue());
             }
         });
+        this.drawLines();
     }
 
     /**
@@ -248,10 +245,10 @@ public class CompositionPanelController {
             }
         }
 
-        //vertical lines at every 400 pixel
-        for(int i = 0; i < 5; i++)
+        //vertical lines at every 100 pixel
+        for(int i = 0; i < this.width/100; i++)
         {
-            Rectangle rec = new Rectangle(400*i, 0, 400, 1280);
+            Rectangle rec = new Rectangle(100*i, 0, 1, 1280);
             rec.setFill(null);
             rec.setStroke(Color.GRAY);
             rec.getTransforms().add(scale);
