@@ -56,11 +56,19 @@ public class PreferencesMenuController {
 
         if(result.isPresent()) { //If the result isn't present, then cancel was pressed
             HashMap<String,String> results = result.get();
-            this.compositionPanelController.updatePreferences(
-                    getWidthFromNote(results.get("duration"), 100),
-                    Integer.parseInt(results.get("volume")),
-                    Integer.parseInt(results.get("tempo"))
-            );
+            try {
+                this.compositionPanelController.updatePreferences(
+                        getWidthFromNote(results.get("duration"), 100),
+                        Integer.parseInt(results.get("volume")),
+                        Integer.parseInt(results.get("tempo"))
+                );
+            } catch (NumberFormatException e) {
+                this.compositionPanelController.updatePreferences(
+                        getWidthFromNote(results.get("duration"), 100),
+                        this.compositionPanelController.getNoteVolume(),
+                        this.compositionPanelController.getCompositionTempo()
+                );
+            }
         }
     }
 
