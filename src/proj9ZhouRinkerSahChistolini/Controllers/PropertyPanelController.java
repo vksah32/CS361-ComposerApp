@@ -20,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeInstrumentAction;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeVolumeAction;
+import proj9ZhouRinkerSahChistolini.Controllers.Actions.ExtendNoteAction;
+import proj9ZhouRinkerSahChistolini.Controllers.Actions.TranslateNoteAction;
 import proj9ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import java.util.ArrayList;
@@ -59,6 +61,12 @@ public class PropertyPanelController {
     @FXML
     /* contorls volume input */
     private Slider volumeBar;
+
+    /* keeps track of the current width of selected notes */
+    private double currentWidth;
+
+    /* keeps track of current pitch of selected notes */
+    private double currentPitch;
 
 
     /**
@@ -112,14 +120,16 @@ public class PropertyPanelController {
     private void setPitchVal(){
         try {
 
-
             int newPitch = Integer.parseInt(this.pitchBox.getCharacters().toString());
+            double deltaPitch = this.currentPitch-newPitch;
 
-            //make sure pitch is in valid range
-            if (newPitch>=0 && newPitch<=127) {
+            //make sure pitch is in valid range and there has been a pitch change
+            if (newPitch>=0 && newPitch<=127 && deltaPitch !=0) {
 
+                this.compositionPanelController.addAction(new TranslateNoteAction(
+                        this.compositionPanelController.getSelectedRectangles(), 0.0,
+                        deltaPitch, this.compositionPanelController));
 
-                this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newPitch));
                 this.compositionPanelController.getSelectedRectangles().forEach(n -> {
                     if (n instanceof NoteRectangle) {
                         n.yProperty().setValue(1270 - newPitch * 10);
@@ -146,14 +156,18 @@ public class PropertyPanelController {
         try {
 
             int newDuration = Integer.parseInt(this.durationBox.getCharacters().toString());
+            double deltaDuration = this.currentWidth-newDuration;
 
-            if (newDuration >0) {
-                this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newDuration));
+            //only add action if there has been a change
+            if (newDuration >0 && deltaDuration!=0) {
+
+                this.compositionPanelController.addAction(new ExtendNoteAction(this.compositionPanelController.getSelectedRectangles(), this.currentWidth - newDuration));
                 this.compositionPanelController.getSelectedRectangles().forEach(n -> {
                     if (n instanceof NoteRectangle) {
                         n.widthProperty().set(newDuration);
                     }
                 });
+
             }
             else {
                 this.warning("Invalid Duration Value", "Please select a positive integer for duration");
@@ -167,6 +181,7 @@ public class PropertyPanelController {
 
     /**
      * sets selected rectangles to a specified volume
+     * This is
      */
     private void setVolume(){
 
@@ -182,6 +197,7 @@ public class PropertyPanelController {
 
     /**
      * Set selected Rectangles to a specified instrument
+     * This is undoable/redoable
      */
     private void setInstrument() {
         String text = (String) this.instrumentSelect.getValue();
@@ -248,12 +264,12 @@ public class PropertyPanelController {
         if(list.isEmpty()){
             return;
         }
-        double commonDuration = list.get(0).getWidth();
+        this.currentWidth = list.get(0).getWidth();
         if (this.compositionPanelController.getComposition().getSelectedNotes().stream().allMatch(n ->
-                n.getWidth() == commonDuration
+                n.getWidth() == this.currentWidth
         )) {
             this.durationBox.setDisable(false);
-            this.durationBox.setText(Integer.toString((int) commonDuration));
+            this.durationBox.setText(Integer.toString((int) this.currentWidth));
         } else {
 
             this.durationBox.setDisable(true);
@@ -306,13 +322,13 @@ public class PropertyPanelController {
             return;
         }
 
-        double commonPitch = list.get(0).getPitch();
+        this.currentPitch = list.get(0).getPitch();
 
         if (this.compositionPanelController.getComposition().getSelectedNotes().stream().allMatch(n ->
-                n.getPitch() == commonPitch
+                n.getPitch() == this.currentPitch
         )) {
             this.pitchBox.setDisable(false);
-            this.pitchBox.setText(Integer.toString((int) commonPitch));
+            this.pitchBox.setText(Integer.toString((int) this.currentPitch));
 
         } else {
 
