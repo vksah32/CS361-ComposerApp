@@ -91,7 +91,10 @@ public class ControllersInitializer {
                 bindingController
         );
         //Initialize Preferences Controller
-        this.preferencesMenuController.init(this.compositionPanelController);
+        this.preferencesMenuController.init(
+                this.compositionPanelController,
+                this.instrumentPaneController
+        );
     }
 }
 

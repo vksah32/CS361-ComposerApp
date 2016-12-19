@@ -32,7 +32,7 @@ public class Instrument {
      * @return channel int
      */
     public int getChannel() {
-        return channel;
+        return this.channel;
     }
 
     /**
@@ -40,7 +40,7 @@ public class Instrument {
      * @return instrument int
      */
     public int getValue() {
-        return instrument;
+        return this.instrument;
     }
 
     /**
@@ -48,6 +48,13 @@ public class Instrument {
      * @return name string
      */
     public String getName() {
-        return name;
+        return this.name;
+    }
+
+    /**
+     * toString method
+     */
+    public String toString(){
+        return this.name;
     }
 }

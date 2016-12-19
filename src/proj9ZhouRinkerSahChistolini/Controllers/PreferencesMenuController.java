@@ -1,4 +1,5 @@
 package proj9ZhouRinkerSahChistolini.Controllers;
+import proj9ZhouRinkerSahChistolini.Models.Instrument;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -6,8 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Alex on 12/11/16.
@@ -18,12 +18,24 @@ public class PreferencesMenuController {
      */
     private CompositionPanelController compositionPanelController;
 
+    /** reference to the instrumentPanelController */
+    private InstrumentPanelController instrumentPanelController;
+
+    /** a list of color options for the various instruments */
+    private Set<String> colorOptions = new HashSet<String>();
+    private List<Instrument> instrumentOptions;
+
     /**
      * Sets up the references to the necessary controllers this minion needs
      * to talk to
      */
-    public void init(CompositionPanelController compController) {
+    public void init(CompositionPanelController compController,
+                     InstrumentPanelController instController) {
         this.compositionPanelController = compController;
+        this.instrumentPanelController = instController;
+        initializeColorOptions();
+        // TODO: 12/18/16 Eventually this should reference a larger list rather than our default
+        this.instrumentOptions = this.instrumentPanelController.getInstruments();
     }
 
     @FXML
@@ -55,10 +67,21 @@ public class PreferencesMenuController {
 
     @FXML
     /**
-     *
+     * updates the instrument panel preferences based on the user's interaction
+     * with the dialog menu
      */
-    public void displayInstPreferences() {
-        return;
+    public void updateInstPreferences() {
+        this.compositionPanelController.stopComposition();
+        Dialog<InstrumentDataHolder> dialog = generateInstrumentDialog(
+                this.instrumentPanelController.getInstruments()
+        );
+        Optional<InstrumentDataHolder> result = dialog.showAndWait();
+        if(result.isPresent()) { //If the result isn't present, then cancel was pressed
+            this.instrumentPanelController.updateInstruments(
+                    result.get().getInstruments(),
+                    result.get().getColors()
+            );
+        }
     }
 
     private Dialog<HashMap<String, String>> generateCompositionDialog(String currentNoteLength,
@@ -101,7 +124,7 @@ public class PreferencesMenuController {
 
         dialog.getDialogPane().setContent(grid);
 
-        // Convert the result to a username-password-pair when the login button is clicked.
+        // Convert the result to a hashmap of results
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == applyButton) {
                 HashMap<String, String> preferences = new HashMap<>();
@@ -115,6 +138,79 @@ public class PreferencesMenuController {
 
         return dialog;
     }
+
+
+    private Dialog<InstrumentDataHolder> generateInstrumentDialog(
+            List<Instrument> instruments
+    ) {
+        // Create the custom dialog.
+        Dialog<InstrumentDataHolder> dialog = new Dialog<>();
+        dialog.setTitle("Instrument Preferences");
+
+        // Set the button types and add them to the pane
+        ButtonType applyButton = new ButtonType("Apply");
+        dialog.getDialogPane().getButtonTypes().addAll(applyButton, ButtonType.CANCEL);
+
+        // Create the grid to place the questions on
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 20, 10, 10));
+
+        ChoiceBox instBox;
+        ChoiceBox instColorBox;
+        ArrayList<ChoiceBox> instBoxes = new ArrayList<>();
+        ArrayList<ChoiceBox> colorBoxes = new ArrayList<>();
+
+        //Set up the various choices
+        for(int i=0; i<instruments.size(); i++) {
+            //Instrument Choices
+            instBox = new ChoiceBox();
+            instBox.getItems().addAll(instruments);
+            instBox.setValue(instruments.get(i));
+            instBoxes.add(instBox);
+
+            //Color choices
+            instColorBox = new ChoiceBox();
+            instColorBox.getItems().addAll(this.colorOptions);
+            instColorBox.getItems().add("Color");
+            instColorBox.setValue("Color");
+            colorBoxes.add(instColorBox);
+
+            //Add items to the grid
+            grid.add(instBox, 0, i);
+            grid.add(instColorBox, 1, i);
+        }
+        dialog.getDialogPane().setContent(grid);
+
+        // Convert the result to an array of Instruments
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == applyButton) {
+                ArrayList<Instrument> instPreferences = new ArrayList<>();
+                ArrayList<String> colorPreferences = new ArrayList<>();
+
+                for(ChoiceBox c : instBoxes) {
+                    instPreferences.add((Instrument) c.getValue());
+                }
+
+                for(ChoiceBox c : colorBoxes) {
+                    String color = (String) c.getValue();
+                    if(color.equals("Color")) { colorPreferences.add("");
+                    } else {
+                        colorPreferences.add((String) c.getValue());
+                    }
+                }
+
+                return new InstrumentDataHolder(instPreferences, colorPreferences);
+            }
+            return null;
+        });
+
+        return dialog;
+    }
+
+    // The following methods are dialog-specific conversions used in the various
+    // Dialogs created above.
 
     /**
      * returns a string representation of the type of note based on
@@ -156,5 +252,49 @@ public class PreferencesMenuController {
                 return ticksPerBeat/8;
         }
         return 0;
+    }
+
+    private void initializeColorOptions() {
+        Collections.addAll(this.colorOptions,
+                "green",
+                "blue",
+                "gold",
+                "magenta",
+                "orange",
+                "black",
+                "pink",
+                "grey"
+        );
+    }
+
+    /**
+     * a class which holds data associated with instrument panel preferences
+     */
+    private class InstrumentDataHolder {
+        private List<Instrument> instruments;
+        private List<String> colorChoices;
+
+        public InstrumentDataHolder(List<Instrument> instruments,
+                                    List<String> colors
+        ) {
+            this.instruments = instruments;
+            this.colorChoices = colors;
+        }
+
+        /**
+         * returns the list of instruments
+         * @return arraylist of instruments
+         */
+        public List<Instrument> getInstruments() {
+            return this.instruments;
+        }
+
+        /**
+         * returns the colors
+         * @return the list of colors
+         */
+        public List<String> getColors() {
+            return this.colorChoices;
+        }
     }
 }

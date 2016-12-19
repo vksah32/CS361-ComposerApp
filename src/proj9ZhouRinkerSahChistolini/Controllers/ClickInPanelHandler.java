@@ -89,10 +89,11 @@ public class ClickInPanelHandler {
                 width,
                 10,
                 this.instController.getInstrument(instId).getValue(),
-                this.instController.getInstrument(instId).getName(),
+                this.instController.getStyleMappings().get(
+                        instController.getInstrument(instId).getName()
+                ) + instController.getInstrument(instId).getChannel(),
                 this.instController
         );
-
         DragInNoteHandler handler = new DragInNoteHandler(rectangle, this.compController);
 
         // sets the handlers of these events to be the
