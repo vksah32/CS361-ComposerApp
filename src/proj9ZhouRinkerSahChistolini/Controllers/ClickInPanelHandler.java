@@ -69,6 +69,9 @@ public class ClickInPanelHandler {
                 event.getY()/this.compController.getZoomFactor().getValue()
                 , width, instId, volume
         );
+
+        this.compController.getPropPanelController().populatePropertyPanel();
+
     }
 
     /**

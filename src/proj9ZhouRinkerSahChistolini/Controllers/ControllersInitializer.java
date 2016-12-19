@@ -50,7 +50,7 @@ public class ControllersInitializer {
     @FXML
     public void initialize() {
         //Initialize CompositionPanelController
-        this.compositionPanelController.init(this.instrumentPaneController);
+        this.compositionPanelController.init(this.instrumentPaneController, this.propertyPaneController);
 
         // Initialize the non-fxml tools
         XMLHandler XMLhandler = new XMLHandler(this.compositionPanelController);

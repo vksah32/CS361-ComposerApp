@@ -12,17 +12,16 @@ package proj9ZhouRinkerSahChistolini.Controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.IntegerBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeVolumeAction;
-import proj9ZhouRinkerSahChistolini.Views.NoteRectangle;
+import proj9ZhouRinkerSahChistolini.Views.GroupRectangle;
 import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
-import javafx.beans.value.ChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -66,9 +65,13 @@ public class PropertyPanelController {
         this.compositionPanelController = compController;
         this.instController = instController;
 
-
         this.setPropertyBarVisibility();
-        this.setUpComboBox();
+
+        //set up combo box selections
+        Collection<String> instrumentOptions = this.instController.getInstrumentNames();
+        for (String s : instrumentOptions){
+            instrumentSelect.getItems().add(s);
+        }
 
     }
 
@@ -93,7 +96,6 @@ public class PropertyPanelController {
 
 
             //set volume
-
             double volume = (this.volumeBar.getValue()/100)*127;
             this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(),(int) volume));
             this.compositionPanelController.getSelectedNotes().forEach( n -> {
@@ -129,38 +131,75 @@ public class PropertyPanelController {
 
 
 
-    private void setUpPitchBox() {
-        StringBinding commonPitch = Bindings.createStringBinding(() ->
-                this.compositionPanelController.getSelectedRectangles().toString());
+    public void populatePropertyPanel(){
 
-               this.pitchBox.textProperty().bind(commonPitch);
+        Collection<SelectableRectangle> notes =
+                this.compositionPanelController.getSelectedRectangles();
+        ArrayList<SelectableRectangle> list = new ArrayList<>(notes);
+
+        this.populatePitch(list);
+        this.populateDuration(list);
 
 
 
     }
 
-    private void setUpComboBox(){
 
-        Collection<String> instrumentOptions = this.instController.getInstrumentNames();
-        for (String s : instrumentOptions){
-            instrumentSelect.getItems().add(s);
+    private void populateDuration(ArrayList<SelectableRectangle> list){
+
+        double commonDuration = list.get(0).getWidth();
+        this.durationBox.setDisable(false);
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getWidth() != commonDuration) {
+                this.durationBox.setText("--");
+                this.durationBox.setDisable(true);
+                break;
+            }
         }
 
-     //   StringBinding commonPitch = Bindings.createStringBinding(() ->
-       //         this.compositionPanelController.getSelectedRectangles().toString());
-        //this.instrumentSelect.valueProperty().bind(commonPitch);
-        //setSelectedItem()
+        if (!this.durationBox.isDisabled()){
+            this.durationBox.setText(Integer.toString((int) commonDuration));
+        }
 
     }
 
 
-    private void setUpVolumeBar(){
-        return;
+    private void populateInstrument(ArrayList<SelectableRectangle> list){
+      //  String commonDuration = list.get(0).getInst;
+        this.instrumentSelect.setDisable(false);
 
-    }
+        for (int i = 0; i < list.size(); i++) {
+        //    if (list.get(i).getWidth() != commonDuration) {
+                this.durationBox.setText("--");
+                this.durationBox.setDisable(true);
+                break;
+            }
+        }
 
-    private void setUpDurationBox(){
-        return;
+        //if (!this.durationBox.isDisabled()){
+          //  this.durationBox.setText(Integer.toString((int) commonDuration));
+       // }
+
+
+
+
+    private void populatePitch(ArrayList<SelectableRectangle> list){
+
+        double commonPitch = list.get(0).getY();
+        this.pitchBox.setDisable(false);
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getY() != commonPitch) {
+                this.pitchBox.setText("--");
+                this.pitchBox.setDisable(true);
+                break;
+            }
+        }
+
+        if (!this.pitchBox.isDisabled()){
+            this.pitchBox.setText(Integer.toString((int) commonPitch/10));
+        }
     }
 
 }

@@ -95,7 +95,7 @@ public class DragInPanelHandler {
                 rectangle.setSelected(true);
             }
         }
-
+        this.compController.getPropPanelController().populatePropertyPanel();
 
     }
 
