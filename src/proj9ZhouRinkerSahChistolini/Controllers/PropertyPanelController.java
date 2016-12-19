@@ -12,17 +12,21 @@ package proj9ZhouRinkerSahChistolini.Controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.IntegerBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeInstrumentAction;
 import proj9ZhouRinkerSahChistolini.Controllers.Actions.ChangeVolumeAction;
-import proj9ZhouRinkerSahChistolini.Views.GroupRectangle;
+import proj9ZhouRinkerSahChistolini.Views.NoteRectangle;
 import proj9ZhouRinkerSahChistolini.Views.SelectableRectangle;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import proj9ZhouRinkerSahChistolini.Models.Note;
+
 
 /**
  * contorls the property panel
@@ -60,8 +64,7 @@ public class PropertyPanelController {
      * Sets up graphic display of the property panel
      */
     public void init(CompositionPanelController compController,
-                     InstrumentPanelController instController)
-    {
+                     InstrumentPanelController instController) {
         this.compositionPanelController = compController;
         this.instController = instController;
 
@@ -69,7 +72,7 @@ public class PropertyPanelController {
 
         //set up combo box selections
         Collection<String> instrumentOptions = this.instController.getInstrumentNames();
-        for (String s : instrumentOptions){
+        for (String s : instrumentOptions) {
             instrumentSelect.getItems().add(s);
         }
 
@@ -79,44 +82,101 @@ public class PropertyPanelController {
     /**
      * called when the apply button is pused to set instrument properties
      */
-    public boolean handleApply(){
+    public void handleApply() {
 
-        Collection<SelectableRectangle> selectedList =
-                this.compositionPanelController.getSelectedRectangles();
-
-
-        try{
-            // set pitch and duration
-            double newPitch = Integer.parseInt(this.pitchBox.getCharacters().toString());
-            double newDuration = Integer.parseInt(this.durationBox.getCharacters().toString());
-
-            // set instrument
-            String selectedInst = (String) this.instrumentSelect.getValue();
-            int selectedInstVal = this.instController.getInstrumentValues(selectedInst);
-
-
-            //set volume
-            double volume = (this.volumeBar.getValue()/100)*127;
-            this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(),(int) volume));
-            this.compositionPanelController.getSelectedNotes().forEach( n -> {
-                n.setVolume((int) volume);
-
-            });
-
-            for (SelectableRectangle s : selectedList){
-                s.setY(newPitch);
-                s.setWidth(newDuration);
-                s.setInstrument(selectedInstVal);
-            }
-
-        }
-        catch (NumberFormatException e){
-            return false;
+        //set pitch
+        if(!this.pitchBox.isDisabled()){
+            this.setPitchVal();
         }
 
-        return true;
+        // set duration
+        if(!this.durationBox.isDisabled()){
+            this.setDuration();
+        }
+
+        //set volume
+        if (!this.volumeBar.isDisabled()){
+            this.setVolume();
+        }
+
+        //set instrument
+        if (!this.instrumentSelect.isDisabled())
+            this.setInstrument();
     }
 
+
+
+
+    private void setPitchVal(){
+        try {
+            // set pitch and duration
+            int newPitch = Integer.parseInt(this.pitchBox.getCharacters().toString());
+            this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newPitch));
+            this.compositionPanelController.getSelectedRectangles().forEach(n -> {
+                if(n instanceof NoteRectangle) {
+                    ((NoteRectangle) n).yProperty().setValue(1270-newPitch*10);
+                }
+            });
+
+        } catch (NumberFormatException e) {
+
+        }
+
+    }
+
+    private void setDuration(){
+
+        try {
+            int newDuration = Integer.parseInt(this.durationBox.getCharacters().toString());
+            this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), newDuration));
+
+            System.out.println(this.compositionPanelController.getSelectedRectangles().size());
+            this.compositionPanelController.getSelectedRectangles().forEach(n ->{
+                if(n instanceof NoteRectangle) {
+                    ((NoteRectangle) n).widthProperty().set(newDuration);
+                }
+            });
+        } catch (NumberFormatException e) {
+        }
+
+    }
+
+    private void setVolume(){
+
+        double volume = (this.volumeBar.getValue() / 100) * 127;
+        this.compositionPanelController.addAction(new ChangeVolumeAction(this.compositionPanelController.getSelectedNotes(), (int) volume));
+        this.compositionPanelController.getSelectedNotes().forEach(n -> {
+            n.setVolume((int) volume);
+
+        });
+
+    }
+
+
+    /**
+     * Set selected Rectangles to a specified instrument
+     */
+    private void setInstrument() {
+        String text = (String) this.instrumentSelect.getValue();
+
+         List<SelectableRectangle> before = new ArrayList<>();
+         this.compositionPanelController.getSelectedRectangles().
+
+        forEach(n->before.add(n));
+            this.compositionPanelController.addAction(new
+
+        ChangeInstrumentAction(this.compositionPanelController, before, text));
+            before.forEach(n->
+            {
+                 n.setInstrument(
+                    this.compositionPanelController.getInstrumentPanelController().getInstruments()
+                        .stream()
+                        .filter(
+                                i -> i.getName().equals(text)
+                        ).collect(Collectors.toList()).get(0).getValue()
+        );
+    });
+}
 
     private void setPropertyBarVisibility(){
 
@@ -133,73 +193,101 @@ public class PropertyPanelController {
 
     public void populatePropertyPanel(){
 
-        Collection<SelectableRectangle> notes =
-                this.compositionPanelController.getSelectedRectangles();
-        ArrayList<SelectableRectangle> list = new ArrayList<>(notes);
+        List<Note> noteSet = this.compositionPanelController.getComposition().getSelectedNotes();
 
-        this.populatePitch(list);
-        this.populateDuration(list);
-
+        this.populatePitch(noteSet);
+        this.populateDuration(noteSet);
+        this.populateInstrument(noteSet);
+        this.populateVolume(noteSet);
 
 
     }
 
 
-    private void populateDuration(ArrayList<SelectableRectangle> list){
-
+    private void populateDuration(List<Note> list){
+        if(list.isEmpty()){
+            return;
+        }
         double commonDuration = list.get(0).getWidth();
-        this.durationBox.setDisable(false);
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getWidth() != commonDuration) {
-                this.durationBox.setText("--");
-                this.durationBox.setDisable(true);
-                break;
-            }
-        }
-
-        if (!this.durationBox.isDisabled()){
+        if (this.compositionPanelController.getComposition().getSelectedNotes().stream().allMatch(n ->
+                n.getWidth() == commonDuration
+        )) {
+            this.durationBox.setDisable(false);
             this.durationBox.setText(Integer.toString((int) commonDuration));
+        } else {
+
+            this.durationBox.setDisable(true);
+            this.durationBox.setText("--");
         }
 
     }
 
 
-    private void populateInstrument(ArrayList<SelectableRectangle> list){
-      //  String commonDuration = list.get(0).getInst;
-        this.instrumentSelect.setDisable(false);
-
-        for (int i = 0; i < list.size(); i++) {
-        //    if (list.get(i).getWidth() != commonDuration) {
-                this.durationBox.setText("--");
-                this.durationBox.setDisable(true);
-                break;
-            }
+    private void populateInstrument(List<Note> noteSet) {
+        if(noteSet.isEmpty()){
+            return;
         }
 
-        //if (!this.durationBox.isDisabled()){
-          //  this.durationBox.setText(Integer.toString((int) commonDuration));
-       // }
+        String stringInst = noteSet.get(0).getInstruemntName();
+        int val = noteSet.get(0).getInstrumentValue();
+
+
+        if (this.compositionPanelController.getComposition().getSelectedNotes().stream().allMatch(n ->
+                n.getInstrumentValue() == val
+        )) {
+            this.instrumentSelect.setDisable(false);
+            this.instrumentSelect.setValue(stringInst);
+
+        } else {
+
+            this.instrumentSelect.setDisable(true);
+            this.instrumentSelect.setValue("--");
+        }
+    }
 
 
 
-
-    private void populatePitch(ArrayList<SelectableRectangle> list){
-
-        double commonPitch = list.get(0).getY();
-        this.pitchBox.setDisable(false);
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getY() != commonPitch) {
-                this.pitchBox.setText("--");
-                this.pitchBox.setDisable(true);
-                break;
-            }
+    private void populatePitch(List<Note> list) {
+        if(list.isEmpty()){
+            return;
         }
 
-        if (!this.pitchBox.isDisabled()){
-            this.pitchBox.setText(Integer.toString((int) commonPitch/10));
+        double commonPitch = list.get(0).getPitch();
+
+        if (this.compositionPanelController.getComposition().getSelectedNotes().stream().allMatch(n ->
+                n.getPitch() == commonPitch
+        )) {
+            this.pitchBox.setDisable(false);
+            this.pitchBox.setText(Integer.toString((int) commonPitch));
+
+        } else {
+
+            this.pitchBox.setDisable(true);
+            this.pitchBox.setText("--");
         }
+
+    }
+
+    private void populateVolume(List<Note> list){
+        if(list.isEmpty()){
+            return;
+        }
+
+        int commonVolume = list.get(0).getVolume();
+        double volumePercent = (commonVolume/127.0)*100.0;
+
+        if (this.compositionPanelController.getComposition().getSelectedNotes().stream().allMatch(n ->
+                n.getVolume() == commonVolume
+        )) {
+            this.volumeBar.setDisable(false);
+            this.volumeBar.setValue(volumePercent);
+
+        } else {
+
+            this.volumeBar.setDisable(true);
+            this.volumeBar.setValue(0.0);
+        }
+
     }
 
 }
